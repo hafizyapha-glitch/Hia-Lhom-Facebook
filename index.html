@@ -47,22 +47,17 @@
     .header { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }
     .logo-area { display: flex; align-items: center; gap: 16px; }
     
-    /* สไตล์โลโก้ใหม่ของเฮียหลอม */
     .logo-icon { width: 64px; height: 64px; border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); background: #FFF; box-shadow: var(--shadow-sm); padding: 4px; }
     .logo-icon img { width: 100%; height: 100%; object-fit: contain; }
     
     .logo-title { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
     .logo-sub { font-size: 13px; color: var(--muted); font-weight: 500; }
     .header-right { display: flex; align-items: center; gap: 16px; }
-    .date-badge { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; font-size: 13px; font-weight: 500; color: var(--text-secondary); }
 
     .main { padding: 18px 64px; max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
 
     .btn-outline { background: var(--surface); border: 1px solid var(--border); color: var(--text); cursor: pointer; transition: all .2s; }
     .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
-    .upload-label { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 7px 16px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text-secondary); transition: all .2s; margin: 0; }
-    .upload-label:hover { border-color: var(--primary); color: var(--primary); }
-    #fileInput { display: none; }
 
     .filter-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
     .filter-row select, .header-right select { background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 8px 32px 8px 16px; font-size: 13px; font-weight: 500; font-family: 'Inter','Noto Sans Thai',sans-serif; outline: none; cursor: pointer; transition: border-color .2s; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748B' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; box-shadow: var(--shadow-sm); }
@@ -72,7 +67,6 @@
     .clear-btn { background: transparent; border: 1px solid transparent; border-radius: 8px; color: var(--muted); padding: 8px 12px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all .2s; }
     .clear-btn:hover { color: var(--text); background: var(--surface); border-color: var(--border); }
 
-    /* New styles for Chart Filter Select */
     .chart-filter-select { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 6px 28px 6px 12px; font-size: 12px; font-weight: 500; font-family: 'Inter','Noto Sans Thai',sans-serif; outline: none; cursor: pointer; transition: border-color .2s; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2364748B' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; box-shadow: var(--shadow-sm); }
     body.dark-mode .chart-filter-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2394A3B8' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
     .chart-filter-select:focus { border-color: var(--primary); }
@@ -99,7 +93,6 @@
     .chart-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
     .chart-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 24px; }
     .chart-wrap { position: relative; height: 280px; }
-    .chart-wrap.tall { height: 340px; }
     
     .chart-summary { margin-top: 16px; padding: 12px 16px; background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.1); border-radius: 8px; font-size: 13px; color: var(--text-secondary); display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
     body.dark-mode .chart-summary { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2); color: var(--text-secondary); }
@@ -117,10 +110,6 @@
     .sortable:hover { color: var(--primary); }
     .sort-icon { display: inline-block; width: 12px; margin-left: 4px; font-size: 10px; color: var(--primary); }
     .badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 500; }
-    .badge-green { background: rgba(16,185,129,0.1); color: var(--green); }
-    .badge-blue { background: rgba(59,130,246,0.1); color: var(--blue); }
-    .badge-amber { background: rgba(245,158,11,0.1); color: var(--accent); }
-    .badge-purple { background: rgba(139,92,246,0.1); color: #8B5CF6; }
     .num { font-family: 'Inter',sans-serif; font-variant-numeric: tabular-nums; }
     .cost-cell { font-weight: 600; font-family: 'Inter',sans-serif; color: var(--text); }
 
@@ -145,9 +134,6 @@
     .setting-label { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
     .setting-desc { font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5; }
     
-    .setting-input { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-family: 'Inter','Noto Sans Thai',sans-serif; font-size: 13px; outline: none; transition: border-color 0.2s; }
-    .setting-input:focus { border-color: var(--primary); }
-
     /* Theme Switch (Slide) */
     .theme-switch-wrapper { display: flex; align-items: center; justify-content: space-between; background: var(--surface); padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border); }
     .theme-switch-text { font-size: 13px; font-weight: 500; color: var(--text); display: flex; align-items: center; gap: 8px; }
@@ -158,7 +144,6 @@
     input:checked + .slider { background-color: var(--primary); }
     input:checked + .slider:before { transform: translateX(20px); }
     body.dark-mode .slider { background-color: #334155; }
-    body.dark-mode input:checked + .slider { background-color: var(--primary); }
 
   @media (max-width: 1200px) {
     .kpi-grid.row6 { grid-template-columns: repeat(3,1fr); }
@@ -182,7 +167,6 @@
 <div class="header">
   <div class="logo-area">
     <div class="logo-icon">
-      <!-- โลโก้แบรนด์เฮียหลอม -->
       <img src="https://scontent.fbkk22-8.fna.fbcdn.net/v/t39.30808-6/605113471_122108048559150355_6122134216378049132_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1319x1311&amp;ctp=s1319x1311&amp;_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=a5f93a&amp;_nc_ohc=CWldC3McBscQ7kNvwETPviA&amp;_nc_oc=AdqrFgPeK9DhTFs5W5XZbuY2V1GwWljQlE60m6a9e8ASKo376vrJqqRB8lriTOZrACA&amp;_nc_zt=23&amp;_nc_ht=scontent.fbkk22-8.fna&amp;_nc_gid=wTEzxyZZ21kiCZZ5ecWC2Q&amp;_nc_ss=7b2a8&amp;oh=00_Af9b7tlTQNPWTQJvxItQmTMMHlozUIfu6OxmXQwXVMGMMQ&amp;oe=6A3ACC62" alt="เฮียหลอม Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'64\' height=\'64\' fill=\'%23cbd5e1\'><rect width=\'100%\' height=\'100%\'/></svg>'">
     </div>
     <div class="logo-text">
@@ -222,7 +206,6 @@
   <div style="padding: 0 32px; margin-top: -8px;" id="innerMain">
     <div id="statusBar"></div>
     <div class="filter-row">
-      <!-- Filter Campaign เดิม -->
       <span class="filter-label">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="4" x2="14" y2="4"/><line x1="10" y1="4" x2="3" y2="4"/><line x1="21" y1="12" x2="12" y2="12"/><line x1="8" y1="12" x2="3" y2="12"/><line x1="21" y1="20" x2="16" y2="20"/><line x1="12" y1="20" x2="3" y2="20"/><line x1="14" y1="2" x2="14" y2="6"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="16" y1="18" x2="16" y2="22"/></svg>
         Campaign:
@@ -231,6 +214,12 @@
         <option value="">ทุก Campaign</option>
       </select>
       <button class="clear-btn" onclick="clearFilters()">✕ ล้างตัวกรอง</button>
+
+      <!-- ส่วนแสดงแหล่งที่มาของข้อมูล (Data Source Indicator) -->
+      <div style="margin-left: auto; display: flex; gap: 16px; font-size: 12px; color: var(--muted); background: var(--card); padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border); box-shadow: var(--shadow-sm);">
+        <div>📁 ข้อมูลหลัก: <strong id="mainSourceFile" style="color: var(--text-secondary); font-family: monospace;">-</strong></div>
+        <div style="border-left: 1px solid var(--border); padding-left: 16px;">🗺️ ภูมิภาค: <strong id="regionSourceFile" style="color: var(--text-secondary); font-family: monospace;">-</strong></div>
+      </div>
     </div>
 
     <div id="kpiSection"></div>
@@ -254,31 +243,30 @@
         <div id="demoSummary" class="chart-summary" style="display:none;"></div>
       </div>
       
-      <!-- กราฟ Region ให้เต็มหน้าจอ (wide) และลบปุ่มอัปโหลดออก -->
       <div class="chart-card wide">
         <div class="chart-title">Region (ภูมิภาค)</div>
         <div class="chart-sub">สัดส่วนการเข้าถึง (Reach) ตามภูมิภาค (ข้อมูลแสดงเป็นทั้งหมด ไม่สามารถแบ่งตาม Objective ได้)</div>
         <div class="chart-wrap"><canvas id="regionChart"></canvas></div>
-        <!-- เพิ่มกล่องสรุป Executive Summary ของ Region -->
         <div id="regionSummary" class="chart-summary" style="display:none;"></div>
       </div>
     </div>
 
-    <div class="kpi-group-label" style="margin-top: 32px; font-size: 18px;">Monthly Performance (เทียบตามแคมเปญ)</div>
+    <!-- Monthly Trend Performance Area -->
+    <div class="kpi-group-label" style="margin-top: 32px; font-size: 18px;">Monthly Trend Performance (เปรียบเทียบรายเดือน)</div>
     <div class="charts-grid" style="margin-top: 8px;">
       <div class="chart-card">
         <div class="chart-title">1. Spending vs. Facebook Like</div>
-        <div class="chart-sub">เปรียบเทียบค่าใช้จ่ายและยอดไลก์เพจ</div>
+        <div class="chart-sub">เปรียบเทียบค่าใช้จ่ายและยอดไลก์เพจรายเดือน</div>
         <div class="chart-wrap"><canvas id="monthlyChart1"></canvas></div>
       </div>
       <div class="chart-card">
         <div class="chart-title">2. Spending vs. Impression</div>
-        <div class="chart-sub">เปรียบเทียบค่าใช้จ่ายและยอดการแสดงผล</div>
+        <div class="chart-sub">เปรียบเทียบค่าใช้จ่ายและยอดการแสดงผลรายเดือน</div>
         <div class="chart-wrap"><canvas id="monthlyChart2"></canvas></div>
       </div>
       <div class="chart-card">
         <div class="chart-title">3. Facebook Like vs. Cost Per Like</div>
-        <div class="chart-sub">เปรียบเทียบยอดไลก์และต้นทุนต่อไลก์</div>
+        <div class="chart-sub">เปรียบเทียบยอดไลก์และต้นทุนต่อไลก์รายเดือน</div>
         <div class="chart-wrap"><canvas id="monthlyChart3"></canvas></div>
       </div>
       <div class="chart-card">
@@ -309,6 +297,7 @@
       </div>
     </div>
 
+    <!-- Tables -->
     <div class="table-card" style="margin-top:24px;">
       <div class="tab-bar" style="padding-top: 12px; background: var(--surface);">
         <button id="tab-campaign" class="tab-btn active" onclick="switchTableTab('campaign')">Campaign Performance</button>
@@ -373,10 +362,12 @@
 
 <script>
 // ─── DATA MANAGEMENT ──────────────────────────────
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+window.allMonthsAggregated = {}; // Store aggregates for all 12 months for trend charts
+
 function parseNum(val) {
   if (val === undefined || val === null || val === '' || val === '-') return 0;
   if (typeof val === 'string') {
-    // ลบลูกน้ำออกและแปลงเป็นตัวเลข
     const n = parseFloat(val.replace(/,/g, ''));
     return isNaN(n) ? 0 : n;
   }
@@ -395,16 +386,11 @@ function parseObjective(campaign) {
 let allData = [];
 let regionData = [];
 
-// โหลดข้อมูลล่าสุดจาก localStorage (ถ้ามี) เพื่อให้อยู่จนกว่าจะอัปโหลดครั้งถัดไป
 try {
   const savedData = localStorage.getItem('hiaLhomDashboardData');
-  if (savedData) {
-    allData = JSON.parse(savedData);
-  }
+  if (savedData) allData = JSON.parse(savedData);
   const savedRegion = localStorage.getItem('hiaLhomRegionData');
-  if (savedRegion) {
-    regionData = JSON.parse(savedRegion);
-  }
+  if (savedRegion) regionData = JSON.parse(savedRegion);
 } catch(e) {
   console.warn('Could not read from localStorage', e);
 }
@@ -413,7 +399,6 @@ let filteredData = [...allData];
 let charts = {};
 
 function destroyCharts() { Object.values(charts).forEach(c => { if(c) c.destroy(); }); charts = {}; }
-function fmt(n) { if(n>=1000000) return (n/1000000).toFixed(1)+'M'; if(n>=1000) return (n/1000).toFixed(1)+'K'; return n.toLocaleString(); }
 function renderAll() { renderKPIs(); renderCharts(); renderTable(); }
 
 function renderKPIs() {
@@ -426,7 +411,6 @@ function renderKPIs() {
   const totalReactions = d.reduce((s,r)=>s+r.reactions,0);
   const totalComments = d.reduce((s,r)=>s+r.comments,0);
   const totalShares = d.reduce((s,r)=>s+r.shares,0);
-  const totalSaves = d.reduce((s,r)=>s+r.saves,0);
   const totalViews = d.reduce((s,r)=>s+r.views,0);
   
   const cpm = totalImpr > 0 ? totalSpend/totalImpr*1000 : 0;
@@ -453,7 +437,6 @@ function renderKPIs() {
   const iconLike = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>';
   const iconComment = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
   const iconShare = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>';
-  const iconSave = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>';
   const iconCPM = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><line x1="16.71" y1="13.88" x2="17.71" y2="13.88"/></svg>';
   const iconFreq = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="3" y1="3" x2="3" y2="21"/><line x1="3" y1="21" x2="21" y2="21"/><polyline points="7 16 11 12 15 14 20 9"/></svg>';
   const iconCPE = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="M14.5 9a2 2 0 0 0-2-1h-1a2 2 0 0 0 0 4h1a2 2 0 0 1 0 4h-1a2 2 0 0 1-2-1"/><line x1="12" y1="7" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="17"/></svg>';
@@ -498,7 +481,6 @@ function renderKPIs() {
 }
 
 const COLORS = ['#2563EB','#10B981','#F59E0B','#8B5CF6','#F43F5E','#06B6D4','#64748B','#334155'];
-const OBJ_COLORS = { 'Page Follower': '#2563EB', 'Awareness': '#10B981', 'Awareness - Chonburi': '#F59E0B' };
 
 function renderCharts() {
   destroyCharts();
@@ -513,24 +495,17 @@ function renderCharts() {
     return { responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:textColor,font:{family:'Inter,Noto Sans Thai',size:12}}}}, scales:{x:{...axisStyle(),stacked}, y:{...axisStyle(),stacked,title:{display:true,text:yLabel,color:isDark?'#94A3B8':'#6B7280',font:{size:11}}}} };
   }
 
-  // Check if current filtered data is ONLY Page Follower
-  const isPageFollowerOnly = d.length > 0 && d.every(r => r.objective === 'Page Follower');
-  const metricKey = isPageFollowerOnly ? 'fbLikes' : 'reach';
-  const metricLabel = isPageFollowerOnly ? 'Follower' : 'Reach';
-
   // ----------------------------------------------------------------------
-  // Demographics - Reach by Age & Gender (WITH OWN FILTER)
+  // Demographics - Reach by Age & Gender
   // ----------------------------------------------------------------------
   const demoObjElement = document.getElementById('demoObjFilter');
   const demoFilterVal = demoObjElement ? demoObjElement.value : '';
   const demoData = demoFilterVal ? d.filter(r => r.objective === demoFilterVal) : d;
 
-  // Check Metric explicitly for Demographics Chart
   const isDemoPageFollowerOnly = demoData.length > 0 && demoData.every(r => r.objective === 'Page Follower');
   const metricKeyDemo = isDemoPageFollowerOnly ? 'fbLikes' : 'reach';
   const metricLabelDemo = isDemoPageFollowerOnly ? 'Follower' : 'Reach';
   
-  // Update Subtitle dynamically for Demographics
   const demoChartSub = document.getElementById('demoChart').closest('.chart-card').querySelector('.chart-sub');
   if (demoChartSub) {
     demoChartSub.textContent = isDemoPageFollowerOnly ? 'Follower สะสมแยกตามกลุ่มอายุและเพศ' : 'การเข้าถึง (Reach) สะสมแยกตามกลุ่มอายุและเพศ';
@@ -554,50 +529,38 @@ function renderCharts() {
     options: chartOpts(metricLabelDemo, false)
   });
 
-  // Generate Demographic Summary (Executive Summary) dynamically
+  // Generate Demographic Summary
   let totalDemo = 0;
   const valByGender = { male: 0, female: 0, unknown: 0 };
-  const valByAge = {};
   
   demoData.forEach(r => {
     totalDemo += r[metricKeyDemo];
     if (valByGender[r.gender] !== undefined) valByGender[r.gender] += r[metricKeyDemo];
-    valByAge[r.age] = (valByAge[r.age] || 0) + r[metricKeyDemo];
   });
 
   if (totalDemo > 0) {
     const sortedGenderAgePairs = [];
-    
     agesDemo.forEach(age => {
       gendersDemo.forEach(gen => {
         const value = demoData.filter(r => r.age === age && r.gender === gen).reduce((s, r) => s + r[metricKeyDemo], 0);
         if (value > 0) {
-          sortedGenderAgePairs.push({
-            age: age,
-            gender: gen,
-            val: value
-          });
+          sortedGenderAgePairs.push({ age, gender: gen, val: value });
         }
       });
     });
     
-    // เรียงคู่เพศ+กลุ่มอายุที่เยอะที่สุด 3 อันดับแรก
     sortedGenderAgePairs.sort((a, b) => b.val - a.val);
     const top3 = sortedGenderAgePairs.slice(0, 3);
     
     let summaryHtml = `<svg style="flex-shrink:0;margin-top:2px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg> <div style="display:flex; flex-direction:column; gap:4px;">`;
-    
     const metricTh = isDemoPageFollowerOnly ? 'Follower' : 'Reach';
     
-    // ปรับข้อความเป็น Executive Summary
     summaryHtml += `<span><strong>Executive Summary:</strong> กลุ่มเป้าหมายหลักที่ตอบสนองแคมเปญ (${metricTh}) มากที่สุด 3 อันดับแรก คือ:</span>`;
-    
     top3.forEach((item, index) => {
       const genderTh = item.gender === 'male' ? 'ชาย' : item.gender === 'female' ? 'หญิง' : 'ไม่ระบุ';
       const pct = ((item.val / totalDemo) * 100).toFixed(1);
       summaryHtml += `<span>${index + 1}. เพศ${genderTh} ช่วงอายุ ${item.age} ปี (สัดส่วน ${pct}% ของยอดรวม)</span>`;
     });
-    
     summaryHtml += `</div>`;
     
     document.getElementById('demoSummary').innerHTML = summaryHtml;
@@ -606,7 +569,9 @@ function renderCharts() {
     document.getElementById('demoSummary').style.display = 'none';
   }
 
+  // ----------------------------------------------------------------------
   // Region Chart & Executive Summary
+  // ----------------------------------------------------------------------
   if (regionData && regionData.length > 0) {
     const regionGroups = {};
     regionData.forEach(r => {
@@ -614,7 +579,6 @@ function renderCharts() {
       regionGroups[reg] = (regionGroups[reg] || 0) + (r.reach || 0);
     });
     
-    // Sort for better display
     const sortedRegions = Object.entries(regionGroups).sort((a,b)=>b[1]-a[1]);
     const labels = sortedRegions.map(item => item[0]);
     const dataValues = sortedRegions.map(item => item[1]);
@@ -628,69 +592,63 @@ function renderCharts() {
       options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:textColor,font:{family:'Inter,Noto Sans Thai',size:11}}}},cutout:'65%'}
     });
 
-    // Generate Executive Summary for Region
     const totalRegionReach = sortedRegions.reduce((sum, item) => sum + item[1], 0);
     if (totalRegionReach > 0 && sortedRegions.length > 0) {
       const topRegion = sortedRegions[0];
       const topPct = ((topRegion[1] / totalRegionReach) * 100).toFixed(1);
       
       let regSummaryHtml = `<svg style="flex-shrink:0;margin-top:2px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg> <div style="display:flex; flex-direction:column; gap:4px;">`;
-      
       regSummaryHtml += `<span><strong>Executive Summary:</strong> ภูมิภาคที่เข้าถึงกลุ่มเป้าหมายได้สูงสุดคือ <strong>${topRegion[0]}</strong> (${topRegion[1].toLocaleString()} Reach, คิดเป็น ${topPct}% ของทั้งหมด)</span>`;
-      
       if (sortedRegions.length > 1) {
         const secondRegion = sortedRegions[1];
         const secondPct = ((secondRegion[1] / totalRegionReach) * 100).toFixed(1);
         regSummaryHtml += `<span>รองลงมาคือ <strong>${secondRegion[0]}</strong> (สัดส่วน ${secondPct}%)</span>`;
       }
-      
       regSummaryHtml += `</div>`;
       document.getElementById('regionSummary').innerHTML = regSummaryHtml;
       document.getElementById('regionSummary').style.display = 'flex';
     } else {
       document.getElementById('regionSummary').style.display = 'none';
     }
-
   } else {
-    // Placeholder If No Data
     charts.region = new Chart(document.getElementById('regionChart'), {
       type:'doughnut',
       data:{
         labels: ['ไม่พบข้อมูลภูมิภาคในเดือนนี้'],
         datasets:[{data:[1],backgroundColor:isDark?['#334155']:['#E5E7EB'],borderWidth:0}]
       },
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:textColor,font:{family:'Inter,Noto Sans Thai',size:11}}}},cutout:'65%', events:[]} // disable hover events
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:textColor,font:{family:'Inter,Noto Sans Thai',size:11}}}},cutout:'65%', events:[]}
     });
-    
-    // Hide Region Summary if no data
-    if (document.getElementById('regionSummary')) {
-      document.getElementById('regionSummary').style.display = 'none';
-    }
+    if (document.getElementById('regionSummary')) document.getElementById('regionSummary').style.display = 'none';
   }
 
   // ----------------------------------------------------------------------
-  // Monthly Performance Charts (4 Charts)
+  // Trigger Monthly Trend Charts rendering
   // ----------------------------------------------------------------------
-  const campaignGroups = {};
-  d.forEach(r => {
-    const c = r.campaign || 'Unknown';
-    if (!campaignGroups[c]) {
-      campaignGroups[c] = { spend: 0, fbLikes: 0, impressions: 0, reach: 0, engagements: 0 };
-    }
-    campaignGroups[c].spend += r.spend;
-    campaignGroups[c].fbLikes += r.fbLikes;
-    campaignGroups[c].impressions += r.impressions;
-    campaignGroups[c].reach += r.reach;
-    campaignGroups[c].engagements += r.engagements;
+  renderMonthlyTrendCharts();
+}
+
+function renderMonthlyTrendCharts() {
+  const isDark = document.body.classList.contains('dark-mode');
+  const textColor = isDark ? '#F8FAFC' : '#111827';
+  const selectedCamp = document.getElementById('filterCampaign').value;
+
+  // Function to extract specific metric from pre-aggregated global data
+  const getAggData = (month, metric) => {
+    if (!window.allMonthsAggregated[month]) return 0;
+    const mData = window.allMonthsAggregated[month];
+    const targetData = selectedCamp ? (mData.campaigns[selectedCamp] || {}) : mData;
+    return targetData[metric] || 0;
+  };
+
+  const spendData = monthNames.map(m => getAggData(m, 'spend'));
+  const likeData = monthNames.map(m => getAggData(m, 'fbLikes'));
+  const impData = monthNames.map(m => getAggData(m, 'impressions'));
+  const costPerLikeData = monthNames.map(m => {
+    const s = getAggData(m, 'spend');
+    const l = getAggData(m, 'fbLikes');
+    return l > 0 ? (s / l) : 0;
   });
-
-  const sortedCamps = Object.keys(campaignGroups).sort((a,b) => campaignGroups[b].spend - campaignGroups[a].spend);
-  const campLabels = sortedCamps.map(c => c.length > 25 ? c.substring(0,25)+'...' : c); // truncate
-
-  const spendData = sortedCamps.map(c => campaignGroups[c].spend);
-  const likeData = sortedCamps.map(c => campaignGroups[c].fbLikes);
-  const impData = sortedCamps.map(c => campaignGroups[c].impressions);
-  const costPerLikeData = sortedCamps.map(c => campaignGroups[c].fbLikes > 0 ? (campaignGroups[c].spend / campaignGroups[c].fbLikes) : 0);
 
   const dualOpts = (y1Label, y2Label) => ({
     responsive: true, maintainAspectRatio: false,
@@ -703,80 +661,78 @@ function renderCharts() {
     }
   });
 
-  if (sortedCamps.length > 0) {
-    // 1. Spending Vs Facebook Like
-    charts.monthly1 = new Chart(document.getElementById('monthlyChart1'), {
-      type: 'bar',
-      data: {
-        labels: campLabels,
-        datasets: [
-          { label: 'Spending (฿)', data: spendData, backgroundColor: 'rgba(37, 99, 235, 0.8)', yAxisID: 'y', borderRadius: 4 },
-          { label: 'Facebook Like', data: likeData, type: 'line', borderColor: '#10B981', backgroundColor: '#10B981', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 3 }
-        ]
-      },
-      options: dualOpts('Spending (฿)', 'FB Likes')
-    });
+  // Chart 1: Spend vs FB Like
+  if (charts.monthly1) charts.monthly1.destroy();
+  charts.monthly1 = new Chart(document.getElementById('monthlyChart1'), {
+    type: 'bar',
+    data: {
+      labels: monthNames,
+      datasets: [
+        { label: 'Spending (฿)', data: spendData, type: 'bar', backgroundColor: 'rgba(37, 99, 235, 0.8)', yAxisID: 'y', borderRadius: 4, order: 2 },
+        { label: 'Facebook Like', data: likeData, type: 'line', borderColor: '#10B981', backgroundColor: '#10B981', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 3, order: 1 }
+      ]
+    },
+    options: dualOpts('Spending (฿)', 'FB Likes')
+  });
 
-    // 2. Spending Vs Impression
-    charts.monthly2 = new Chart(document.getElementById('monthlyChart2'), {
-      type: 'bar',
-      data: {
-        labels: campLabels,
-        datasets: [
-          { label: 'Spending (฿)', data: spendData, backgroundColor: 'rgba(37, 99, 235, 0.8)', yAxisID: 'y', borderRadius: 4 },
-          { label: 'Impressions', data: impData, type: 'line', borderColor: '#F59E0B', backgroundColor: '#F59E0B', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 3 }
-        ]
-      },
-      options: dualOpts('Spending (฿)', 'Impressions')
-    });
+  // Chart 2: Spend vs Impressions
+  if (charts.monthly2) charts.monthly2.destroy();
+  charts.monthly2 = new Chart(document.getElementById('monthlyChart2'), {
+    type: 'bar',
+    data: {
+      labels: monthNames,
+      datasets: [
+        { label: 'Spending (฿)', data: spendData, type: 'bar', backgroundColor: 'rgba(37, 99, 235, 0.8)', yAxisID: 'y', borderRadius: 4, order: 2 },
+        { label: 'Impressions', data: impData, type: 'line', borderColor: '#F59E0B', backgroundColor: '#F59E0B', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 3, order: 1 }
+      ]
+    },
+    options: dualOpts('Spending (฿)', 'Impressions')
+  });
 
-    // 3. Facebook Like vs Cost Per Facebook Like
-    charts.monthly3 = new Chart(document.getElementById('monthlyChart3'), {
-      type: 'bar',
-      data: {
-        labels: campLabels,
-        datasets: [
-          { label: 'Facebook Like', data: likeData, backgroundColor: 'rgba(16, 185, 129, 0.8)', yAxisID: 'y', borderRadius: 4 },
-          { label: 'Cost Per Like (฿)', data: costPerLikeData, type: 'line', borderColor: '#F43F5E', backgroundColor: '#F43F5E', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 3 }
-        ]
-      },
-      options: dualOpts('FB Likes', 'Cost/Like (฿)')
-    });
-  }
+  // Chart 3: FB Like vs Cost Per Like
+  if (charts.monthly3) charts.monthly3.destroy();
+  charts.monthly3 = new Chart(document.getElementById('monthlyChart3'), {
+    type: 'bar',
+    data: {
+      labels: monthNames,
+      datasets: [
+        { label: 'Facebook Like', data: likeData, type: 'bar', backgroundColor: 'rgba(16, 185, 129, 0.8)', yAxisID: 'y', borderRadius: 4, order: 2 },
+        { label: 'Cost Per Like (฿)', data: costPerLikeData, type: 'line', borderColor: '#F43F5E', backgroundColor: '#F43F5E', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 3, order: 1 }
+      ]
+    },
+    options: dualOpts('FB Likes', 'Cost/Like (฿)')
+  });
 
-  // Set global variable for Chart 4 so the dropdown function can access it without re-rendering everything
-  window.monthlyCampaignData = { campLabels, campaignGroups, sortedCamps };
+  // Trigger custom Chart 4
   renderChart4();
 }
 
 window.renderChart4 = function() {
   if (charts.monthly4) charts.monthly4.destroy();
   
-  const mData = window.monthlyCampaignData;
-  if (!mData || !mData.sortedCamps || mData.sortedCamps.length === 0) return;
-
   const m1 = document.getElementById('customMetric1').value;
   const m2 = document.getElementById('customMetric2').value;
+  const selectedCamp = document.getElementById('filterCampaign').value;
   const isDark = document.body.classList.contains('dark-mode');
   const textColor = isDark ? '#F8FAFC' : '#111827';
 
-  const mapData = (metric) => {
-    return mData.sortedCamps.map(c => {
-      const g = mData.campaignGroups[c];
-      switch(metric) {
-        case 'impressions': return g.impressions;
-        case 'spend': return g.spend;
-        case 'reach': return g.reach;
-        case 'fbLikes': return g.fbLikes;
-        case 'engagements': return g.engagements;
-        case 'cpm': return g.impressions > 0 ? (g.spend/g.impressions)*1000 : 0;
-        case 'cpe': return g.engagements > 0 ? (g.spend/g.engagements) : 0;
-        case 'cpr': return g.reach > 0 ? (g.spend/g.reach)*1000 : 0;
-        case 'costPerLike': return g.fbLikes > 0 ? (g.spend/g.fbLikes) : 0;
-        case 'freq': return g.reach > 0 ? (g.impressions/g.reach) : 0;
-        default: return 0;
-      }
-    });
+  const mapData = (month, metric) => {
+    const mData = window.allMonthsAggregated[month] || {};
+    const targetData = selectedCamp ? (mData.campaigns && mData.campaigns[selectedCamp] ? mData.campaigns[selectedCamp] : {}) : mData;
+
+    switch(metric) {
+      case 'impressions': return targetData.impressions || 0;
+      case 'spend': return targetData.spend || 0;
+      case 'reach': return targetData.reach || 0;
+      case 'fbLikes': return targetData.fbLikes || 0;
+      case 'engagements': return targetData.engagements || 0;
+      case 'cpm': return (targetData.impressions > 0) ? (targetData.spend/targetData.impressions)*1000 : 0;
+      case 'cpe': return (targetData.engagements > 0) ? (targetData.spend/targetData.engagements) : 0;
+      case 'cpr': return (targetData.reach > 0) ? (targetData.spend/targetData.reach)*1000 : 0;
+      case 'costPerLike': return (targetData.fbLikes > 0) ? (targetData.spend/targetData.fbLikes) : 0;
+      case 'freq': return (targetData.reach > 0) ? (targetData.impressions/targetData.reach) : 0;
+      default: return 0;
+    }
   };
 
   const labelMap = {
@@ -784,8 +740,8 @@ window.renderChart4 = function() {
     cpm: 'CPM (฿)', cpe: 'CPE (฿)', cpr: 'Cost/1K Reach (฿)', costPerLike: 'Cost/Like (฿)', freq: 'Frequency'
   };
 
-  const data1 = mapData(m1);
-  const data2 = mapData(m2);
+  const data1 = monthNames.map(m => mapData(m, m1));
+  const data2 = monthNames.map(m => mapData(m, m2));
 
   const dualOpts = (y1Label, y2Label) => ({
     responsive: true, maintainAspectRatio: false,
@@ -801,10 +757,10 @@ window.renderChart4 = function() {
   charts.monthly4 = new Chart(document.getElementById('monthlyChart4'), {
     type: 'bar',
     data: {
-      labels: mData.campLabels,
+      labels: monthNames,
       datasets: [
-        { label: labelMap[m1], data: data1, backgroundColor: 'rgba(139, 92, 246, 0.8)', yAxisID: 'y', borderRadius: 4 },
-        { label: labelMap[m2], data: data2, type: 'line', borderColor: '#06B6D4', backgroundColor: '#06B6D4', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 3 }
+        { label: labelMap[m1], data: data1, type: 'bar', backgroundColor: 'rgba(139, 92, 246, 0.8)', yAxisID: 'y', borderRadius: 4, order: 2 },
+        { label: labelMap[m2], data: data2, type: 'line', borderColor: '#06B6D4', backgroundColor: '#06B6D4', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 3, order: 1 }
       ]
     },
     options: dualOpts(labelMap[m1], labelMap[m2])
@@ -813,7 +769,7 @@ window.renderChart4 = function() {
 
 let currentSortCol = 'spend';
 let currentSortAsc = false;
-let currentTableTab = 'campaign'; // default tab
+let currentTableTab = 'campaign';
 
 window.switchTableTab = function(tab) {
   if (currentTableTab === tab) return;
@@ -835,25 +791,17 @@ window.handleSort = function(col) {
 
 function renderTable() {
   let d = filteredData;
-  
-  // Update Tab UI
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(`tab-${currentTableTab}`).classList.add('active');
   document.getElementById('tableMainTitle').textContent = currentTableTab === 'campaign' ? 'Campaign Performance' : 'Ad Performance';
   document.getElementById('th-name-label').innerHTML = currentTableTab === 'campaign' ? 'Campaign Name <span class="sort-icon" id="sortIcon-name"></span>' : 'Ad Name <span class="sort-icon" id="sortIcon-name"></span>';
 
-  // Group by Campaign or Ad
   const groupedObj = {};
   d.forEach(r => {
     const key = currentTableTab === 'campaign' ? r.campaign : r.ad;
-    if (!key) return; // skip if empty
-
+    if (!key) return;
     if (!groupedObj[key]) {
-      groupedObj[key] = {
-        name: key,
-        spend: 0, reach: 0, impressions: 0, views: 0,
-        engagements: 0, fbLikes: 0, reactions: 0, comments: 0, shares: 0, saves: 0
-      };
+      groupedObj[key] = { name: key, spend: 0, reach: 0, impressions: 0, views: 0, engagements: 0, fbLikes: 0, reactions: 0, comments: 0, shares: 0, saves: 0 };
     }
     groupedObj[key].spend += r.spend;
     groupedObj[key].reach += r.reach;
@@ -867,17 +815,12 @@ function renderTable() {
     groupedObj[key].saves += r.saves;
   });
 
-  // Sort data
   const groupedData = Object.values(groupedObj).sort((a, b) => {
-    let valA = a[currentSortCol];
-    let valB = b[currentSortCol];
-    if (typeof valA === 'string') {
-      return currentSortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
-    }
+    let valA = a[currentSortCol]; let valB = b[currentSortCol];
+    if (typeof valA === 'string') return currentSortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
     return currentSortAsc ? valA - valB : valB - valA;
   });
 
-  // Update sort icons
   const cols = ['name','spend','reach','impressions','views','engagements','fbLikes','reactions','comments','shares','saves'];
   cols.forEach(c => {
     const el = document.getElementById(`sortIcon-${c}`);
@@ -885,7 +828,6 @@ function renderTable() {
   });
 
   document.getElementById('tableCount').textContent = `แสดง ${groupedData.length} รายการ`;
-
   if (groupedData.length === 0) {
     document.getElementById('tableBody').innerHTML = `<tr><td colspan="11" style="text-align: center; color: var(--muted); padding: 32px 0;">ไม่มีข้อมูล (Data = 0)</td></tr>`;
     return;
@@ -893,7 +835,6 @@ function renderTable() {
 
   document.getElementById('tableBody').innerHTML = groupedData.map(r=>{
     let displayHTML = `<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${r.name}</div>`;
-      
     return `<tr>
       <td title="${r.name}" style="max-width:240px; padding-right:12px;">${displayHTML}</td>
       <td class="cost-cell">฿${r.spend.toFixed(2)}</td>
@@ -917,11 +858,8 @@ function populateFilters() {
 
 function applyFilters() {
   const campaign = document.getElementById('filterCampaign').value;
-  filteredData = allData.filter(r=>{
-    if (campaign && r.campaign !== campaign) return false;
-    return true;
-  });
-  renderAll();
+  filteredData = allData.filter(r => !campaign || r.campaign === campaign);
+  renderAll(); // Will automatically update KPI, charts, table, AND Monthly Trend charts
 }
 
 function clearFilters() {
@@ -930,27 +868,74 @@ function clearFilters() {
   renderAll();
 }
 
-// ─── NEW: Load Month Data (Main + Region) ──────────────────────────
+// โหลดข้อมูลรวมของทุกเดือนเพื่อใช้ในกราฟ Monthly Trend แบบ Background
+async function loadAllMonthsTrend() {
+  const promises = monthNames.map(async (month) => {
+    let rows = [];
+    try {
+      let res = await fetch(`./data/${month}.csv`);
+      if (res.ok) {
+        const text = await res.text();
+        rows = Papa.parse(text, {header: true, skipEmptyLines: true}).data;
+      } else {
+        res = await fetch(`./data/${month}.xlsx`);
+        if (res.ok) {
+          const buffer = await res.arrayBuffer();
+          const wb = XLSX.read(buffer, { type: 'array' });
+          const ws = wb.Sheets[wb.SheetNames[0]];
+          rows = XLSX.utils.sheet_to_json(ws, {defval: 0});
+        }
+      }
+    } catch(e) {}
+
+    if(rows.length === 0) return { month, data: null };
+
+    let monthlyTotal = { spend:0, reach:0, impressions:0, engagements:0, fbLikes:0, views:0, campaigns: {} };
+    rows.forEach(r => {
+        let c = r['Campaign name']||r['campaign']||'';
+        let spend = parseNum(r['Amount spent (THB)']||r['spend']);
+        let reach = parseNum(r['Reach']||r['reach']);
+        let imp = parseNum(r['Impressions']||r['impressions']);
+        let eng = parseNum(r['Post engagements']||r['engagements']);
+        let likes = parseNum(r['Facebook likes']||r['fbLikes']);
+        let views = parseNum(r['Video plays']||r['Views']||r['views']);
+
+        monthlyTotal.spend += spend;
+        monthlyTotal.reach += reach;
+        monthlyTotal.impressions += imp;
+        monthlyTotal.engagements += eng;
+        monthlyTotal.fbLikes += likes;
+        monthlyTotal.views += views;
+
+        if(!monthlyTotal.campaigns[c]) monthlyTotal.campaigns[c] = {spend:0, reach:0, impressions:0, engagements:0, fbLikes:0, views:0};
+        monthlyTotal.campaigns[c].spend += spend;
+        monthlyTotal.campaigns[c].reach += reach;
+        monthlyTotal.campaigns[c].impressions += imp;
+        monthlyTotal.campaigns[c].engagements += eng;
+        monthlyTotal.campaigns[c].fbLikes += likes;
+        monthlyTotal.campaigns[c].views += views;
+    });
+    return { month, data: monthlyTotal };
+  });
+
+  const results = await Promise.all(promises);
+  results.forEach(res => {
+      if(res.data) window.allMonthsAggregated[res.month] = res.data;
+  });
+}
+
+// โหลดข้อมูลสำหรับเดือนที่เลือก + Region ของเดือนนั้น
 async function loadMonthData() {
   const month = document.getElementById('filterMonth').value;
   if (!month) return; 
-
   showStatus(`กำลังดึงข้อมูลแคมเปญและภูมิภาคของเดือน ${month}...`);
-
   try {
-    // 1. ลองดึงไฟล์ Main Campaign Data ก่อน (.csv -> .xlsx)
     let mainLoaded = false;
     let response = await fetch(`./data/${month}.csv`);
     if (response.ok) {
       const text = await response.text();
-      Papa.parse(text, {
-        header: true,
-        skipEmptyLines: true,
-        complete: r => {
-          loadData(r.data);
-          document.getElementById('fileLabel').textContent = `ข้อมูล: ${month}.csv`;
-        }
-      });
+      Papa.parse(text, { header: true, skipEmptyLines: true, complete: r => loadData(r.data) });
+      document.getElementById('mainSourceFile').textContent = `./data/${month}.csv`;
       mainLoaded = true;
     } else {
       response = await fetch(`./data/${month}.xlsx`);
@@ -958,33 +943,24 @@ async function loadMonthData() {
         const arrayBuffer = await response.arrayBuffer();
         const wb = XLSX.read(arrayBuffer, { type: 'array' });
         const ws = wb.Sheets[wb.SheetNames[0]];
-        const rows = XLSX.utils.sheet_to_json(ws, { defval: 0 });
-        
-        loadData(rows);
-        document.getElementById('fileLabel').textContent = `ข้อมูล: ${month}.xlsx`;
+        loadData(XLSX.utils.sheet_to_json(ws, { defval: 0 }));
+        document.getElementById('mainSourceFile').textContent = `./data/${month}.xlsx`;
         mainLoaded = true;
       }
     }
 
     if (!mainLoaded) {
       showStatus(`❌ ไม่พบไฟล์ข้อมูลหลัก ${month}.csv หรือ .xlsx ใน ./data/`);
-      allData = [];
-      filteredData = [];
-      renderAll();
+      document.getElementById('mainSourceFile').textContent = 'ไม่พบไฟล์ข้อมูลหลัก';
+      allData = []; filteredData = []; 
     }
 
-    // 2. ลองดึงไฟล์ Region Data (.csv -> .xlsx)
     let regionLoaded = false;
     let regionResponse = await fetch(`./data/region/Region-${month}.csv`);
     if (regionResponse.ok) {
       const text = await regionResponse.text();
-      Papa.parse(text, {
-        header: true,
-        skipEmptyLines: true,
-        complete: r => {
-          loadRegionData(r.data);
-        }
-      });
+      Papa.parse(text, { header: true, skipEmptyLines: true, complete: r => loadRegionData(r.data) });
+      document.getElementById('regionSourceFile').textContent = `./data/region/Region-${month}.csv`;
       regionLoaded = true;
     } else {
       regionResponse = await fetch(`./data/region/Region-${month}.xlsx`);
@@ -992,21 +968,18 @@ async function loadMonthData() {
         const arrayBuffer = await regionResponse.arrayBuffer();
         const wb = XLSX.read(arrayBuffer, { type: 'array' });
         const ws = wb.Sheets[wb.SheetNames[0]];
-        const rows = XLSX.utils.sheet_to_json(ws, { defval: 0 });
-        
-        loadRegionData(rows);
+        loadRegionData(XLSX.utils.sheet_to_json(ws, { defval: 0 }));
+        document.getElementById('regionSourceFile').textContent = `./data/region/Region-${month}.xlsx`;
         regionLoaded = true;
       }
     }
 
     if (!regionLoaded) {
-      // เคลียร์กราฟภูมิภาคถ้าเดือนนี้ไม่มีไฟล์
-      regionData = [];
-      renderCharts();
+      document.getElementById('regionSourceFile').textContent = 'ไม่พบไฟล์ภูมิภาค';
+      regionData = []; 
     }
-
   } catch (error) {
-    console.error("Error loading month data:", error);
+    console.error(error);
     showStatus(`❌ พบปัญหาการดึงไฟล์ โปรดตรวจสอบว่ารันผ่าน Local Web Server หรือไม่`);
   }
 }
@@ -1017,15 +990,8 @@ function loadRegionData(rows) {
       region: r['Region'] || r['ภูมิภาค'] || r['region'] || 'Unknown',
       reach: parseNum(r['Reach'] || r['reach'])
     })).filter(r => r.reach > 0);
-    
-    try {
-      localStorage.setItem('hiaLhomRegionData', JSON.stringify(regionData));
-    } catch(e) { console.warn('Local storage issue'); }
-    
-    renderCharts();
-  } catch(e) { 
-    console.warn('เกิดข้อผิดพลาดในการอ่านไฟล์ภูมิภาค: '+e.message); 
-  }
+    try { localStorage.setItem('hiaLhomRegionData', JSON.stringify(regionData)); } catch(e){}
+  } catch(e) { console.warn(e.message); }
 }
 
 function loadData(rows) {
@@ -1051,34 +1017,17 @@ function loadData(rows) {
       };
     }).filter(r=>r.ad && r.ad!=='-');
     filteredData = [...allData];
-    
-    // บันทึกลง localStorage เพื่อให้อยู่ข้ามการ Refresh จนกว่าจะอัปโหลดครั้งถัดไป
     try {
       localStorage.setItem('hiaLhomDashboardData', JSON.stringify(allData));
       localStorage.setItem('hiaLhomUploadDate', new Date().toISOString());
-    } catch(e) {
-      console.warn('Local storage is full or disabled');
-    }
-
+    } catch(e) {}
     populateFilters();
-    renderAll();
-
   } catch(e) { showStatus('❌ เกิดข้อผิดพลาดในการอ่านไฟล์: '+e.message); }
 }
 
-function showStatus(msg) {
-  const bar = document.getElementById('statusBar');
-  bar.textContent = msg; bar.style.display = 'block';
-  setTimeout(()=>{ bar.style.display='none'; }, 4000);
-}
-
-// Theme
 if (localStorage.getItem('theme')==='dark') document.body.classList.add('dark-mode');
-
 const themeCheckbox = document.getElementById('themeToggleCheckbox');
-if (themeCheckbox) {
-  themeCheckbox.checked = document.body.classList.contains('dark-mode');
-}
+if (themeCheckbox) themeCheckbox.checked = document.body.classList.contains('dark-mode');
 
 function updateThemeIcon() {
   const isDark = document.body.classList.contains('dark-mode');
@@ -1088,61 +1037,45 @@ function updateThemeIcon() {
       ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> โหมดมืด (Dark Mode)'
       : '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg> โหมดสว่าง (Light Mode)';
   }
-  if (themeCheckbox) themeCheckbox.checked = isDark;
 }
 updateThemeIcon();
 
 if (themeCheckbox) {
   themeCheckbox.addEventListener('change', (e) => {
-    if (e.target.checked) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
+    if (e.target.checked) document.body.classList.add('dark-mode');
+    else document.body.classList.remove('dark-mode');
     localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-    updateThemeIcon();
-    renderCharts();
+    updateThemeIcon(); renderCharts();
   });
 }
 
-// Settings Drawer Logic
 const settingsBtn = document.getElementById('settingsBtn');
 const closeDrawerBtn = document.getElementById('closeDrawerBtn');
 const settingsDrawer = document.getElementById('settingsDrawer');
 const settingsOverlay = document.getElementById('settingsOverlay');
 
-function openDrawer() {
-  settingsOverlay.classList.add('show');
-  settingsDrawer.classList.add('open');
-}
-
-function closeDrawer() {
-  settingsOverlay.classList.remove('show');
-  settingsDrawer.classList.remove('open');
-}
-
+function openDrawer() { settingsOverlay.classList.add('show'); settingsDrawer.classList.add('open'); }
+function closeDrawer() { settingsOverlay.classList.remove('show'); settingsDrawer.classList.remove('open'); }
 settingsBtn?.addEventListener('click', openDrawer);
 closeDrawerBtn?.addEventListener('click', closeDrawer);
 settingsOverlay?.addEventListener('click', closeDrawer);
 
 // Init
 populateFilters();
-
-// ตั้งค่า Default เดือนปัจจุบันและดึงข้อมูลมาแสดงอัตโนมัติ
-const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const currentMonth = monthNames[new Date().getMonth()];
 const monthDropdown = document.getElementById('filterMonth');
 
 if (monthDropdown) {
   monthDropdown.value = currentMonth;
-  // โหลดข้อมูลเดือนปัจจุบันทันทีเมื่อเปิดหน้า
-  loadMonthData().finally(() => {
-    // เรนเดอร์ข้อมูล (หากไม่พบไฟล์เดือนปัจจุบัน จะแสดงข้อมูลเก่าที่ค้างใน LocalStorage แทน)
-    renderAll();
-  });
-} else {
-  renderAll();
 }
+
+// ใช้งาน Promise.all เพื่อดึงข้อมูลเดือนปัจจุบัน + ข้อมูล 12 เดือน (Trend) แบบขนาน
+Promise.all([
+  loadMonthData(),
+  loadAllMonthsTrend()
+]).finally(() => {
+  renderAll(); // เมื่อโหลดครบแล้วจึงนำไปแสดงผลทั้งหมด
+});
 </script>
 </body>
 </html>
