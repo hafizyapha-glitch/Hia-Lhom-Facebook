@@ -363,7 +363,10 @@
 <script>
 // ─── DATA MANAGEMENT ──────────────────────────────
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-window.allMonthsAggregated = {}; // Store aggregates for all 12 months for trend charts
+window.allMonthsAggregated = {}; 
+
+// Clean string functions to handle invisible spaces or BOM characters
+const cleanKey = k => k ? k.trim().replace(/^\uFEFF/, '').toLowerCase() : '';
 
 function parseNum(val) {
   if (val === undefined || val === null || val === '' || val === '-') return 0;
@@ -385,17 +388,7 @@ function parseObjective(campaign) {
 
 let allData = [];
 let regionData = [];
-
-try {
-  const savedData = localStorage.getItem('hiaLhomDashboardData');
-  if (savedData) allData = JSON.parse(savedData);
-  const savedRegion = localStorage.getItem('hiaLhomRegionData');
-  if (savedRegion) regionData = JSON.parse(savedRegion);
-} catch(e) {
-  console.warn('Could not read from localStorage', e);
-}
-
-let filteredData = [...allData];
+let filteredData = [];
 let charts = {};
 
 function destroyCharts() { Object.values(charts).forEach(c => { if(c) c.destroy(); }); charts = {}; }
@@ -633,7 +626,6 @@ function renderMonthlyTrendCharts() {
   const textColor = isDark ? '#F8FAFC' : '#111827';
   const selectedCamp = document.getElementById('filterCampaign').value;
 
-  // Function to extract specific metric from pre-aggregated global data
   const getAggData = (month, metric) => {
     if (!window.allMonthsAggregated[month]) return 0;
     const mData = window.allMonthsAggregated[month];
@@ -661,7 +653,6 @@ function renderMonthlyTrendCharts() {
     }
   });
 
-  // Chart 1: Spend vs FB Like
   if (charts.monthly1) charts.monthly1.destroy();
   charts.monthly1 = new Chart(document.getElementById('monthlyChart1'), {
     type: 'bar',
@@ -675,7 +666,6 @@ function renderMonthlyTrendCharts() {
     options: dualOpts('Spending (฿)', 'FB Likes')
   });
 
-  // Chart 2: Spend vs Impressions
   if (charts.monthly2) charts.monthly2.destroy();
   charts.monthly2 = new Chart(document.getElementById('monthlyChart2'), {
     type: 'bar',
@@ -689,7 +679,6 @@ function renderMonthlyTrendCharts() {
     options: dualOpts('Spending (฿)', 'Impressions')
   });
 
-  // Chart 3: FB Like vs Cost Per Like
   if (charts.monthly3) charts.monthly3.destroy();
   charts.monthly3 = new Chart(document.getElementById('monthlyChart3'), {
     type: 'bar',
@@ -703,7 +692,6 @@ function renderMonthlyTrendCharts() {
     options: dualOpts('FB Likes', 'Cost/Like (฿)')
   });
 
-  // Trigger custom Chart 4
   renderChart4();
 }
 
@@ -859,7 +847,7 @@ function populateFilters() {
 function applyFilters() {
   const campaign = document.getElementById('filterCampaign').value;
   filteredData = allData.filter(r => !campaign || r.campaign === campaign);
-  renderAll(); // Will automatically update KPI, charts, table, AND Monthly Trend charts
+  renderAll(); 
 }
 
 function clearFilters() {
@@ -868,7 +856,6 @@ function clearFilters() {
   renderAll();
 }
 
-// โหลดข้อมูลรวมของทุกเดือนเพื่อใช้ในกราฟ Monthly Trend แบบ Background
 async function loadAllMonthsTrend() {
   const promises = monthNames.map(async (month) => {
     let rows = [];
@@ -892,13 +879,18 @@ async function loadAllMonthsTrend() {
 
     let monthlyTotal = { spend:0, reach:0, impressions:0, engagements:0, fbLikes:0, views:0, campaigns: {} };
     rows.forEach(r => {
-        let c = r['Campaign name']||r['campaign']||'';
-        let spend = parseNum(r['Amount spent (THB)']||r['spend']);
-        let reach = parseNum(r['Reach']||r['reach']);
-        let imp = parseNum(r['Impressions']||r['impressions']);
-        let eng = parseNum(r['Post engagements']||r['engagements']);
-        let likes = parseNum(r['Facebook likes']||r['fbLikes']);
-        let views = parseNum(r['Video plays']||r['Views']||r['views']);
+        let c = '', spend=0, reach=0, imp=0, eng=0, likes=0, views=0;
+        for(let k in r) {
+            let cleanK = cleanKey(k);
+            let val = r[k];
+            if(['campaign name', 'campaign', 'แคมเปญ'].includes(cleanK)) c = val;
+            else if(['amount spent (thb)', 'spend', 'ยอดใช้จ่าย'].includes(cleanK)) spend = parseNum(val);
+            else if(['reach', 'การเข้าถึง'].includes(cleanK)) reach = parseNum(val);
+            else if(['impressions', 'การแสดงผล'].includes(cleanK)) imp = parseNum(val);
+            else if(['post engagements', 'engagements', 'การมีส่วนร่วม'].includes(cleanK)) eng = parseNum(val);
+            else if(['facebook likes', 'fblikes', 'ยอดถูกใจเพจ', 'ไลก์'].includes(cleanK)) likes = parseNum(val);
+            else if(['video plays', 'views', 'การรับชม'].includes(cleanK)) views = parseNum(val);
+        }
 
         monthlyTotal.spend += spend;
         monthlyTotal.reach += reach;
@@ -924,17 +916,20 @@ async function loadAllMonthsTrend() {
   });
 }
 
-// โหลดข้อมูลสำหรับเดือนที่เลือก + Region ของเดือนนั้น
-async function loadMonthData() {
+// โหลดข้อมูลสำหรับเดือนที่เลือก (ส่ง Parameter ป้องกันการ render ซ้ำซ้อนตอนเปิดหน้าเว็บครั้งแรก)
+async function loadMonthData(isInit = false) {
   const month = document.getElementById('filterMonth').value;
   if (!month) return; 
-  showStatus(`กำลังดึงข้อมูลแคมเปญและภูมิภาคของเดือน ${month}...`);
+  
+  if(!isInit) showStatus(`กำลังดึงข้อมูลแคมเปญและภูมิภาคของเดือน ${month}...`);
+
   try {
     let mainLoaded = false;
     let response = await fetch(`./data/${month}.csv`);
     if (response.ok) {
       const text = await response.text();
-      Papa.parse(text, { header: true, skipEmptyLines: true, complete: r => loadData(r.data) });
+      const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
+      processMainData(parsed.data);
       document.getElementById('mainSourceFile').textContent = `./data/${month}.csv`;
       mainLoaded = true;
     } else {
@@ -943,14 +938,14 @@ async function loadMonthData() {
         const arrayBuffer = await response.arrayBuffer();
         const wb = XLSX.read(arrayBuffer, { type: 'array' });
         const ws = wb.Sheets[wb.SheetNames[0]];
-        loadData(XLSX.utils.sheet_to_json(ws, { defval: 0 }));
+        processMainData(XLSX.utils.sheet_to_json(ws, { defval: 0 }));
         document.getElementById('mainSourceFile').textContent = `./data/${month}.xlsx`;
         mainLoaded = true;
       }
     }
 
     if (!mainLoaded) {
-      showStatus(`❌ ไม่พบไฟล์ข้อมูลหลัก ${month}.csv หรือ .xlsx ใน ./data/`);
+      if(!isInit) showStatus(`❌ ไม่พบไฟล์ข้อมูลหลัก ${month}.csv หรือ .xlsx ใน ./data/`);
       document.getElementById('mainSourceFile').textContent = 'ไม่พบไฟล์ข้อมูลหลัก';
       allData = []; filteredData = []; 
     }
@@ -959,7 +954,8 @@ async function loadMonthData() {
     let regionResponse = await fetch(`./data/region/Region-${month}.csv`);
     if (regionResponse.ok) {
       const text = await regionResponse.text();
-      Papa.parse(text, { header: true, skipEmptyLines: true, complete: r => loadRegionData(r.data) });
+      const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
+      processRegionData(parsed.data);
       document.getElementById('regionSourceFile').textContent = `./data/region/Region-${month}.csv`;
       regionLoaded = true;
     } else {
@@ -968,7 +964,7 @@ async function loadMonthData() {
         const arrayBuffer = await regionResponse.arrayBuffer();
         const wb = XLSX.read(arrayBuffer, { type: 'array' });
         const ws = wb.Sheets[wb.SheetNames[0]];
-        loadRegionData(XLSX.utils.sheet_to_json(ws, { defval: 0 }));
+        processRegionData(XLSX.utils.sheet_to_json(ws, { defval: 0 }));
         document.getElementById('regionSourceFile').textContent = `./data/region/Region-${month}.xlsx`;
         regionLoaded = true;
       }
@@ -978,53 +974,75 @@ async function loadMonthData() {
       document.getElementById('regionSourceFile').textContent = 'ไม่พบไฟล์ภูมิภาค';
       regionData = []; 
     }
+
+    // หากเป็นการเปลี่ยน Dropdown ธรรมดา ให้เรนเดอร์ใหม่ทันที
+    if (!isInit) {
+        populateFilters();
+        renderAll();
+    }
   } catch (error) {
     console.error(error);
-    showStatus(`❌ พบปัญหาการดึงไฟล์ โปรดตรวจสอบว่ารันผ่าน Local Web Server หรือไม่`);
+    if(!isInit) showStatus(`❌ พบปัญหาการดึงไฟล์ โปรดตรวจสอบ Web Server`);
   }
 }
 
-function loadRegionData(rows) {
+function processRegionData(rows) {
   try {
-    regionData = rows.map(r => ({
-      region: r['Region'] || r['ภูมิภาค'] || r['region'] || 'Unknown',
-      reach: parseNum(r['Reach'] || r['reach'])
-    })).filter(r => r.reach > 0);
-    try { localStorage.setItem('hiaLhomRegionData', JSON.stringify(regionData)); } catch(e){}
+    regionData = rows.map(r => {
+      let region = 'Unknown';
+      let reach = 0;
+      for(let k in r) {
+          let cleanK = cleanKey(k);
+          if(['region', 'ภูมิภาค', 'จังหวัด', 'province'].includes(cleanK)) region = r[k];
+          if(['reach', 'การเข้าถึง', 'ยอดเข้าถึง'].includes(cleanK)) reach = parseNum(r[k]);
+      }
+      return { region, reach };
+    }).filter(r => r.reach > 0);
   } catch(e) { console.warn(e.message); }
 }
 
-function loadData(rows) {
+function processMainData(rows) {
   try {
-    allData = rows.map(r=>{
-      const campaign = r['Campaign name']||r['campaign']||'';
+    allData = rows.map(r => {
+      let campaign = '', ad = '', age = '', gender = '';
+      let spend=0, reach=0, impressions=0, views=0, engagements=0, fbLikes=0, reactions=0, comments=0, shares=0, saves=0;
+      
+      for(let k in r) {
+        let cleanK = cleanKey(k);
+        let val = r[k];
+        if(['campaign name', 'campaign', 'แคมเปญ'].includes(cleanK)) campaign = val;
+        else if(['ad name', 'ad', 'ชื่อโฆษณา'].includes(cleanK)) ad = val;
+        else if(['age', 'อายุ'].includes(cleanK)) age = val;
+        else if(['gender', 'เพศ'].includes(cleanK)) gender = val;
+        else if(['amount spent (thb)', 'spend', 'ยอดใช้จ่าย'].includes(cleanK)) spend = parseNum(val);
+        else if(['reach', 'การเข้าถึง'].includes(cleanK)) reach = parseNum(val);
+        else if(['impressions', 'การแสดงผล'].includes(cleanK)) impressions = parseNum(val);
+        else if(['video plays', 'views', 'การรับชม'].includes(cleanK)) views = parseNum(val);
+        else if(['post engagements', 'engagements', 'การมีส่วนร่วม'].includes(cleanK)) engagements = parseNum(val);
+        else if(['facebook likes', 'fblikes', 'ยอดถูกใจเพจ', 'ไลก์'].includes(cleanK)) fbLikes = parseNum(val);
+        else if(['post reactions', 'reactions', 'ความรู้สึก'].includes(cleanK)) reactions = parseNum(val);
+        else if(['post comments', 'comments', 'ความคิดเห็น'].includes(cleanK)) comments = parseNum(val);
+        else if(['post shares', 'shares', 'การแชร์'].includes(cleanK)) shares = parseNum(val);
+        else if(['post saves', 'saves', 'การบันทึก'].includes(cleanK)) saves = parseNum(val);
+      }
+
       return {
-        campaign,
-        ad: r['Ad name']||r['ad']||'',
-        age: r['Age']||r['age']||'',
-        gender: r['Gender']||r['gender']||'',
-        spend: parseNum(r['Amount spent (THB)']||r['spend']),
-        reach: parseNum(r['Reach']||r['reach']),
-        impressions: parseNum(r['Impressions']||r['impressions']),
-        views: parseNum(r['Video plays'] || r['Views'] || r['views']),
-        engagements: parseNum(r['Post engagements']||r['engagements']),
-        fbLikes: parseNum(r['Facebook likes']||r['fbLikes']),
-        reactions: parseNum(r['Post reactions']||r['reactions']),
-        comments: parseNum(r['Post comments']||r['comments']),
-        shares: parseNum(r['Post shares']||r['shares']),
-        saves: parseNum(r['Post saves']||r['saves']),
+        campaign, ad, age, gender, spend, reach, impressions, views, engagements, fbLikes, reactions, comments, shares, saves,
         objective: parseObjective(campaign)
       };
-    }).filter(r=>r.ad && r.ad!=='-');
+    }).filter(r => r.ad && String(r.ad).trim() !== '-');
+
     filteredData = [...allData];
-    try {
-      localStorage.setItem('hiaLhomDashboardData', JSON.stringify(allData));
-      localStorage.setItem('hiaLhomUploadDate', new Date().toISOString());
-    } catch(e) {}
-    populateFilters();
   } catch(e) { showStatus('❌ เกิดข้อผิดพลาดในการอ่านไฟล์: '+e.message); }
 }
 
+function showStatus(msg) {
+  const bar = document.getElementById('statusBar');
+  bar.textContent = msg; bar.style.display = 'block';
+  setTimeout(()=>{ bar.style.display='none'; }, 4000);
+}
+
+// UI Settings & Theme
 if (localStorage.getItem('theme')==='dark') document.body.classList.add('dark-mode');
 const themeCheckbox = document.getElementById('themeToggleCheckbox');
 if (themeCheckbox) themeCheckbox.checked = document.body.classList.contains('dark-mode');
@@ -1060,21 +1078,18 @@ settingsBtn?.addEventListener('click', openDrawer);
 closeDrawerBtn?.addEventListener('click', closeDrawer);
 settingsOverlay?.addEventListener('click', closeDrawer);
 
-// Init
-populateFilters();
+// Initialization Flow
 const currentMonth = monthNames[new Date().getMonth()];
 const monthDropdown = document.getElementById('filterMonth');
+if (monthDropdown) monthDropdown.value = currentMonth;
 
-if (monthDropdown) {
-  monthDropdown.value = currentMonth;
-}
-
-// ใช้งาน Promise.all เพื่อดึงข้อมูลเดือนปัจจุบัน + ข้อมูล 12 เดือน (Trend) แบบขนาน
+// Load Data
 Promise.all([
-  loadMonthData(),
+  loadMonthData(true), // true = flag to not render yet
   loadAllMonthsTrend()
 ]).finally(() => {
-  renderAll(); // เมื่อโหลดครบแล้วจึงนำไปแสดงผลทั้งหมด
+  populateFilters();
+  renderAll();
 });
 </script>
 </body>
