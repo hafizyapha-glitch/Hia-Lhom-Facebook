@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hia Lhom | GSM Facebook Campaign Dashboard</title>
+
+  <!-- Favicon Link -->
+  <link rel="icon" type="image/jpeg" href="https://scontent.fbkk22-8.fna.fbcdn.net/v/t39.30808-6/605113471_122108048559150355_6122134216378049132_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1319x1311&amp;ctp=s1319x1311&amp;_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=a5f93a&amp;_nc_ohc=CWldC3McBscQ7kNvwETPviA&amp;_nc_oc=AdqrFgPeK9DhTFs5W5XZbuY2V1GwWljQlE60m6a9e8ASKo376vrJqqRB8lriTOZrACA&amp;_nc_zt=23&amp;_nc_ht=scontent.fbkk22-8.fna&amp;_nc_gid=wTEzxyZZ21kiCZZ5ecWC2Q&amp;_nc_ss=7b2a8&amp;oh=00_Af9b7tlTQNPWTQJvxItQmTMMHlozUIfu6OxmXQwXVMGMMQ&amp;oe=6A3ACC62">
+  <link rel="shortcut icon" type="image/jpeg" href="https://scontent.fbkk22-8.fna.fbcdn.net/v/t39.30808-6/605113471_122108048559150355_6122134216378049132_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1319x1311&amp;ctp=s1319x1311&amp;_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=a5f93a&amp;_nc_ohc=CWldC3McBscQ7kNvwETPviA&amp;_nc_oc=AdqrFgPeK9DhTFs5W5XZbuY2V1GwWljQlE60m6a9e8ASKo376vrJqqRB8lriTOZrACA&amp;_nc_zt=23&amp;_nc_ht=scontent.fbkk22-8.fna&amp;_nc_gid=wTEzxyZZ21kiCZZ5ecWC2Q&amp;_nc_ss=7b2a8&amp;oh=00_Af9b7tlTQNPWTQJvxItQmTMMHlozUIfu6OxmXQwXVMGMMQ&amp;oe=6A3ACC62">
+  <link rel="apple-touch-icon" href="https://scontent.fbkk22-8.fna.fbcdn.net/v/t39.30808-6/605113471_122108048559150355_6122134216378049132_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1319x1311&amp;ctp=s1319x1311&amp;_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=a5f93a&amp;_nc_ohc=CWldC3McBscQ7kNvwETPviA&amp;_nc_oc=AdqrFgPeK9DhTFs5W5XZbuY2V1GwWljQlE60m6a9e8ASKo376vrJqqRB8lriTOZrACA&amp;_nc_zt=23&amp;_nc_ht=scontent.fbkk22-8.fna&amp;_nc_gid=wTEzxyZZ21kiCZZ5ecWC2Q&amp;_nc_ss=7b2a8&amp;oh=00_Af9b7tlTQNPWTQJvxItQmTMMHlozUIfu6OxmXQwXVMGMMQ&amp;oe=6A3ACC62">
+
+  <!-- External Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #2563EB;
+      --primary-dark: #1D4ED8;
+      --bg: #F3F4F6;
+      --surface: #F9FAFB;
+      --card: #FFFFFF;
+      --border: #E5E7EB;
+      --text: #111827;
+      --text-secondary: #4B5563;
+      --muted: #6B7280;
+      --accent: #F59E0B;
+      --green: #10B981;
+      --blue: #3B82F6;
+      --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    }
+    body.dark-mode {
+      --primary: #3B82F6; --primary-dark: #60A5FA;
+      --bg: #0F172A; --surface: #1E293B; --card: #1E293B; --border: #334155;
+      --text: #F8FAFC; --text-secondary: #CBD5E1; --muted: #94A3B8;
+      --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.3);
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.4), 0 2px 4px -1px rgba(0,0,0,0.2);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter','Noto Sans Thai',sans-serif; min-height: 100vh; line-height: 1.5; }
+
+    .header { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }
+    .logo-area { display: flex; align-items: center; gap: 16px; }
+    
+    /* สไตล์โลโก้ใหม่ของเฮียหลอม */
+    .logo-icon { width: 64px; height: 64px; border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); background: #FFF; box-shadow: var(--shadow-sm); padding: 4px; }
+    .logo-icon img { width: 100%; height: 100%; object-fit: contain; }
+    
+    .logo-title { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
+    .logo-sub { font-size: 13px; color: var(--muted); font-weight: 500; }
+    .header-right { display: flex; align-items: center; gap: 16px; }
+    .date-badge { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+
+    .main { padding: 18px 64px; max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+
+    .btn-outline { background: var(--surface); border: 1px solid var(--border); color: var(--text); cursor: pointer; transition: all .2s; }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+    .upload-label { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 7px 16px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text-secondary); transition: all .2s; margin: 0; }
+    .upload-label:hover { border-color: var(--primary); color: var(--primary); }
+    #fileInput { display: none; }
+
+    .filter-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .filter-row select, .header-right select { background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 8px 32px 8px 16px; font-size: 13px; font-weight: 500; font-family: 'Inter','Noto Sans Thai',sans-serif; outline: none; cursor: pointer; transition: border-color .2s; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748B' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; box-shadow: var(--shadow-sm); }
+    body.dark-mode .filter-row select, body.dark-mode .header-right select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394A3B8' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+    .filter-row select:focus, .header-right select:focus { border-color: var(--primary); }
+    .filter-label { font-size: 14px; font-weight: 500; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+    .clear-btn { background: transparent; border: 1px solid transparent; border-radius: 8px; color: var(--muted); padding: 8px 12px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all .2s; }
+    .clear-btn:hover { color: var(--text); background: var(--surface); border-color: var(--border); }
+
+    /* New styles for Chart Filter Select */
+    .chart-filter-select { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 6px 28px 6px 12px; font-size: 12px; font-weight: 500; font-family: 'Inter','Noto Sans Thai',sans-serif; outline: none; cursor: pointer; transition: border-color .2s; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2364748B' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; box-shadow: var(--shadow-sm); }
+    body.dark-mode .chart-filter-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2394A3B8' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+    .chart-filter-select:focus { border-color: var(--primary); }
+
+    .kpi-group-label { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 16px; margin-top: 8px; }
+    .kpi-grid { display: grid; gap: 16px; margin-bottom: 8px; }
+    .kpi-grid.row6 { grid-template-columns: repeat(6,1fr); }
+    .kpi-grid.row5 { grid-template-columns: repeat(5,1fr); }
+    .kpi-grid.row4 { grid-template-columns: repeat(4,1fr); }
+    .kpi-grid.row3 { grid-template-columns: repeat(3,1fr); }
+    .kpi-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; box-shadow: var(--shadow-sm); display: grid; grid-template-areas: "label icon" "value icon" "sub sub" "bench bench"; grid-template-columns: 1fr auto; align-items: start; transition: transform .2s, box-shadow .2s; }
+    .kpi-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .kpi-icon { grid-area: icon; width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+    .kpi-icon svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 1.75; }
+    .kpi-label { grid-area: label; font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-bottom: 4px; }
+    .kpi-value { grid-area: value; font-size: 24px; font-weight: 700; font-family: 'Inter',sans-serif; color: var(--text); line-height: 1.2; margin-bottom: 8px; }
+    .kpi-sub { grid-area: sub; font-size: 12px; color: var(--muted); }
+    .kpi-benchmark { grid-area: bench; font-size: 12px; color: var(--text-secondary); margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .kpi-benchmark .bm-val { color: var(--text); font-weight: 600; font-family: 'Inter',sans-serif; }
+
+    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+    .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-shadow: var(--shadow-sm); }
+    .chart-card.wide { grid-column: span 2; }
+    .chart-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .chart-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 24px; }
+    .chart-wrap { position: relative; height: 280px; }
+    .chart-wrap.tall { height: 340px; }
+    
+    .chart-summary { margin-top: 16px; padding: 12px 16px; background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.1); border-radius: 8px; font-size: 13px; color: var(--text-secondary); display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+    body.dark-mode .chart-summary { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2); color: var(--text-secondary); }
+    .chart-summary strong { color: var(--text); }
+
+    .table-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 0; box-shadow: var(--shadow-sm); overflow: hidden; margin-top: 24px; }
+    .table-header { padding: 24px 24px 0; display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .table-responsive { width: 100%; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 900px; text-align: left; }
+    th { font-size: 12px; font-weight: 600; color: var(--text-secondary); padding: 12px 24px; border-bottom: 1px solid var(--border); background: var(--surface); white-space: nowrap; }
+    td { padding: 16px 24px; font-size: 13px; color: var(--text); border-bottom: 1px solid var(--border); white-space: nowrap; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--surface); }
+    .sortable { cursor: pointer; user-select: none; transition: color 0.2s; }
+    .sortable:hover { color: var(--primary); }
+    .sort-icon { display: inline-block; width: 12px; margin-left: 4px; font-size: 10px; color: var(--primary); }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 500; }
+    .badge-green { background: rgba(16,185,129,0.1); color: var(--green); }
+    .badge-blue { background: rgba(59,130,246,0.1); color: var(--blue); }
+    .badge-amber { background: rgba(245,158,11,0.1); color: var(--accent); }
+    .badge-purple { background: rgba(139,92,246,0.1); color: #8B5CF6; }
+    .num { font-family: 'Inter',sans-serif; font-variant-numeric: tabular-nums; }
+    .cost-cell { font-weight: 600; font-family: 'Inter',sans-serif; color: var(--text); }
+
+    .tab-bar { display: flex; gap: 8px; border-bottom: 1px solid var(--border); padding: 0 24px; }
+    .tab-btn { background: transparent; border: none; color: var(--text-secondary); font-family: 'Inter','Noto Sans Thai',sans-serif; font-size: 14px; font-weight: 500; padding: 12px 16px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color .2s, border-color .2s; }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+    #statusBar { display: none; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 12px 16px; font-size: 14px; font-weight: 500; color: var(--green); margin-bottom: 16px; }
+
+    /* Settings Drawer Styles */
+    .drawer-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .drawer-overlay.show { opacity: 1; visibility: visible; }
+    .drawer { position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100vh; background: var(--card); z-index: 1000; box-shadow: -4px 0 15px rgba(0,0,0,0.1); transition: right 0.3s ease; display: flex; flex-direction: column; border-left: 1px solid var(--border); }
+    .drawer.open { right: 0; }
+    .drawer-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--border); }
+    .drawer-title { font-size: 18px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
+    .drawer-close { background: transparent; border: none; cursor: pointer; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; padding: 4px; border-radius: 6px; transition: all 0.2s; }
+    .drawer-close:hover { background: var(--surface); color: var(--text); }
+    .drawer-content { padding: 24px; overflow-y: auto; flex-grow: 1; }
+    .setting-group { margin-bottom: 24px; }
+    .setting-label { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .setting-desc { font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5; }
+    
+    .setting-input { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-family: 'Inter','Noto Sans Thai',sans-serif; font-size: 13px; outline: none; transition: border-color 0.2s; }
+    .setting-input:focus { border-color: var(--primary); }
+
+    /* Theme Switch (Slide) */
+    .theme-switch-wrapper { display: flex; align-items: center; justify-content: space-between; background: var(--surface); padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border); }
+    .theme-switch-text { font-size: 13px; font-weight: 500; color: var(--text); display: flex; align-items: center; gap: 8px; }
+    .switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #CBD5E1; transition: .3s; border-radius: 24px; }
+    .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    input:checked + .slider { background-color: var(--primary); }
+    input:checked + .slider:before { transform: translateX(20px); }
+    body.dark-mode .slider { background-color: #334155; }
+    body.dark-mode input:checked + .slider { background-color: var(--primary); }
+
+  @media (max-width: 1200px) {
+    .kpi-grid.row6 { grid-template-columns: repeat(3,1fr); }
+  }
+  @media (max-width: 900px) {
+    .main { padding: 16px; gap: 16px; }
+    .charts-grid { grid-template-columns: 1fr; }
+    .chart-card.wide { grid-column: span 1; }
+    .header { padding: 16px; flex-direction: column; gap: 16px; align-items: flex-start; }
+    .kpi-grid.row6, .kpi-grid.row5, .kpi-grid.row3 { grid-template-columns: repeat(2,1fr); }
+    .kpi-grid.row4 { grid-template-columns: repeat(4,1fr); }
+    td, th { padding: 12px 16px; }
+  }
+  @media (max-width: 600px) {
+    .kpi-grid.row6, .kpi-grid.row5, .kpi-grid.row4, .kpi-grid.row3 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-area">
+    <div class="logo-icon">
+      <!-- โลโก้แบรนด์เฮียหลอม -->
+      <img src="https://scontent.fbkk22-8.fna.fbcdn.net/v/t39.30808-6/605113471_122108048559150355_6122134216378049132_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1319x1311&amp;ctp=s1319x1311&amp;_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=a5f93a&amp;_nc_ohc=CWldC3McBscQ7kNvwETPviA&amp;_nc_oc=AdqrFgPeK9DhTFs5W5XZbuY2V1GwWljQlE60m6a9e8ASKo376vrJqqRB8lriTOZrACA&amp;_nc_zt=23&amp;_nc_ht=scontent.fbkk22-8.fna&amp;_nc_gid=wTEzxyZZ21kiCZZ5ecWC2Q&amp;_nc_ss=7b2a8&amp;oh=00_Af9b7tlTQNPWTQJvxItQmTMMHlozUIfu6OxmXQwXVMGMMQ&amp;oe=6A3ACC62" alt="เฮียหลอม Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'64\' height=\'64\' fill=\'%23cbd5e1\'><rect width=\'100%\' height=\'100%\'/></svg>'">
+    </div>
+    <div class="logo-text">
+      <div class="logo-title">เฮียหลอม (Hia Lhom)</div>
+      <div class="logo-sub">Facebook Campaign Performance Dashboard</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div style="display: flex; align-items: center; gap: 8px; margin-right: 8px;">
+      <span class="filter-label" style="font-size: 13px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        Month:
+      </span>
+      <select id="filterMonth" onchange="loadMonthData()">
+        <option value="">เลือกเดือน</option>
+        <option value="January">January</option>
+        <option value="February">February</option>
+        <option value="March">March</option>
+        <option value="April">April</option>
+        <option value="May">May</option>
+        <option value="June">June</option>
+        <option value="July">July</option>
+        <option value="August">August</option>
+        <option value="September">September</option>
+        <option value="October">October</option>
+        <option value="November">November</option>
+        <option value="December">December</option>
+      </select>
+    </div>
+    <button id="settingsBtn" class="btn-outline" style="padding:8px;display:flex;align-items:center;justify-content:center;border-radius:50%;width:36px;height:36px;" title="ตั้งค่า (Settings)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="main">
+  <div style="padding: 0 32px; margin-top: -8px;" id="innerMain">
+    <div id="statusBar"></div>
+    <div class="filter-row">
+      <!-- Filter Campaign เดิม -->
+      <span class="filter-label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="4" x2="14" y2="4"/><line x1="10" y1="4" x2="3" y2="4"/><line x1="21" y1="12" x2="12" y2="12"/><line x1="8" y1="12" x2="3" y2="12"/><line x1="21" y1="20" x2="16" y2="20"/><line x1="12" y1="20" x2="3" y2="20"/><line x1="14" y1="2" x2="14" y2="6"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="16" y1="18" x2="16" y2="22"/></svg>
+        Campaign:
+      </span>
+      <select id="filterCampaign" onchange="applyFilters()">
+        <option value="">ทุก Campaign</option>
+      </select>
+      <button class="clear-btn" onclick="clearFilters()">✕ ล้างตัวกรอง</button>
+    </div>
+
+    <div id="kpiSection"></div>
+
+    <div class="charts-grid" style="margin-top: 16px;">
+      <div class="chart-card wide">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
+          <div>
+            <div class="chart-title">Demographics - Age & Gender</div>
+            <div class="chart-sub" style="margin-bottom: 0;">การเข้าถึง (Reach) สะสมแยกตามกลุ่มอายุและเพศ</div>
+          </div>
+          <select id="demoObjFilter" class="chart-filter-select" onchange="renderCharts()">
+            <option value="">ทุก Objective</option>
+            <option value="Awareness">Awareness</option>
+            <option value="Awareness - Chonburi">Awareness - Chonburi</option>
+            <option value="Page Follower">Page Follower</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="chart-wrap"><canvas id="demoChart"></canvas></div>
+        <div id="demoSummary" class="chart-summary" style="display:none;"></div>
+      </div>
+      
+      <!-- กราฟ Region ให้เต็มหน้าจอ (wide) และลบปุ่มอัปโหลดออก -->
+      <div class="chart-card wide">
+        <div class="chart-title">Region (ภูมิภาค)</div>
+        <div class="chart-sub">สัดส่วนการเข้าถึง (Reach) ตามภูมิภาค (ข้อมูลแสดงเป็นทั้งหมด ไม่สามารถแบ่งตาม Objective ได้)</div>
+        <div class="chart-wrap"><canvas id="regionChart"></canvas></div>
+        <!-- เพิ่มกล่องสรุป Executive Summary ของ Region -->
+        <div id="regionSummary" class="chart-summary" style="display:none;"></div>
+      </div>
+    </div>
+
+    <div class="kpi-group-label" style="margin-top: 32px; font-size: 18px;">Monthly Performance (เทียบตามแคมเปญ)</div>
+    <div class="charts-grid" style="margin-top: 8px;">
+      <div class="chart-card">
+        <div class="chart-title">1. Spending vs. Facebook Like</div>
+        <div class="chart-sub">เปรียบเทียบค่าใช้จ่ายและยอดไลก์เพจ</div>
+        <div class="chart-wrap"><canvas id="monthlyChart1"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">2. Spending vs. Impression</div>
+        <div class="chart-sub">เปรียบเทียบค่าใช้จ่ายและยอดการแสดงผล</div>
+        <div class="chart-wrap"><canvas id="monthlyChart2"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">3. Facebook Like vs. Cost Per Like</div>
+        <div class="chart-sub">เปรียบเทียบยอดไลก์และต้นทุนต่อไลก์</div>
+        <div class="chart-wrap"><canvas id="monthlyChart3"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
+          <div>
+            <div class="chart-title">4. Impression vs. CPM</div>
+            <div class="chart-sub" style="margin-bottom: 0;">(สามารถเปลี่ยน Metric ได้)</div>
+          </div>
+          <div style="display: flex; gap: 4px; align-items: center;">
+            <select id="customMetric1" class="chart-filter-select" onchange="renderChart4()" style="padding: 4px 20px 4px 8px; font-size: 11px;">
+              <option value="impressions" selected>Impression</option>
+              <option value="spend">Spend</option>
+              <option value="reach">Reach</option>
+              <option value="fbLikes">FB Like</option>
+              <option value="engagements">Engagement</option>
+            </select>
+            <span style="font-size: 11px; color: var(--muted);">vs</span>
+            <select id="customMetric2" class="chart-filter-select" onchange="renderChart4()" style="padding: 4px 20px 4px 8px; font-size: 11px;">
+              <option value="cpm" selected>CPM</option>
+              <option value="cpe">CPE</option>
+              <option value="cpr">Cost/1K Reach</option>
+              <option value="costPerLike">Cost/Like</option>
+              <option value="freq">Frequency</option>
+            </select>
+          </div>
+        </div>
+        <div class="chart-wrap" style="height: 235px;"><canvas id="monthlyChart4"></canvas></div>
+      </div>
+    </div>
+
+    <div class="table-card" style="margin-top:24px;">
+      <div class="tab-bar" style="padding-top: 12px; background: var(--surface);">
+        <button id="tab-campaign" class="tab-btn active" onclick="switchTableTab('campaign')">Campaign Performance</button>
+        <button id="tab-ad" class="tab-btn" onclick="switchTableTab('ad')">Ad Performance</button>
+      </div>
+      <div class="table-header">
+        <div>
+          <div class="chart-title" id="tableMainTitle">Campaign Performance</div>
+          <div class="chart-sub" id="tableCount" style="margin-bottom:0;"></div>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table>
+          <thead><tr>
+            <th class="sortable" onclick="handleSort('name')" id="th-name-label">Campaign Name <span class="sort-icon" id="sortIcon-name"></span></th>
+            <th class="sortable" onclick="handleSort('spend')">Spend (฿) <span class="sort-icon" id="sortIcon-spend"></span></th>
+            <th class="sortable" onclick="handleSort('reach')">Reach <span class="sort-icon" id="sortIcon-reach"></span></th>
+            <th class="sortable" onclick="handleSort('impressions')">Impressions <span class="sort-icon" id="sortIcon-impressions"></span></th>
+            <th class="sortable" onclick="handleSort('views')">Views <span class="sort-icon" id="sortIcon-views"></span></th>
+            <th class="sortable" onclick="handleSort('engagements')">Engagements <span class="sort-icon" id="sortIcon-engagements"></span></th>
+            <th class="sortable" onclick="handleSort('fbLikes')">FB Likes <span class="sort-icon" id="sortIcon-fbLikes"></span></th>
+            <th class="sortable" onclick="handleSort('reactions')">Reactions <span class="sort-icon" id="sortIcon-reactions"></span></th>
+            <th class="sortable" onclick="handleSort('comments')">Comments <span class="sort-icon" id="sortIcon-comments"></span></th>
+            <th class="sortable" onclick="handleSort('shares')">Shares <span class="sort-icon" id="sortIcon-shares"></span></th>
+            <th class="sortable" onclick="handleSort('saves')">Saves <span class="sort-icon" id="sortIcon-saves"></span></th>
+          </tr></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Settings Drawer -->
+<div id="settingsOverlay" class="drawer-overlay"></div>
+<div id="settingsDrawer" class="drawer">
+  <div class="drawer-header">
+    <div class="drawer-title">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      การตั้งค่า (Settings)
+    </div>
+    <button id="closeDrawerBtn" class="drawer-close">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="drawer-content">
+    <div class="setting-group">
+      <div class="setting-label">โหมดการแสดงผล (Theme)</div>
+      <div class="setting-desc">สลับโหมดสีของหน้าจอระหว่างโหมดสว่างและโหมดมืด</div>
+      <div class="theme-switch-wrapper">
+        <div class="theme-switch-text" id="themeSwitchText">
+          <!-- JS will inject icon and text here -->
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="themeToggleCheckbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── DATA MANAGEMENT ──────────────────────────────
+function parseNum(val) {
+  if (val === undefined || val === null || val === '' || val === '-') return 0;
+  if (typeof val === 'string') {
+    // ลบลูกน้ำออกและแปลงเป็นตัวเลข
+    const n = parseFloat(val.replace(/,/g, ''));
+    return isNaN(n) ? 0 : n;
+  }
+  return isNaN(val) ? 0 : Number(val);
+}
+
+function parseObjective(campaign) {
+  if (!campaign) return 'Other';
+  const c = String(campaign);
+  if (c.includes('Awareness - Chonburi')) return 'Awareness - Chonburi';
+  if (c.includes('Awareness')) return 'Awareness';
+  if (c.includes('Page Follower')) return 'Page Follower';
+  return 'Other';
+}
+
+let allData = [];
+let regionData = [];
+
+// โหลดข้อมูลล่าสุดจาก localStorage (ถ้ามี) เพื่อให้อยู่จนกว่าจะอัปโหลดครั้งถัดไป
+try {
+  const savedData = localStorage.getItem('hiaLhomDashboardData');
+  if (savedData) {
+    allData = JSON.parse(savedData);
+  }
+  const savedRegion = localStorage.getItem('hiaLhomRegionData');
+  if (savedRegion) {
+    regionData = JSON.parse(savedRegion);
+  }
+} catch(e) {
+  console.warn('Could not read from localStorage', e);
+}
+
+let filteredData = [...allData];
+let charts = {};
+
+function destroyCharts() { Object.values(charts).forEach(c => { if(c) c.destroy(); }); charts = {}; }
+function fmt(n) { if(n>=1000000) return (n/1000000).toFixed(1)+'M'; if(n>=1000) return (n/1000).toFixed(1)+'K'; return n.toLocaleString(); }
+function renderAll() { renderKPIs(); renderCharts(); renderTable(); }
+
+function renderKPIs() {
+  const d = filteredData;
+  const totalSpend = d.reduce((s,r)=>s+r.spend,0);
+  const totalImpr = d.reduce((s,r)=>s+r.impressions,0);
+  const totalReach = d.reduce((s,r)=>s+r.reach,0);
+  const totalEng = d.reduce((s,r)=>s+r.engagements,0);
+  const totalLikes = d.reduce((s,r)=>s+r.fbLikes,0);
+  const totalReactions = d.reduce((s,r)=>s+r.reactions,0);
+  const totalComments = d.reduce((s,r)=>s+r.comments,0);
+  const totalShares = d.reduce((s,r)=>s+r.shares,0);
+  const totalSaves = d.reduce((s,r)=>s+r.saves,0);
+  const totalViews = d.reduce((s,r)=>s+r.views,0);
+  
+  const cpm = totalImpr > 0 ? totalSpend/totalImpr*1000 : 0;
+  const cpe = totalEng > 0 ? totalSpend/totalEng : 0;
+  const cpv = totalViews > 0 ? totalSpend/totalViews : 0;
+  const freq = totalReach > 0 ? totalImpr/totalReach : 0;
+  const engRate = totalImpr > 0 ? totalEng/totalImpr*100 : 0;
+  const costPerPageLike = totalLikes > 0 ? totalSpend/totalLikes : 0;
+  const cpr = totalReach > 0 ? (totalSpend/totalReach)*1000 : 0;
+
+  function card(icon, label, value, sub, color, benchmark='') {
+    const bmHtml = benchmark ? `<div class="kpi-benchmark"><span class="bm-label">Benchmark</span><span class="bm-val">${benchmark}</span></div>` : '';
+    return `<div class="kpi-card">
+      <div class="kpi-label">${label}</div>
+      <div class="kpi-icon" style="color:${color};background:color-mix(in srgb,${color} 12%,transparent);">${icon}</div>
+      <div class="kpi-value">${value}</div>
+      <div class="kpi-sub">${sub}</div>${bmHtml}</div>`;
+  }
+
+  const iconSpend = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"/></svg>';
+  const iconImpr = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+  const iconReach = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
+  const iconEng = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>';
+  const iconLike = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>';
+  const iconComment = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+  const iconShare = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>';
+  const iconSave = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>';
+  const iconCPM = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><line x1="16.71" y1="13.88" x2="17.71" y2="13.88"/></svg>';
+  const iconFreq = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="3" y1="3" x2="3" y2="21"/><line x1="3" y1="21" x2="21" y2="21"/><polyline points="7 16 11 12 15 14 20 9"/></svg>';
+  const iconCPE = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="M14.5 9a2 2 0 0 0-2-1h-1a2 2 0 0 0 0 4h1a2 2 0 0 1 0 4h-1a2 2 0 0 1-2-1"/><line x1="12" y1="7" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="17"/></svg>';
+  const iconView = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+  const iconCPV = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>';
+
+  const g1 = [
+    card(iconSpend, 'Total Spend', '฿'+totalSpend.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}), 'THB', 'var(--primary)'),
+    card(iconReach, 'Reach', totalReach.toLocaleString(), 'Unique people reached', 'var(--green)'),
+    card(iconImpr, 'Impressions', totalImpr.toLocaleString(), 'Total ad impressions', 'var(--blue)'),
+    card(iconEng, 'Post Engagements', totalEng.toLocaleString(), 'Total interactions', 'var(--accent)'),
+    card(iconLike, 'Page Like', totalLikes.toLocaleString(), 'Page / post likes', '#3B82F6'),
+    card(iconView, 'Views', totalViews.toLocaleString(), 'Video views', '#06B6D4')
+  ];
+  
+  const g2 = [
+    card('<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>', 'Reactions', totalReactions.toLocaleString(), 'Post reactions', '#F43F5E'),
+    card(iconComment, 'Comments', totalComments.toLocaleString(), 'Post comments', '#8B5CF6'),
+    card(iconShare, 'Shares', totalShares.toLocaleString(), 'Post shares', 'var(--green)'),
+    card(iconFreq, 'Frequency', freq.toFixed(2), 'Avg. times reached per person', 'var(--blue)')
+  ];
+
+  const g3 = [
+    card(iconReach, 'Cost per 1,000 Reach', '฿'+cpr.toFixed(2), 'Cost per 1,000 reach', 'var(--green)', '฿30–฿100'),
+    card(iconCPM, 'CPM', '฿'+cpm.toFixed(2), 'Cost per 1,000 impressions', 'var(--primary)', '฿25–฿80'),
+    card(iconCPE, 'CPE', '฿'+cpe.toFixed(2), 'Cost per engagement', '#8B5CF6', '฿2–฿10'),
+    card(iconLike, 'Cost per Page Like', '฿'+costPerPageLike.toFixed(2), 'Cost per page like', '#3B82F6', '฿15–฿50'),
+    card(iconCPV, 'Cost per View (CPV)', '฿'+cpv.toFixed(2), 'Cost per video view', '#06B6D4', '฿0.30–฿1.50'),
+    card(iconEng, 'Engagement Rate', engRate.toFixed(2)+'%', 'Engagements / Impressions', 'var(--accent)', '0.50%–1.50%')
+  ];
+
+  document.getElementById('kpiSection').innerHTML = `
+    <div class="kpi-group-label">Overview</div>
+    <div class="kpi-grid row3">${g1.join('')}</div>
+    <div class="kpi-group-label">Engagement Breakdown</div>
+    <div class="kpi-grid row4">${g2.join('')}</div>
+    <div class="kpi-group-label">Cost Efficiency</div>
+    <div class="kpi-grid row6" style="margin-bottom:8px;">${g3.join('')}</div>
+    <div style="text-align:right;font-size:11px;color:var(--muted);margin-bottom:8px;">
+      Benchmark ref: Meta Business Suite / Wordstream Facebook Ads 2025 (Thailand)
+    </div>`;
+}
+
+const COLORS = ['#2563EB','#10B981','#F59E0B','#8B5CF6','#F43F5E','#06B6D4','#64748B','#334155'];
+const OBJ_COLORS = { 'Page Follower': '#2563EB', 'Awareness': '#10B981', 'Awareness - Chonburi': '#F59E0B' };
+
+function renderCharts() {
+  destroyCharts();
+  const isDark = document.body.classList.contains('dark-mode');
+  const textColor = isDark ? '#F8FAFC' : '#111827';
+  const d = filteredData;
+
+  function axisStyle() {
+    return { grid:{color:isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.04)'}, ticks:{color:isDark?'#94A3B8':'#6B7280',font:{family:'Inter,Noto Sans Thai',size:11}}, border:{color:'transparent'} };
+  }
+  function chartOpts(yLabel, stacked) {
+    return { responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:textColor,font:{family:'Inter,Noto Sans Thai',size:12}}}}, scales:{x:{...axisStyle(),stacked}, y:{...axisStyle(),stacked,title:{display:true,text:yLabel,color:isDark?'#94A3B8':'#6B7280',font:{size:11}}}} };
+  }
+
+  // Check if current filtered data is ONLY Page Follower
+  const isPageFollowerOnly = d.length > 0 && d.every(r => r.objective === 'Page Follower');
+  const metricKey = isPageFollowerOnly ? 'fbLikes' : 'reach';
+  const metricLabel = isPageFollowerOnly ? 'Follower' : 'Reach';
+
+  // ----------------------------------------------------------------------
+  // Demographics - Reach by Age & Gender (WITH OWN FILTER)
+  // ----------------------------------------------------------------------
+  const demoObjElement = document.getElementById('demoObjFilter');
+  const demoFilterVal = demoObjElement ? demoObjElement.value : '';
+  const demoData = demoFilterVal ? d.filter(r => r.objective === demoFilterVal) : d;
+
+  // Check Metric explicitly for Demographics Chart
+  const isDemoPageFollowerOnly = demoData.length > 0 && demoData.every(r => r.objective === 'Page Follower');
+  const metricKeyDemo = isDemoPageFollowerOnly ? 'fbLikes' : 'reach';
+  const metricLabelDemo = isDemoPageFollowerOnly ? 'Follower' : 'Reach';
+  
+  // Update Subtitle dynamically for Demographics
+  const demoChartSub = document.getElementById('demoChart').closest('.chart-card').querySelector('.chart-sub');
+  if (demoChartSub) {
+    demoChartSub.textContent = isDemoPageFollowerOnly ? 'Follower สะสมแยกตามกลุ่มอายุและเพศ' : 'การเข้าถึง (Reach) สะสมแยกตามกลุ่มอายุและเพศ';
+  }
+
+  const agesDemo = ['18-24','25-34','35-44','45-54','55-64','65+'];
+  const gendersDemo = ['male', 'female', 'unknown'];
+  const genderColorsDemo = ['#3B82F6', '#F43F5E', '#94A3B8'];
+  
+  charts.demo = new Chart(document.getElementById('demoChart'), {
+    type:'bar',
+    data:{
+      labels: agesDemo,
+      datasets: gendersDemo.map((g, i) => ({
+        label: g.charAt(0).toUpperCase() + g.slice(1),
+        data: agesDemo.map(a => demoData.filter(r=>r.age===a && r.gender===g).reduce((s,r)=>s+r[metricKeyDemo], 0)),
+        backgroundColor: genderColorsDemo[i],
+        borderRadius: 4, borderSkipped: false
+      }))
+    },
+    options: chartOpts(metricLabelDemo, false)
+  });
+
+  // Generate Demographic Summary (Executive Summary) dynamically
+  let totalDemo = 0;
+  const valByGender = { male: 0, female: 0, unknown: 0 };
+  const valByAge = {};
+  
+  demoData.forEach(r => {
+    totalDemo += r[metricKeyDemo];
+    if (valByGender[r.gender] !== undefined) valByGender[r.gender] += r[metricKeyDemo];
+    valByAge[r.age] = (valByAge[r.age] || 0) + r[metricKeyDemo];
+  });
+
+  if (totalDemo > 0) {
+    const sortedGenderAgePairs = [];
+    
+    agesDemo.forEach(age => {
+      gendersDemo.forEach(gen => {
+        const value = demoData.filter(r => r.age === age && r.gender === gen).reduce((s, r) => s + r[metricKeyDemo], 0);
+        if (value > 0) {
+          sortedGenderAgePairs.push({
+            age: age,
+            gender: gen,
+            val: value
+          });
+        }
+      });
+    });
+    
+    // เรียงคู่เพศ+กลุ่มอายุที่เยอะที่สุด 3 อันดับแรก
+    sortedGenderAgePairs.sort((a, b) => b.val - a.val);
+    const top3 = sortedGenderAgePairs.slice(0, 3);
+    
+    let summaryHtml = `<svg style="flex-shrink:0;margin-top:2px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg> <div style="display:flex; flex-direction:column; gap:4px;">`;
+    
+    const metricTh = isDemoPageFollowerOnly ? 'Follower' : 'Reach';
+    
+    // ปรับข้อความเป็น Executive Summary
+    summaryHtml += `<span><strong>Executive Summary:</strong> กลุ่มเป้าหมายหลักที่ตอบสนองแคมเปญ (${metricTh}) มากที่สุด 3 อันดับแรก คือ:</span>`;
+    
+    top3.forEach((item, index) => {
+      const genderTh = item.gender === 'male' ? 'ชาย' : item.gender === 'female' ? 'หญิง' : 'ไม่ระบุ';
+      const pct = ((item.val / totalDemo) * 100).toFixed(1);
+      summaryHtml += `<span>${index + 1}. เพศ${genderTh} ช่วงอายุ ${item.age} ปี (สัดส่วน ${pct}% ของยอดรวม)</span>`;
+    });
+    
+    summaryHtml += `</div>`;
+    
+    document.getElementById('demoSummary').innerHTML = summaryHtml;
+    document.getElementById('demoSummary').style.display = 'flex';
+  } else {
+    document.getElementById('demoSummary').style.display = 'none';
+  }
+
+  // Region Chart & Executive Summary
+  if (regionData && regionData.length > 0) {
+    const regionGroups = {};
+    regionData.forEach(r => {
+      const reg = r.region || 'Unknown';
+      regionGroups[reg] = (regionGroups[reg] || 0) + (r.reach || 0);
+    });
+    
+    // Sort for better display
+    const sortedRegions = Object.entries(regionGroups).sort((a,b)=>b[1]-a[1]);
+    const labels = sortedRegions.map(item => item[0]);
+    const dataValues = sortedRegions.map(item => item[1]);
+    
+    charts.region = new Chart(document.getElementById('regionChart'), {
+      type:'doughnut',
+      data:{
+        labels: labels,
+        datasets:[{data:dataValues,backgroundColor:COLORS,borderWidth:2,borderColor:isDark?'#1E293B':'#FFF',hoverOffset:8}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:textColor,font:{family:'Inter,Noto Sans Thai',size:11}}}},cutout:'65%'}
+    });
+
+    // Generate Executive Summary for Region
+    const totalRegionReach = sortedRegions.reduce((sum, item) => sum + item[1], 0);
+    if (totalRegionReach > 0 && sortedRegions.length > 0) {
+      const topRegion = sortedRegions[0];
+      const topPct = ((topRegion[1] / totalRegionReach) * 100).toFixed(1);
+      
+      let regSummaryHtml = `<svg style="flex-shrink:0;margin-top:2px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg> <div style="display:flex; flex-direction:column; gap:4px;">`;
+      
+      regSummaryHtml += `<span><strong>Executive Summary:</strong> ภูมิภาคที่เข้าถึงกลุ่มเป้าหมายได้สูงสุดคือ <strong>${topRegion[0]}</strong> (${topRegion[1].toLocaleString()} Reach, คิดเป็น ${topPct}% ของทั้งหมด)</span>`;
+      
+      if (sortedRegions.length > 1) {
+        const secondRegion = sortedRegions[1];
+        const secondPct = ((secondRegion[1] / totalRegionReach) * 100).toFixed(1);
+        regSummaryHtml += `<span>รองลงมาคือ <strong>${secondRegion[0]}</strong> (สัดส่วน ${secondPct}%)</span>`;
+      }
+      
+      regSummaryHtml += `</div>`;
+      document.getElementById('regionSummary').innerHTML = regSummaryHtml;
+      document.getElementById('regionSummary').style.display = 'flex';
+    } else {
+      document.getElementById('regionSummary').style.display = 'none';
+    }
+
+  } else {
+    // Placeholder If No Data
+    charts.region = new Chart(document.getElementById('regionChart'), {
+      type:'doughnut',
+      data:{
+        labels: ['ไม่พบข้อมูลภูมิภาคในเดือนนี้'],
+        datasets:[{data:[1],backgroundColor:isDark?['#334155']:['#E5E7EB'],borderWidth:0}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:textColor,font:{family:'Inter,Noto Sans Thai',size:11}}}},cutout:'65%', events:[]} // disable hover events
+    });
+    
+    // Hide Region Summary if no data
+    if (document.getElementById('regionSummary')) {
+      document.getElementById('regionSummary').style.display = 'none';
+    }
+  }
+
+  // ----------------------------------------------------------------------
+  // Monthly Performance Charts (4 Charts)
+  // ----------------------------------------------------------------------
+  const campaignGroups = {};
+  d.forEach(r => {
+    const c = r.campaign || 'Unknown';
+    if (!campaignGroups[c]) {
+      campaignGroups[c] = { spend: 0, fbLikes: 0, impressions: 0, reach: 0, engagements: 0 };
+    }
+    campaignGroups[c].spend += r.spend;
+    campaignGroups[c].fbLikes += r.fbLikes;
+    campaignGroups[c].impressions += r.impressions;
+    campaignGroups[c].reach += r.reach;
+    campaignGroups[c].engagements += r.engagements;
+  });
+
+  const sortedCamps = Object.keys(campaignGroups).sort((a,b) => campaignGroups[b].spend - campaignGroups[a].spend);
+  const campLabels = sortedCamps.map(c => c.length > 25 ? c.substring(0,25)+'...' : c); // truncate
+
+  const spendData = sortedCamps.map(c => campaignGroups[c].spend);
+  const likeData = sortedCamps.map(c => campaignGroups[c].fbLikes);
+  const impData = sortedCamps.map(c => campaignGroups[c].impressions);
+  const costPerLikeData = sortedCamps.map(c => campaignGroups[c].fbLikes > 0 ? (campaignGroups[c].spend / campaignGroups[c].fbLikes) : 0);
+
+  const dualOpts = (y1Label, y2Label) => ({
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: { legend: { position: 'bottom', labels: { color: textColor, font: { family: 'Inter,Noto Sans Thai', size: 11 }, usePointStyle: true } } },
+    scales: {
+      x: { grid: { color: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)' }, ticks: { color: isDark ? '#94A3B8' : '#6B7280', font: {size: 10} } },
+      y: { type: 'linear', display: true, position: 'left', title: { display: true, text: y1Label, color: isDark ? '#94A3B8' : '#6B7280', font: {size: 11} }, grid: { color: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)' }, ticks: { color: isDark ? '#94A3B8' : '#6B7280' } },
+      y1: { type: 'linear', display: true, position: 'right', title: { display: true, text: y2Label, color: isDark ? '#94A3B8' : '#6B7280', font: {size: 11} }, grid: { drawOnChartArea: false }, ticks: { color: isDark ? '#94A3B8' : '#6B7280' } }
+    }
+  });
+
+  if (sortedCamps.length > 0) {
+    // 1. Spending Vs Facebook Like
+    charts.monthly1 = new Chart(document.getElementById('monthlyChart1'), {
+      type: 'bar',
+      data: {
+        labels: campLabels,
+        datasets: [
+          { label: 'Spending (฿)', data: spendData, backgroundColor: 'rgba(37, 99, 235, 0.8)', yAxisID: 'y', borderRadius: 4 },
+          { label: 'Facebook Like', data: likeData, type: 'line', borderColor: '#10B981', backgroundColor: '#10B981', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 3 }
+        ]
+      },
+      options: dualOpts('Spending (฿)', 'FB Likes')
+    });
+
+    // 2. Spending Vs Impression
+    charts.monthly2 = new Chart(document.getElementById('monthlyChart2'), {
+      type: 'bar',
+      data: {
+        labels: campLabels,
+        datasets: [
+          { label: 'Spending (฿)', data: spendData, backgroundColor: 'rgba(37, 99, 235, 0.8)', yAxisID: 'y', borderRadius: 4 },
+          { label: 'Impressions', data: impData, type: 'line', borderColor: '#F59E0B', backgroundColor: '#F59E0B', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 3 }
+        ]
+      },
+      options: dualOpts('Spending (฿)', 'Impressions')
+    });
+
+    // 3. Facebook Like vs Cost Per Facebook Like
+    charts.monthly3 = new Chart(document.getElementById('monthlyChart3'), {
+      type: 'bar',
+      data: {
+        labels: campLabels,
+        datasets: [
+          { label: 'Facebook Like', data: likeData, backgroundColor: 'rgba(16, 185, 129, 0.8)', yAxisID: 'y', borderRadius: 4 },
+          { label: 'Cost Per Like (฿)', data: costPerLikeData, type: 'line', borderColor: '#F43F5E', backgroundColor: '#F43F5E', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 3 }
+        ]
+      },
+      options: dualOpts('FB Likes', 'Cost/Like (฿)')
+    });
+  }
+
+  // Set global variable for Chart 4 so the dropdown function can access it without re-rendering everything
+  window.monthlyCampaignData = { campLabels, campaignGroups, sortedCamps };
+  renderChart4();
+}
+
+window.renderChart4 = function() {
+  if (charts.monthly4) charts.monthly4.destroy();
+  
+  const mData = window.monthlyCampaignData;
+  if (!mData || !mData.sortedCamps || mData.sortedCamps.length === 0) return;
+
+  const m1 = document.getElementById('customMetric1').value;
+  const m2 = document.getElementById('customMetric2').value;
+  const isDark = document.body.classList.contains('dark-mode');
+  const textColor = isDark ? '#F8FAFC' : '#111827';
+
+  const mapData = (metric) => {
+    return mData.sortedCamps.map(c => {
+      const g = mData.campaignGroups[c];
+      switch(metric) {
+        case 'impressions': return g.impressions;
+        case 'spend': return g.spend;
+        case 'reach': return g.reach;
+        case 'fbLikes': return g.fbLikes;
+        case 'engagements': return g.engagements;
+        case 'cpm': return g.impressions > 0 ? (g.spend/g.impressions)*1000 : 0;
+        case 'cpe': return g.engagements > 0 ? (g.spend/g.engagements) : 0;
+        case 'cpr': return g.reach > 0 ? (g.spend/g.reach)*1000 : 0;
+        case 'costPerLike': return g.fbLikes > 0 ? (g.spend/g.fbLikes) : 0;
+        case 'freq': return g.reach > 0 ? (g.impressions/g.reach) : 0;
+        default: return 0;
+      }
+    });
+  };
+
+  const labelMap = {
+    impressions: 'Impressions', spend: 'Spending (฿)', reach: 'Reach', fbLikes: 'FB Likes', engagements: 'Engagements',
+    cpm: 'CPM (฿)', cpe: 'CPE (฿)', cpr: 'Cost/1K Reach (฿)', costPerLike: 'Cost/Like (฿)', freq: 'Frequency'
+  };
+
+  const data1 = mapData(m1);
+  const data2 = mapData(m2);
+
+  const dualOpts = (y1Label, y2Label) => ({
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: { legend: { position: 'bottom', labels: { color: textColor, font: { family: 'Inter,Noto Sans Thai', size: 11 }, usePointStyle: true } } },
+    scales: {
+      x: { grid: { color: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)' }, ticks: { color: isDark ? '#94A3B8' : '#6B7280', font: {size: 10} } },
+      y: { type: 'linear', display: true, position: 'left', title: { display: true, text: y1Label, color: isDark ? '#94A3B8' : '#6B7280', font: {size: 11} }, grid: { color: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)' }, ticks: { color: isDark ? '#94A3B8' : '#6B7280' } },
+      y1: { type: 'linear', display: true, position: 'right', title: { display: true, text: y2Label, color: isDark ? '#94A3B8' : '#6B7280', font: {size: 11} }, grid: { drawOnChartArea: false }, ticks: { color: isDark ? '#94A3B8' : '#6B7280' } }
+    }
+  });
+
+  charts.monthly4 = new Chart(document.getElementById('monthlyChart4'), {
+    type: 'bar',
+    data: {
+      labels: mData.campLabels,
+      datasets: [
+        { label: labelMap[m1], data: data1, backgroundColor: 'rgba(139, 92, 246, 0.8)', yAxisID: 'y', borderRadius: 4 },
+        { label: labelMap[m2], data: data2, type: 'line', borderColor: '#06B6D4', backgroundColor: '#06B6D4', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 3 }
+      ]
+    },
+    options: dualOpts(labelMap[m1], labelMap[m2])
+  });
+}
+
+let currentSortCol = 'spend';
+let currentSortAsc = false;
+let currentTableTab = 'campaign'; // default tab
+
+window.switchTableTab = function(tab) {
+  if (currentTableTab === tab) return;
+  currentTableTab = tab;
+  currentSortCol = 'spend';
+  currentSortAsc = false;
+  renderTable();
+};
+
+window.handleSort = function(col) {
+  if (currentSortCol === col) {
+    currentSortAsc = !currentSortAsc;
+  } else {
+    currentSortCol = col;
+    currentSortAsc = col === 'name' ? true : false;
+  }
+  renderTable();
+};
+
+function renderTable() {
+  let d = filteredData;
+  
+  // Update Tab UI
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`tab-${currentTableTab}`).classList.add('active');
+  document.getElementById('tableMainTitle').textContent = currentTableTab === 'campaign' ? 'Campaign Performance' : 'Ad Performance';
+  document.getElementById('th-name-label').innerHTML = currentTableTab === 'campaign' ? 'Campaign Name <span class="sort-icon" id="sortIcon-name"></span>' : 'Ad Name <span class="sort-icon" id="sortIcon-name"></span>';
+
+  // Group by Campaign or Ad
+  const groupedObj = {};
+  d.forEach(r => {
+    const key = currentTableTab === 'campaign' ? r.campaign : r.ad;
+    if (!key) return; // skip if empty
+
+    if (!groupedObj[key]) {
+      groupedObj[key] = {
+        name: key,
+        spend: 0, reach: 0, impressions: 0, views: 0,
+        engagements: 0, fbLikes: 0, reactions: 0, comments: 0, shares: 0, saves: 0
+      };
+    }
+    groupedObj[key].spend += r.spend;
+    groupedObj[key].reach += r.reach;
+    groupedObj[key].impressions += r.impressions;
+    groupedObj[key].views += (r.views || 0);
+    groupedObj[key].engagements += r.engagements;
+    groupedObj[key].fbLikes += r.fbLikes;
+    groupedObj[key].reactions += r.reactions;
+    groupedObj[key].comments += r.comments;
+    groupedObj[key].shares += r.shares;
+    groupedObj[key].saves += r.saves;
+  });
+
+  // Sort data
+  const groupedData = Object.values(groupedObj).sort((a, b) => {
+    let valA = a[currentSortCol];
+    let valB = b[currentSortCol];
+    if (typeof valA === 'string') {
+      return currentSortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+    }
+    return currentSortAsc ? valA - valB : valB - valA;
+  });
+
+  // Update sort icons
+  const cols = ['name','spend','reach','impressions','views','engagements','fbLikes','reactions','comments','shares','saves'];
+  cols.forEach(c => {
+    const el = document.getElementById(`sortIcon-${c}`);
+    if (el) el.innerHTML = c === currentSortCol ? (currentSortAsc ? '▲' : '▼') : '';
+  });
+
+  document.getElementById('tableCount').textContent = `แสดง ${groupedData.length} รายการ`;
+
+  if (groupedData.length === 0) {
+    document.getElementById('tableBody').innerHTML = `<tr><td colspan="11" style="text-align: center; color: var(--muted); padding: 32px 0;">ไม่มีข้อมูล (Data = 0)</td></tr>`;
+    return;
+  }
+
+  document.getElementById('tableBody').innerHTML = groupedData.map(r=>{
+    let displayHTML = `<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${r.name}</div>`;
+      
+    return `<tr>
+      <td title="${r.name}" style="max-width:240px; padding-right:12px;">${displayHTML}</td>
+      <td class="cost-cell">฿${r.spend.toFixed(2)}</td>
+      <td class="num">${r.reach.toLocaleString()}</td>
+      <td class="num">${r.impressions.toLocaleString()}</td>
+      <td class="num">${r.views.toLocaleString()}</td>
+      <td class="num">${r.engagements.toLocaleString()}</td>
+      <td class="num">${r.fbLikes.toLocaleString()}</td>
+      <td class="num">${r.reactions.toLocaleString()}</td>
+      <td class="num">${r.comments.toLocaleString()}</td>
+      <td class="num">${r.shares.toLocaleString()}</td>
+      <td class="num">${r.saves.toLocaleString()}</td>
+    </tr>`;
+  }).join('');
+}
+
+function populateFilters() {
+  const campaigns = [...new Set(allData.map(r=>r.campaign))].sort();
+  document.getElementById('filterCampaign').innerHTML = '<option value="">ทุก Campaign</option>'+campaigns.map(c=>`<option value="${c}">${c}</option>`).join('');
+}
+
+function applyFilters() {
+  const campaign = document.getElementById('filterCampaign').value;
+  filteredData = allData.filter(r=>{
+    if (campaign && r.campaign !== campaign) return false;
+    return true;
+  });
+  renderAll();
+}
+
+function clearFilters() {
+  document.getElementById('filterCampaign').value = '';
+  filteredData = [...allData];
+  renderAll();
+}
+
+// ─── NEW: Load Month Data (Main + Region) ──────────────────────────
+async function loadMonthData() {
+  const month = document.getElementById('filterMonth').value;
+  if (!month) return; 
+
+  showStatus(`กำลังดึงข้อมูลแคมเปญและภูมิภาคของเดือน ${month}...`);
+
+  try {
+    // 1. ลองดึงไฟล์ Main Campaign Data ก่อน (.csv -> .xlsx)
+    let mainLoaded = false;
+    let response = await fetch(`./data/${month}.csv`);
+    if (response.ok) {
+      const text = await response.text();
+      Papa.parse(text, {
+        header: true,
+        skipEmptyLines: true,
+        complete: r => {
+          loadData(r.data);
+          document.getElementById('fileLabel').textContent = `ข้อมูล: ${month}.csv`;
+        }
+      });
+      mainLoaded = true;
+    } else {
+      response = await fetch(`./data/${month}.xlsx`);
+      if (response.ok) {
+        const arrayBuffer = await response.arrayBuffer();
+        const wb = XLSX.read(arrayBuffer, { type: 'array' });
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(ws, { defval: 0 });
+        
+        loadData(rows);
+        document.getElementById('fileLabel').textContent = `ข้อมูล: ${month}.xlsx`;
+        mainLoaded = true;
+      }
+    }
+
+    if (!mainLoaded) {
+      showStatus(`❌ ไม่พบไฟล์ข้อมูลหลัก ${month}.csv หรือ .xlsx ใน ./data/`);
+      allData = [];
+      filteredData = [];
+      renderAll();
+    }
+
+    // 2. ลองดึงไฟล์ Region Data (.csv -> .xlsx)
+    let regionLoaded = false;
+    let regionResponse = await fetch(`./data/region/Region-${month}.csv`);
+    if (regionResponse.ok) {
+      const text = await regionResponse.text();
+      Papa.parse(text, {
+        header: true,
+        skipEmptyLines: true,
+        complete: r => {
+          loadRegionData(r.data);
+        }
+      });
+      regionLoaded = true;
+    } else {
+      regionResponse = await fetch(`./data/region/Region-${month}.xlsx`);
+      if (regionResponse.ok) {
+        const arrayBuffer = await regionResponse.arrayBuffer();
+        const wb = XLSX.read(arrayBuffer, { type: 'array' });
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(ws, { defval: 0 });
+        
+        loadRegionData(rows);
+        regionLoaded = true;
+      }
+    }
+
+    if (!regionLoaded) {
+      // เคลียร์กราฟภูมิภาคถ้าเดือนนี้ไม่มีไฟล์
+      regionData = [];
+      renderCharts();
+    }
+
+  } catch (error) {
+    console.error("Error loading month data:", error);
+    showStatus(`❌ พบปัญหาการดึงไฟล์ โปรดตรวจสอบว่ารันผ่าน Local Web Server หรือไม่`);
+  }
+}
+
+function loadRegionData(rows) {
+  try {
+    regionData = rows.map(r => ({
+      region: r['Region'] || r['ภูมิภาค'] || r['region'] || 'Unknown',
+      reach: parseNum(r['Reach'] || r['reach'])
+    })).filter(r => r.reach > 0);
+    
+    try {
+      localStorage.setItem('hiaLhomRegionData', JSON.stringify(regionData));
+    } catch(e) { console.warn('Local storage issue'); }
+    
+    renderCharts();
+  } catch(e) { 
+    console.warn('เกิดข้อผิดพลาดในการอ่านไฟล์ภูมิภาค: '+e.message); 
+  }
+}
+
+function loadData(rows) {
+  try {
+    allData = rows.map(r=>{
+      const campaign = r['Campaign name']||r['campaign']||'';
+      return {
+        campaign,
+        ad: r['Ad name']||r['ad']||'',
+        age: r['Age']||r['age']||'',
+        gender: r['Gender']||r['gender']||'',
+        spend: parseNum(r['Amount spent (THB)']||r['spend']),
+        reach: parseNum(r['Reach']||r['reach']),
+        impressions: parseNum(r['Impressions']||r['impressions']),
+        views: parseNum(r['Video plays'] || r['Views'] || r['views']),
+        engagements: parseNum(r['Post engagements']||r['engagements']),
+        fbLikes: parseNum(r['Facebook likes']||r['fbLikes']),
+        reactions: parseNum(r['Post reactions']||r['reactions']),
+        comments: parseNum(r['Post comments']||r['comments']),
+        shares: parseNum(r['Post shares']||r['shares']),
+        saves: parseNum(r['Post saves']||r['saves']),
+        objective: parseObjective(campaign)
+      };
+    }).filter(r=>r.ad && r.ad!=='-');
+    filteredData = [...allData];
+    
+    // บันทึกลง localStorage เพื่อให้อยู่ข้ามการ Refresh จนกว่าจะอัปโหลดครั้งถัดไป
+    try {
+      localStorage.setItem('hiaLhomDashboardData', JSON.stringify(allData));
+      localStorage.setItem('hiaLhomUploadDate', new Date().toISOString());
+    } catch(e) {
+      console.warn('Local storage is full or disabled');
+    }
+
+    populateFilters();
+    renderAll();
+
+  } catch(e) { showStatus('❌ เกิดข้อผิดพลาดในการอ่านไฟล์: '+e.message); }
+}
+
+function showStatus(msg) {
+  const bar = document.getElementById('statusBar');
+  bar.textContent = msg; bar.style.display = 'block';
+  setTimeout(()=>{ bar.style.display='none'; }, 4000);
+}
+
+// Theme
+if (localStorage.getItem('theme')==='dark') document.body.classList.add('dark-mode');
+
+const themeCheckbox = document.getElementById('themeToggleCheckbox');
+if (themeCheckbox) {
+  themeCheckbox.checked = document.body.classList.contains('dark-mode');
+}
+
+function updateThemeIcon() {
+  const isDark = document.body.classList.contains('dark-mode');
+  const label = document.getElementById('themeSwitchText');
+  if (label) {
+    label.innerHTML = isDark
+      ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> โหมดมืด (Dark Mode)'
+      : '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg> โหมดสว่าง (Light Mode)';
+  }
+  if (themeCheckbox) themeCheckbox.checked = isDark;
+}
+updateThemeIcon();
+
+if (themeCheckbox) {
+  themeCheckbox.addEventListener('change', (e) => {
+    if (e.target.checked) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+    localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    updateThemeIcon();
+    renderCharts();
+  });
+}
+
+// Settings Drawer Logic
+const settingsBtn = document.getElementById('settingsBtn');
+const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+const settingsDrawer = document.getElementById('settingsDrawer');
+const settingsOverlay = document.getElementById('settingsOverlay');
+
+function openDrawer() {
+  settingsOverlay.classList.add('show');
+  settingsDrawer.classList.add('open');
+}
+
+function closeDrawer() {
+  settingsOverlay.classList.remove('show');
+  settingsDrawer.classList.remove('open');
+}
+
+settingsBtn?.addEventListener('click', openDrawer);
+closeDrawerBtn?.addEventListener('click', closeDrawer);
+settingsOverlay?.addEventListener('click', closeDrawer);
+
+// Init
+populateFilters();
+
+// ตั้งค่า Default เดือนปัจจุบันและดึงข้อมูลมาแสดงอัตโนมัติ
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const currentMonth = monthNames[new Date().getMonth()];
+const monthDropdown = document.getElementById('filterMonth');
+
+if (monthDropdown) {
+  monthDropdown.value = currentMonth;
+  // โหลดข้อมูลเดือนปัจจุบันทันทีเมื่อเปิดหน้า
+  loadMonthData().finally(() => {
+    // เรนเดอร์ข้อมูล (หากไม่พบไฟล์เดือนปัจจุบัน จะแสดงข้อมูลเก่าที่ค้างใน LocalStorage แทน)
+    renderAll();
+  });
+} else {
+  renderAll();
+}
+</script>
+</body>
+</html>
