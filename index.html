@@ -256,7 +256,7 @@
     <div class="charts-grid" style="margin-top: 8px;">
       <div class="chart-card">
         <div class="chart-title">1. Spending vs. Facebook Like</div>
-        <div class="chart-sub">เปรียบเทียบค่าใช้จ่ายและยอดไลก์เพจรายเดือน</div>
+        <div class="chart-sub">เปรียบเทียบค่าใช้จ่ายและยอดไลก์เพจรายเดือน (เฉพาะ Page Follower)</div>
         <div class="chart-wrap"><canvas id="monthlyChart1"></canvas></div>
       </div>
       <div class="chart-card">
@@ -266,7 +266,7 @@
       </div>
       <div class="chart-card">
         <div class="chart-title">3. Facebook Like vs. Cost Per Like</div>
-        <div class="chart-sub">เปรียบเทียบยอดไลก์และต้นทุนต่อไลก์รายเดือน</div>
+        <div class="chart-sub">เปรียบเทียบยอดไลก์และต้นทุนต่อไลก์รายเดือน (เฉพาะ Page Follower)</div>
         <div class="chart-wrap"><canvas id="monthlyChart3"></canvas></div>
       </div>
       <div class="chart-card">
@@ -633,12 +633,34 @@ function renderMonthlyTrendCharts() {
     return targetData[metric] || 0;
   };
 
+  const getPageFollowerAggData = (month, metric) => {
+    if (!window.allMonthsAggregated[month]) return 0;
+    const mData = window.allMonthsAggregated[month];
+    
+    if (selectedCamp) {
+       // หากกำลังเปิดตัวกรอง Campaign อื่นที่ไม่ใช่ Page Follower ให้ค่าเป็น 0
+       if (!selectedCamp.includes('Page Follower')) return 0;
+       return mData.campaigns[selectedCamp] ? (mData.campaigns[selectedCamp][metric] || 0) : 0;
+    } else {
+       // หากดูแบบรวม ให้รวมยอดเฉพาะที่มีคำว่า Page Follower ในชื่อแคมเปญ
+       let total = 0;
+       for (let c in mData.campaigns) {
+          if (c.includes('Page Follower')) {
+             total += mData.campaigns[c][metric] || 0;
+          }
+       }
+       return total;
+    }
+  };
+
   const spendData = monthNames.map(m => getAggData(m, 'spend'));
-  const likeData = monthNames.map(m => getAggData(m, 'fbLikes'));
   const impData = monthNames.map(m => getAggData(m, 'impressions'));
-  const costPerLikeData = monthNames.map(m => {
-    const s = getAggData(m, 'spend');
-    const l = getAggData(m, 'fbLikes');
+  
+  const pfSpendData = monthNames.map(m => getPageFollowerAggData(m, 'spend'));
+  const pfLikeData = monthNames.map(m => getPageFollowerAggData(m, 'fbLikes'));
+  const pfCostPerLikeData = monthNames.map(m => {
+    const s = getPageFollowerAggData(m, 'spend');
+    const l = getPageFollowerAggData(m, 'fbLikes');
     return l > 0 ? (s / l) : 0;
   });
 
@@ -659,8 +681,8 @@ function renderMonthlyTrendCharts() {
     data: {
       labels: monthNames,
       datasets: [
-        { label: 'Spending (฿)', data: spendData, type: 'bar', backgroundColor: 'rgba(37, 99, 235, 0.8)', yAxisID: 'y', borderRadius: 4, order: 2 },
-        { label: 'Facebook Like', data: likeData, type: 'line', borderColor: '#10B981', backgroundColor: '#10B981', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 3, order: 1 }
+        { label: 'Spending (฿)', data: pfSpendData, type: 'bar', backgroundColor: 'rgba(37, 99, 235, 0.8)', yAxisID: 'y', borderRadius: 4, order: 2 },
+        { label: 'Facebook Like', data: pfLikeData, type: 'line', borderColor: '#10B981', backgroundColor: '#10B981', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 3, order: 1 }
       ]
     },
     options: dualOpts('Spending (฿)', 'FB Likes')
@@ -685,8 +707,8 @@ function renderMonthlyTrendCharts() {
     data: {
       labels: monthNames,
       datasets: [
-        { label: 'Facebook Like', data: likeData, type: 'bar', backgroundColor: 'rgba(16, 185, 129, 0.8)', yAxisID: 'y', borderRadius: 4, order: 2 },
-        { label: 'Cost Per Like (฿)', data: costPerLikeData, type: 'line', borderColor: '#F43F5E', backgroundColor: '#F43F5E', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 3, order: 1 }
+        { label: 'Facebook Like', data: pfLikeData, type: 'bar', backgroundColor: 'rgba(16, 185, 129, 0.8)', yAxisID: 'y', borderRadius: 4, order: 2 },
+        { label: 'Cost Per Like (฿)', data: pfCostPerLikeData, type: 'line', borderColor: '#F43F5E', backgroundColor: '#F43F5E', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 3, order: 1 }
       ]
     },
     options: dualOpts('FB Likes', 'Cost/Like (฿)')
