@@ -52,7 +52,13 @@
     
     .logo-title { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
     .logo-sub { font-size: 13px; color: var(--muted); font-weight: 500; }
+    
+    .header-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
     .header-right { display: flex; align-items: center; gap: 16px; }
+
+    .data-source-indicator { display: flex; flex-wrap: wrap; gap: 8px 12px; font-size: 11px; color: var(--muted); background: var(--bg); padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border); box-shadow: inset 0 1px 2px rgba(0,0,0,0.02); align-items: center; }
+    .data-source-indicator > div:not(:first-child) { border-left: 1px solid var(--border); padding-left: 12px; }
+    .source-label { color: var(--text-secondary); font-family: monospace; font-weight: 600; }
 
     .main { padding: 18px 64px; max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
 
@@ -153,12 +159,14 @@
     .charts-grid { grid-template-columns: 1fr; }
     .chart-card.wide { grid-column: span 1; }
     .header { padding: 16px; flex-direction: column; gap: 16px; align-items: flex-start; }
+    .header-actions { align-items: flex-start; width: 100%; }
     .kpi-grid.row6, .kpi-grid.row5, .kpi-grid.row3 { grid-template-columns: repeat(2,1fr); }
     .kpi-grid.row4 { grid-template-columns: repeat(4,1fr); }
     td, th { padding: 12px 16px; }
   }
   @media (max-width: 600px) {
     .kpi-grid.row6, .kpi-grid.row5, .kpi-grid.row4, .kpi-grid.row3 { grid-template-columns: 1fr; }
+    .data-source-indicator > div:not(:first-child) { border-left: none; padding-left: 0; }
   }
 </style>
 </head>
@@ -174,31 +182,41 @@
       <div class="logo-sub">Facebook Campaign Performance Dashboard</div>
     </div>
   </div>
-  <div class="header-right">
-    <div style="display: flex; align-items: center; gap: 8px; margin-right: 8px;">
-      <span class="filter-label" style="font-size: 13px;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-        Month:
-      </span>
-      <select id="filterMonth" onchange="loadMonthData()">
-        <option value="">เลือกเดือน</option>
-        <option value="January">January</option>
-        <option value="February">February</option>
-        <option value="March">March</option>
-        <option value="April">April</option>
-        <option value="May">May</option>
-        <option value="June">June</option>
-        <option value="July">July</option>
-        <option value="August">August</option>
-        <option value="September">September</option>
-        <option value="October">October</option>
-        <option value="November">November</option>
-        <option value="December">December</option>
-      </select>
+  
+  <div class="header-actions">
+    <div class="header-right">
+      <div style="display: flex; align-items: center; gap: 8px; margin-right: 8px;">
+        <span class="filter-label" style="font-size: 13px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          Month:
+        </span>
+        <select id="filterMonth" onchange="loadMonthData()">
+          <option value="">เลือกเดือน</option>
+          <option value="January">January</option>
+          <option value="February">February</option>
+          <option value="March">March</option>
+          <option value="April">April</option>
+          <option value="May">May</option>
+          <option value="June">June</option>
+          <option value="July">July</option>
+          <option value="August">August</option>
+          <option value="September">September</option>
+          <option value="October">October</option>
+          <option value="November">November</option>
+          <option value="December">December</option>
+        </select>
+      </div>
+      <button id="settingsBtn" class="btn-outline" style="padding:8px;display:flex;align-items:center;justify-content:center;border-radius:50%;width:36px;height:36px;" title="ตั้งค่า (Settings)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
     </div>
-    <button id="settingsBtn" class="btn-outline" style="padding:8px;display:flex;align-items:center;justify-content:center;border-radius:50%;width:36px;height:36px;" title="ตั้งค่า (Settings)">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    </button>
+    
+    <!-- Data Source Indicator -->
+    <div class="data-source-indicator">
+      <div>📁 ข้อมูลหลัก: <span id="mainSourceFile" class="source-label">-</span></div>
+      <div>🗺️ ภูมิภาค: <span id="regionSourceFile" class="source-label">-</span></div>
+      <div>🗓️ อัปเดตล่าสุด: <span id="lastUpdated" class="source-label">-</span></div>
+    </div>
   </div>
 </div>
 
@@ -214,12 +232,6 @@
         <option value="">ทุก Campaign</option>
       </select>
       <button class="clear-btn" onclick="clearFilters()">✕ ล้างตัวกรอง</button>
-
-      <!-- ส่วนแสดงแหล่งที่มาของข้อมูล (Data Source Indicator) -->
-      <div style="margin-left: auto; display: flex; gap: 16px; font-size: 12px; color: var(--muted); background: var(--card); padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border); box-shadow: var(--shadow-sm);">
-        <div>📁 ข้อมูลหลัก: <strong id="mainSourceFile" style="color: var(--text-secondary); font-family: monospace;">-</strong></div>
-        <div style="border-left: 1px solid var(--border); padding-left: 16px;">🗺️ ภูมิภาค: <strong id="regionSourceFile" style="color: var(--text-secondary); font-family: monospace;">-</strong></div>
-      </div>
     </div>
 
     <div id="kpiSection"></div>
@@ -938,7 +950,7 @@ async function loadAllMonthsTrend() {
   });
 }
 
-// โหลดข้อมูลสำหรับเดือนที่เลือก (ส่ง Parameter ป้องกันการ render ซ้ำซ้อนตอนเปิดหน้าเว็บครั้งแรก)
+// โหลดข้อมูลสำหรับเดือนที่เลือก
 async function loadMonthData(isInit = false) {
   const month = document.getElementById('filterMonth').value;
   if (!month) return; 
@@ -996,6 +1008,10 @@ async function loadMonthData(isInit = false) {
       document.getElementById('regionSourceFile').textContent = 'ไม่พบไฟล์ภูมิภาค';
       regionData = []; 
     }
+    
+    // อัปเดตเวลาล่าสุด
+    const now = new Date();
+    document.getElementById('lastUpdated').textContent = now.toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'short' }) + ' น.';
 
     // หากเป็นการเปลี่ยน Dropdown ธรรมดา ให้เรนเดอร์ใหม่ทันที
     if (!isInit) {
