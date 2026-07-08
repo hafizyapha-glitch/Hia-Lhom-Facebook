@@ -223,8 +223,15 @@
   <div style="padding: 0 32px; margin-top: -8px;" id="innerMain">
     <div id="statusBar"></div>
     <div class="filter-row">
-      <!-- เพิ่ม Filter Objective ตามที่กำหนด -->
       <span class="filter-label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="4" x2="14" y2="4"/><line x1="10" y1="4" x2="3" y2="4"/><line x1="21" y1="12" x2="12" y2="12"/><line x1="8" y1="12" x2="3" y2="12"/><line x1="21" y1="20" x2="16" y2="20"/><line x1="12" y1="20" x2="3" y2="20"/><line x1="14" y1="2" x2="14" y2="6"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="16" y1="18" x2="16" y2="22"/></svg>
+        Campaign:
+      </span>
+      <select id="filterCampaign" onchange="applyFilters()">
+        <option value="">ทุก Campaign</option>
+      </select>
+
+      <span class="filter-label" style="margin-left: 8px;">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         Objective:
       </span>
@@ -234,14 +241,7 @@
         <option value="Engagement">Engagement</option>
         <option value="Page Follower">Page Follower</option>
       </select>
-
-      <span class="filter-label" style="margin-left: 8px;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="4" x2="14" y2="4"/><line x1="10" y1="4" x2="3" y2="4"/><line x1="21" y1="12" x2="12" y2="12"/><line x1="8" y1="12" x2="3" y2="12"/><line x1="21" y1="20" x2="16" y2="20"/><line x1="12" y1="20" x2="3" y2="20"/><line x1="14" y1="2" x2="14" y2="6"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="16" y1="18" x2="16" y2="22"/></svg>
-        Campaign:
-      </span>
-      <select id="filterCampaign" onchange="applyFilters()">
-        <option value="">ทุก Campaign</option>
-      </select>
+      
       <button class="clear-btn" onclick="clearFilters()">✕ ล้างตัวกรอง</button>
     </div>
 
@@ -274,49 +274,51 @@
       </div>
     </div>
 
-    <!-- Monthly Trend Performance Area -->
-    <div class="kpi-group-label" style="margin-top: 32px; font-size: 18px;">Monthly Trend Performance (เปรียบเทียบรายเดือน)</div>
-    <div class="charts-grid" style="margin-top: 8px;">
-      <div class="chart-card">
-        <div class="chart-title">1. Spending vs. Facebook Like</div>
-        <div class="chart-sub">เปรียบเทียบค่าใช้จ่ายและยอดไลก์เพจรายเดือน (เฉพาะ Page Follower)</div>
-        <div class="chart-wrap"><canvas id="monthlyChart1"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-title">2. Spending vs. Impression</div>
-        <div class="chart-sub">เปรียบเทียบค่าใช้จ่ายและยอดการแสดงผลรายเดือน</div>
-        <div class="chart-wrap"><canvas id="monthlyChart2"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-title">3. Facebook Like vs. Cost Per Like</div>
-        <div class="chart-sub">เปรียบเทียบยอดไลก์และต้นทุนต่อไลก์รายเดือน (เฉพาะ Page Follower)</div>
-        <div class="chart-wrap"><canvas id="monthlyChart3"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
-          <div>
-            <div class="chart-title">4. Impression vs. CPM</div>
-            <div class="chart-sub" style="margin-bottom: 0;">(สามารถเปลี่ยน Metric ได้)</div>
-          </div>
-          <div style="display: flex; gap: 4px; align-items: center;">
-            <select id="customMetric1" class="chart-filter-select" onchange="renderChart4()" style="padding: 4px 20px 4px 8px; font-size: 11px;">
-              <option value="impressions" selected>Impression</option>
-              <option value="spend">Spend</option>
-              <option value="reach">Reach</option>
-              <option value="fbLikes">FB Like</option>
-              <option value="engagements">Engagement</option>
-            </select>
-            <span style="font-size: 11px; color: var(--muted);">vs</span>
-            <select id="customMetric2" class="chart-filter-select" onchange="renderChart4()" style="padding: 4px 20px 4px 8px; font-size: 11px;">
-              <option value="cpm" selected>CPM</option>
-              <option value="cpe">CPE</option>
-              <option value="cpr">Cost/1K Reach</option>
-              <option value="costPerLike">Cost/Like</option>
-              <option value="freq">Frequency</option>
-            </select>
-          </div>
+    <div id="monthlyTrendContainer">
+      <!-- Monthly Trend Performance Area -->
+      <div class="kpi-group-label" style="margin-top: 32px; font-size: 18px;">Monthly Trend Performance (เปรียบเทียบรายเดือน)</div>
+      <div class="charts-grid" style="margin-top: 8px;">
+        <div class="chart-card">
+          <div class="chart-title">1. Spending vs. Facebook Like</div>
+          <div class="chart-sub">เปรียบเทียบค่าใช้จ่ายและยอดไลก์เพจรายเดือน (เฉพาะ Page Follower)</div>
+          <div class="chart-wrap"><canvas id="monthlyChart1"></canvas></div>
         </div>
-        <div class="chart-wrap" style="height: 235px;"><canvas id="monthlyChart4"></canvas></div>
+        <div class="chart-card">
+          <div class="chart-title">2. Spending vs. Impression</div>
+          <div class="chart-sub">เปรียบเทียบค่าใช้จ่ายและยอดการแสดงผลรายเดือน</div>
+          <div class="chart-wrap"><canvas id="monthlyChart2"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">3. Facebook Like vs. Cost Per Like</div>
+          <div class="chart-sub">เปรียบเทียบยอดไลก์และต้นทุนต่อไลก์รายเดือน (เฉพาะ Page Follower)</div>
+          <div class="chart-wrap"><canvas id="monthlyChart3"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
+            <div>
+              <div class="chart-title">4. Impression vs. CPM</div>
+              <div class="chart-sub" style="margin-bottom: 0;">(สามารถเปลี่ยน Metric ได้)</div>
+            </div>
+            <div style="display: flex; gap: 4px; align-items: center;">
+              <select id="customMetric1" class="chart-filter-select" onchange="renderChart4()" style="padding: 4px 20px 4px 8px; font-size: 11px;">
+                <option value="impressions" selected>Impression</option>
+                <option value="spend">Spend</option>
+                <option value="reach">Reach</option>
+                <option value="fbLikes">FB Like</option>
+                <option value="engagements">Engagement</option>
+              </select>
+              <span style="font-size: 11px; color: var(--muted);">vs</span>
+              <select id="customMetric2" class="chart-filter-select" onchange="renderChart4()" style="padding: 4px 20px 4px 8px; font-size: 11px;">
+                <option value="cpm" selected>CPM</option>
+                <option value="cpe">CPE</option>
+                <option value="cpr">Cost/1K Reach</option>
+                <option value="costPerLike">Cost/Like</option>
+                <option value="freq">Frequency</option>
+              </select>
+            </div>
+          </div>
+          <div class="chart-wrap" style="height: 235px;"><canvas id="monthlyChart4"></canvas></div>
+        </div>
       </div>
     </div>
 
@@ -707,6 +709,14 @@ function renderMonthlyTrendCharts() {
   const spendData = monthNames.map(m => getAggData(m, 'spend'));
   const impData = monthNames.map(m => getAggData(m, 'impressions'));
   
+  // ตรวจสอบว่ามีข้อมูลหรือไม่ (ถ้าไม่มีข้อมูลให้ซ่อนส่วน Monthly Trend)
+  const totalData = spendData.reduce((sum, v) => sum + v, 0) + impData.reduce((sum, v) => sum + v, 0);
+  const container = document.getElementById('monthlyTrendContainer');
+  if (container) {
+      container.style.display = totalData === 0 ? 'none' : 'block';
+      if (totalData === 0) return; // ข้ามการเรนเดอร์กราฟถ้าไม่มีข้อมูลแสดงผล
+  }
+
   const pfSpendData = monthNames.map(m => getPageFollowerAggData(m, 'spend'));
   const pfLikeData = monthNames.map(m => getPageFollowerAggData(m, 'fbLikes'));
   const pfCostPerLikeData = monthNames.map(m => {
@@ -971,22 +981,7 @@ async function loadAllMonthsTrend() {
       }
     } catch(e) {}
 
-    if(rows.length === 0) {
-        // Generate mock data for preview environments
-        let m = monthNames.indexOf(month);
-        let base = (m + 1) * 1500;
-        return {
-            month,
-            data: {
-                spend: base * 10, reach: base * 100, impressions: base * 150, engagements: base * 8, fbLikes: base * 2, views: base * 5, 
-                campaigns: {
-                    'Awareness - Always On': { spend: base*5, reach: base*60, impressions: base*100, engagements: base*2, fbLikes: base*0.1, views: base*5 },
-                    'Engagement - Promo': { spend: base*3, reach: base*30, impressions: base*40, engagements: base*5, fbLikes: base*0.5, views: 0 },
-                    'Page Follower - Target': { spend: base*2, reach: base*10, impressions: base*10, engagements: base*1, fbLikes: base*1.4, views: 0 }
-                }
-            }
-        };
-    }
+    if(rows.length === 0) return { month, data: null };
 
     let monthlyTotal = { spend:0, reach:0, impressions:0, engagements:0, fbLikes:0, views:0, campaigns: {} };
     rows.forEach(r => {
@@ -1056,19 +1051,10 @@ async function loadMonthData(isInit = false) {
     }
 
     if (!mainLoaded) {
-      if(!isInit) showStatus(`⚠️ ไม่พบไฟล์ข้อมูล แสดงผลด้วย Mock Data เพื่อการทดสอบ`);
-      
-      // Mock data fallback สำหรับโหมดทดสอบ
-      allData = [
-        { campaign: 'Awareness - Always On', ad: 'Video Ad 1', age: '18-24', gender: 'female', spend: 2500, reach: 45000, impressions: 55000, views: 12000, engagements: 800, fbLikes: 15, reactions: 600, comments: 100, shares: 100, saves: 20, objective: 'Awareness' },
-        { campaign: 'Awareness - Always On', ad: 'Image Ad 1', age: '25-34', gender: 'male', spend: 3500, reach: 60000, impressions: 70000, views: 0, engagements: 1200, fbLikes: 25, reactions: 900, comments: 150, shares: 150, saves: 40, objective: 'Awareness' },
-        { campaign: 'Engagement - Promo', ad: 'Carousel Ad 1', age: '25-34', gender: 'female', spend: 4000, reach: 35000, impressions: 45000, views: 0, engagements: 4500, fbLikes: 80, reactions: 3800, comments: 400, shares: 300, saves: 100, objective: 'Engagement' },
-        { campaign: 'Engagement - Promo', ad: 'Post Boost', age: '35-44', gender: 'male', spend: 2000, reach: 20000, impressions: 25000, views: 0, engagements: 2200, fbLikes: 40, reactions: 1800, comments: 250, shares: 150, saves: 50, objective: 'Engagement' },
-        { campaign: 'Page Follower - Target', ad: 'Like Ad 1', age: '18-24', gender: 'male', spend: 1500, reach: 12000, impressions: 15000, views: 0, engagements: 400, fbLikes: 350, reactions: 300, comments: 20, shares: 10, saves: 5, objective: 'Page Follower' },
-        { campaign: 'Page Follower - Target', ad: 'Like Ad 2', age: '45-54', gender: 'unknown', spend: 500, reach: 5000, impressions: 6000, views: 0, engagements: 100, fbLikes: 150, reactions: 80, comments: 5, shares: 2, saves: 0, objective: 'Page Follower' }
-      ];
-      filteredData = [...allData];
-      document.getElementById('mainSourceFile').textContent = 'Mock Data (Preview Mode)';
+      if(!isInit) showStatus(`❌ ไม่พบไฟล์ข้อมูลหลัก ${month}.csv หรือ .xlsx ใน ./data/`);
+      allData = [];
+      filteredData = [];
+      document.getElementById('mainSourceFile').textContent = 'ไม่พบไฟล์ข้อมูลหลัก (ค่า 0)';
     }
 
     let regionLoaded = false;
@@ -1092,14 +1078,8 @@ async function loadMonthData(isInit = false) {
     }
 
     if (!regionLoaded) {
-      regionData = [
-        { region: 'Bangkok', reach: 85000 },
-        { region: 'Chonburi', reach: 32000 },
-        { region: 'Chiang Mai', reach: 28000 },
-        { region: 'Phuket', reach: 15000 },
-        { region: 'Khon Kaen', reach: 17000 }
-      ];
-      document.getElementById('regionSourceFile').textContent = 'Mock Data (Preview Mode)';
+      regionData = [];
+      document.getElementById('regionSourceFile').textContent = 'ไม่พบไฟล์ภูมิภาค (ค่า 0)';
     }
     
     // อัปเดตเวลาล่าสุด
