@@ -264,6 +264,7 @@
         <option value="Awareness">Awareness</option>
         <option value="Engagement">Engagement</option>
         <option value="Page Follower">Page Follower</option>
+        <option value="Leads">Leads</option>
       </select>
       
       <button class="clear-btn" onclick="clearFilters()">✕ ล้างตัวกรอง</button>
@@ -468,6 +469,7 @@ function parseObjective(campaign) {
   if (c.includes('Awareness - Chonburi')) return 'Awareness - Chonburi';
   if (c.includes('Awareness')) return 'Awareness';
   if (c.includes('Page Follower')) return 'Page Follower';
+  if (c.toLowerCase().includes('leads') || c.includes('ลีด')) return 'Leads';
   return 'Other';
 }
 
@@ -521,6 +523,7 @@ function renderKPIs() {
   const totalComments = d.reduce((s,r)=>s+r.comments,0);
   const totalShares = d.reduce((s,r)=>s+r.shares,0);
   const totalViews = d.reduce((s,r)=>s+r.views,0);
+  const totalLeads = d.reduce((s,r)=>s+(r.leads||0),0);
   
   const cpm = totalImpr > 0 ? totalSpend/totalImpr*1000 : 0;
   const cpe = totalEng > 0 ? totalSpend/totalEng : 0;
@@ -529,6 +532,7 @@ function renderKPIs() {
   const engRate = totalImpr > 0 ? totalEng/totalImpr*100 : 0;
   const costPerPageLike = totalLikes > 0 ? totalSpend/totalLikes : 0;
   const cpr = totalReach > 0 ? (totalSpend/totalReach)*1000 : 0;
+  const cpl = totalLeads > 0 ? totalSpend/totalLeads : 0;
 
   function card(icon, label, value, sub, color, benchmark='') {
     const bmHtml = benchmark ? `<div class="kpi-benchmark"><span class="bm-label">Benchmark</span><span class="bm-val">${benchmark}</span></div>` : '';
@@ -551,6 +555,7 @@ function renderKPIs() {
   const iconCPE = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="M14.5 9a2 2 0 0 0-2-1h-1a2 2 0 0 0 0 4h1a2 2 0 0 1 0 4h-1a2 2 0 0 1-2-1"/><line x1="12" y1="7" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="17"/></svg>';
   const iconView = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
   const iconCPV = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>';
+  const iconLead = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>';
 
   const g1 = [
     card(iconSpend, 'Total Spend', '฿'+totalSpend.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}), 'THB', 'var(--primary)'),
@@ -558,10 +563,11 @@ function renderKPIs() {
     card(iconImpr, 'Impressions', totalImpr.toLocaleString(), 'Total ad impressions', 'var(--blue)'),
     card(iconEng, 'Post Engagements', totalEng.toLocaleString(), 'Total interactions', 'var(--accent)'),
     card(iconLike, 'Page Like', totalLikes.toLocaleString(), 'Page / post likes', '#3B82F6'),
-    card(iconView, 'Views', totalViews.toLocaleString(), 'Video views', '#06B6D4')
+    card(iconLead, 'Leads', totalLeads.toLocaleString(), 'Total leads generated', '#F59E0B')
   ];
   
   const g2 = [
+    card(iconView, 'Views', totalViews.toLocaleString(), 'Video views', '#06B6D4'),
     card('<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>', 'Reactions', totalReactions.toLocaleString(), 'Post reactions', '#F43F5E'),
     card(iconComment, 'Comments', totalComments.toLocaleString(), 'Post comments', '#8B5CF6'),
     card(iconShare, 'Shares', totalShares.toLocaleString(), 'Post shares', 'var(--green)'),
@@ -574,6 +580,7 @@ function renderKPIs() {
     card(iconCPE, 'CPE', '฿'+cpe.toFixed(2), 'Cost per engagement', '#8B5CF6', '฿2–฿10'),
     card(iconLike, 'Cost per Page Like', '฿'+costPerPageLike.toFixed(2), 'Cost per page like', '#3B82F6', '฿15–฿50'),
     card(iconCPV, 'Cost per View (CPV)', '฿'+cpv.toFixed(2), 'Cost per video view', '#06B6D4', '฿0.30–฿1.50'),
+    card(iconLead, 'Cost per Lead (CPL)', '฿'+cpl.toFixed(2), 'Cost per lead', '#F59E0B', '฿50–฿250'),
     card(iconEng, 'Engagement Rate', engRate.toFixed(2)+'%', 'Engagements / Impressions', 'var(--accent)', '0.50%–1.50%')
   ];
 
@@ -581,9 +588,9 @@ function renderKPIs() {
     <div class="kpi-group-label">Overview</div>
     <div class="kpi-grid row3">${g1.join('')}</div>
     <div class="kpi-group-label">Engagement Breakdown</div>
-    <div class="kpi-grid row4">${g2.join('')}</div>
+    <div class="kpi-grid row5">${g2.join('')}</div>
     <div class="kpi-group-label">Cost Efficiency</div>
-    <div class="kpi-grid row6" style="margin-bottom:8px;">${g3.join('')}</div>
+    <div class="kpi-grid row4" style="margin-bottom:8px;">${g3.join('')}</div>
     <div style="text-align:right;font-size:11px;color:var(--muted);margin-bottom:8px;">
       Benchmark ref: Meta Business Suite / Wordstream Facebook Ads 2025 (Thailand)
     </div>`;
@@ -1263,7 +1270,7 @@ function processMainData(rows) {
   try {
     allData = rows.map(r => {
       let campaign = '', ad = '', age = '', gender = '';
-      let spend=0, reach=0, impressions=0, views=0, engagements=0, fbLikes=0, reactions=0, comments=0, shares=0, saves=0;
+      let spend=0, reach=0, impressions=0, views=0, engagements=0, fbLikes=0, reactions=0, comments=0, shares=0, saves=0, leads=0;
       
       for(let k in r) {
         let cleanK = cleanKey(k);
@@ -1282,10 +1289,11 @@ function processMainData(rows) {
         else if(['post comments', 'comments', 'ความคิดเห็น'].includes(cleanK)) comments = parseNum(val);
         else if(['post shares', 'shares', 'การแชร์'].includes(cleanK)) shares = parseNum(val);
         else if(['post saves', 'saves', 'การบันทึก'].includes(cleanK)) saves = parseNum(val);
+        else if(['leads', 'ลีด', 'ผู้ติดต่อ', 'contacts'].includes(cleanK)) leads = parseNum(val);
       }
 
       return {
-        campaign, ad, age, gender, spend, reach, impressions, views, engagements, fbLikes, reactions, comments, shares, saves,
+        campaign, ad, age, gender, spend, reach, impressions, views, engagements, fbLikes, reactions, comments, shares, saves, leads,
         objective: parseObjective(campaign)
       };
     }).filter(r => r.ad && String(r.ad).trim() !== '-');
