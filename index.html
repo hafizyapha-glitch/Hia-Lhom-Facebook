@@ -53,7 +53,6 @@
     
     .header-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
     .header-right { display: flex; align-items: center; gap: 16px; }
-    .source-label { color: var(--text-secondary); font-family: monospace; font-weight: 600; }
 
     .main { padding: 18px 64px; max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
 
@@ -150,25 +149,27 @@
     .settings-data-box .label { color: var(--text-secondary); }
     .settings-data-box .value { color: var(--text); font-family: monospace; font-weight: 600; }
 
-    .carousel-track { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 16px; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: thin; }
+    .carousel-wrapper { position: relative; width: 100%; display: flex; align-items: center; }
+    .carousel-track { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 16px; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: thin; width: 100%; }
     .carousel-track::-webkit-scrollbar { height: 6px; }
     .carousel-track::-webkit-scrollbar-track { background: var(--surface); border-radius: 4px; }
     .carousel-track::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
     .carousel-track::-webkit-scrollbar-thumb:hover { background: var(--muted); }
     
-    .ad-card { flex: 0 0 240px; scroll-snap-align: start; background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm); transition: transform 0.2s; display: flex; flex-direction: column; }
+    .ad-card { flex: 0 0 240px; scroll-snap-align: start; background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm); transition: transform 0.2s; display: flex; flex-direction: column; position: relative; }
     .ad-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
-    .ad-image-wrap { display: block; position: relative; text-decoration: none; cursor: pointer; }
-    .ad-image { width: 100%; aspect-ratio: 4 / 5; height: auto; object-fit: cover; background: var(--surface); border-bottom: 1px solid var(--border); display: block; }
-    .link-overlay { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.6); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; backdrop-filter: blur(4px); }
-    .ad-image-wrap:hover .link-overlay { opacity: 1; }
-    .ad-info { padding: 16px; flex-grow: 1; }
-    .ad-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; height: 39px; }
-    .ad-metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .ad-metric { font-size: 11px; color: var(--text-secondary); }
-    .ad-metric strong { color: var(--text); display: block; font-size: 13px; font-family: 'Inter', sans-serif; font-weight: 600; margin-top: 2px; }
+    .ad-rank { position: absolute; top: 12px; left: 12px; background: var(--primary); color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; z-index: 2; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
     
-    .scroll-btn { position: absolute; top: 40%; transform: translateY(-50%); z-index: 10; width: 36px; height: 36px; border-radius: 50%; background: var(--card); border: 1px solid var(--border); box-shadow: var(--shadow); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--text); opacity: 0.9; transition: all 0.2s; }
+    .ad-image-wrap { position: relative; display: block; width: 100%; background: var(--surface); border-bottom: 1px solid var(--border); }
+    .ad-image { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; }
+    .ad-link-overlay { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.6); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; backdrop-filter: blur(4px); z-index: 2; }
+    .ad-image-wrap a:hover .ad-link-overlay { opacity: 1; }
+    
+    .ad-info { padding: 16px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .ad-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
+    .ad-stat { display: flex; justify-content: space-between; align-items: center; background: var(--surface); padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: 'Inter', sans-serif; color: var(--primary); }
+    
+    .scroll-btn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; width: 36px; height: 36px; border-radius: 50%; background: var(--card); border: 1px solid var(--border); box-shadow: var(--shadow); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--text); opacity: 0.9; transition: all 0.2s; }
     .scroll-btn:hover { border-color: var(--primary); color: var(--primary); opacity: 1; }
     .scroll-btn.left { left: -18px; }
     .scroll-btn.right { right: -18px; }
@@ -182,8 +183,7 @@
     .chart-card.wide { grid-column: span 1; }
     .header { padding: 16px; flex-direction: column; gap: 16px; align-items: flex-start; }
     .header-actions { align-items: flex-start; width: 100%; }
-    .kpi-grid.row6, .kpi-grid.row5, .kpi-grid.row3 { grid-template-columns: repeat(2,1fr); }
-    .kpi-grid.row4 { grid-template-columns: repeat(4,1fr); }
+    .kpi-grid.row6, .kpi-grid.row5, .kpi-grid.row4, .kpi-grid.row3 { grid-template-columns: repeat(2,1fr); }
     td, th { padding: 12px 16px; }
   }
   @media (max-width: 600px) {
@@ -239,15 +239,15 @@
   <div style="padding: 0 32px; margin-top: -8px;" id="innerMain">
     <div id="statusBar"></div>
     <div class="filter-row">
-      <span class="filter-label" style="margin-left: 8px;">
+      <span class="filter-label">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="4" x2="14" y2="4"/><line x1="10" y1="4" x2="3" y2="4"/><line x1="21" y1="12" x2="12" y2="12"/><line x1="8" y1="12" x2="3" y2="12"/><line x1="21" y1="20" x2="16" y2="20"/><line x1="12" y1="20" x2="3" y2="20"/><line x1="14" y1="2" x2="14" y2="6"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="16" y1="18" x2="16" y2="22"/></svg>
         Campaign:
       </span>
       <select id="filterCampaign" onchange="applyFilters()">
         <option value="">ทุก Campaign</option>
       </select>
-
-      <span class="filter-label">
+      
+      <span class="filter-label" style="margin-left: 8px;">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         Objective:
       </span>
@@ -258,7 +258,7 @@
         <option value="Page Follower">Page Follower</option>
         <option value="Leads">Leads</option>
       </select>
-      
+
       <button class="clear-btn" onclick="clearFilters()">✕ ล้างตัวกรอง</button>
     </div>
 
@@ -291,8 +291,7 @@
       </div>
     </div>
 
-    <!-- Top 10 Ads Carousel -->
-    <div class="chart-card" style="margin-top: 24px; padding: 24px;">
+    <div class="chart-card wide" style="margin-top: 24px;">
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
         <div>
           <div class="chart-title" style="font-size: 18px;">Top 10 Ads Performance</div>
@@ -305,16 +304,15 @@
           <option value="fbLikes">Sort by: FB Likes</option>
         </select>
       </div>
-      <div class="carousel-wrapper" style="position: relative;">
-        <button class="scroll-btn left" onclick="document.getElementById('topAdsTrack').scrollBy({left: -300, behavior: 'smooth'})">‹</button>
-        <div id="topAdsTrack" class="carousel-track">
-          <!-- Cards will be injected here -->
+      <div class="carousel-wrapper">
+        <button class="scroll-btn left" onclick="document.getElementById('topAdsContainer').scrollBy({left: -260, behavior: 'smooth'})">‹</button>
+        <div id="topAdsContainer" class="carousel-track">
+          <!-- Cards will be injected here via JS -->
         </div>
-        <button class="scroll-btn right" onclick="document.getElementById('topAdsTrack').scrollBy({left: 300, behavior: 'smooth'})">›</button>
+        <button class="scroll-btn right" onclick="document.getElementById('topAdsContainer').scrollBy({left: 260, behavior: 'smooth'})">›</button>
       </div>
     </div>
 
-    <!-- Monthly Trend Performance Area -->
     <div id="monthlyTrendSectionContainer" style="display: none;">
       <div class="kpi-group-label" style="margin-top: 32px; font-size: 18px;">Monthly Trend Performance (เปรียบเทียบรายเดือน)</div>
       <div class="charts-grid" style="margin-top: 8px;">
@@ -362,7 +360,6 @@
       </div>
     </div>
 
-    <!-- Tables -->
     <div class="table-card" style="margin-top:24px;">
       <div class="tab-bar" style="padding-top: 12px; background: var(--surface);">
         <button id="tab-campaign" class="tab-btn active" onclick="switchTableTab('campaign')">Campaign Performance</button>
@@ -396,7 +393,6 @@
   </div>
 </div>
 
-<!-- Settings Drawer -->
 <div id="settingsOverlay" class="drawer-overlay"></div>
 <div id="settingsDrawer" class="drawer">
   <div class="drawer-header">
@@ -440,7 +436,7 @@
 <script>
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 window.allMonthsAggregated = {}; 
-window.creativeLinks = {}; 
+window.creativeLinksData = {}; 
 
 const cleanKey = k => k ? k.trim().replace(/^\uFEFF/, '').toLowerCase() : '';
 
@@ -474,16 +470,24 @@ let charts = {};
 function destroyCharts() { Object.values(charts).forEach(c => { if(c) c.destroy(); }); charts = {}; }
 function renderAll() { renderKPIs(); renderCharts(); renderTopAds(); renderTable(); }
 
+async function safeFetch(url) {
+  try {
+    if (window.location.protocol.startsWith('blob') || window.location.protocol.startsWith('data')) return null;
+    const res = await window.fetch(url);
+    return res.ok ? res : null;
+  } catch (e) {
+    return null;
+  }
+}
+
 async function loadCreativeLinks() {
   try {
-    // โหลดไฟล์ Creative_Link.csv ตามที่เปลี่ยนชื่อแล้ว
     let res = await safeFetch(`./data/Creative_Link.csv`);
     let rows = [];
     if (res) {
       const text = await res.text();
       rows = Papa.parse(text, { header: true, skipEmptyLines: true }).data;
     } else {
-      // เผื่อไว้รองรับไฟล์ .xlsx ด้วย
       res = await safeFetch(`./data/Creative_Link.xlsx`);
       if (res) {
         const buffer = await res.arrayBuffer();
@@ -500,12 +504,9 @@ async function loadCreativeLinks() {
         if(['ad name', 'ad', 'ชื่อโฆษณา', 'creative'].includes(cleanK)) adName = r[k];
         if(['link', 'url', 'destination', 'ลิงก์'].includes(cleanK)) link = r[k];
       }
-      if (adName && link) {
-        // นำ Link มาผูกกับ "ชื่อ Ad Name"
-        window.creativeLinks[adName] = link;
-      }
+      if (adName && link) window.creativeLinksData[adName] = link;
     });
-  } catch(e) { console.warn("Could not load Ceative_Link data:", e); }
+  } catch(e) { console.warn("Could not load Creative_Link data:", e); }
 }
 
 function renderKPIs() {
@@ -607,9 +608,7 @@ function renderCharts() {
     return { responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:textColor,font:{family:'Inter,Noto Sans Thai',size:12}}}}, scales:{x:{...axisStyle(),stacked}, y:{...axisStyle(),stacked,title:{display:true,text:yLabel,color:isDark?'#94A3B8':'#6B7280',font:{size:11}}}} };
   }
 
-  // ----------------------------------------------------------------------
-  // Demographics - Reach by Age & Gender
-  // ----------------------------------------------------------------------
+  // Demographics
   const demoObjElement = document.getElementById('demoObjFilter');
   const demoFilterVal = demoObjElement ? demoObjElement.value : '';
   const demoData = demoFilterVal ? d.filter(r => r.objective === demoFilterVal) : d;
@@ -641,10 +640,9 @@ function renderCharts() {
     options: chartOpts(metricLabelDemo, false)
   });
 
-  // Generate Demographic Summary
+  // Summary logic
   let totalDemo = 0;
   const valByGender = { male: 0, female: 0, unknown: 0 };
-  
   demoData.forEach(r => {
     totalDemo += r[metricKeyDemo];
     if (valByGender[r.gender] !== undefined) valByGender[r.gender] += r[metricKeyDemo];
@@ -655,12 +653,9 @@ function renderCharts() {
     agesDemo.forEach(age => {
       gendersDemo.forEach(gen => {
         const value = demoData.filter(r => r.age === age && r.gender === gen).reduce((s, r) => s + r[metricKeyDemo], 0);
-        if (value > 0) {
-          sortedGenderAgePairs.push({ age, gender: gen, val: value });
-        }
+        if (value > 0) sortedGenderAgePairs.push({ age, gender: gen, val: value });
       });
     });
-    
     sortedGenderAgePairs.sort((a, b) => b.val - a.val);
     const top3 = sortedGenderAgePairs.slice(0, 3);
     
@@ -674,33 +669,26 @@ function renderCharts() {
       summaryHtml += `<span>${index + 1}. เพศ${genderTh} ช่วงอายุ ${item.age} ปี (สัดส่วน ${pct}% ของยอดรวม)</span>`;
     });
     summaryHtml += `</div>`;
-    
     document.getElementById('demoSummary').innerHTML = summaryHtml;
     document.getElementById('demoSummary').style.display = 'flex';
   } else {
     document.getElementById('demoSummary').style.display = 'none';
   }
 
-  // ----------------------------------------------------------------------
-  // Region Chart & Executive Summary
-  // ----------------------------------------------------------------------
+  // Region Chart
   if (regionData && regionData.length > 0) {
     const regionGroups = {};
     regionData.forEach(r => {
       const reg = r.region || 'Unknown';
       regionGroups[reg] = (regionGroups[reg] || 0) + (r.reach || 0);
     });
-    
     const sortedRegions = Object.entries(regionGroups).sort((a,b)=>b[1]-a[1]);
     const labels = sortedRegions.map(item => item[0]);
     const dataValues = sortedRegions.map(item => item[1]);
     
     charts.region = new Chart(document.getElementById('regionChart'), {
       type:'doughnut',
-      data:{
-        labels: labels,
-        datasets:[{data:dataValues,backgroundColor:COLORS,borderWidth:2,borderColor:isDark?'#1E293B':'#FFF',hoverOffset:8}]
-      },
+      data:{ labels: labels, datasets:[{data:dataValues,backgroundColor:COLORS,borderWidth:2,borderColor:isDark?'#1E293B':'#FFF',hoverOffset:8}] },
       options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:textColor,font:{family:'Inter,Noto Sans Thai',size:11}}}},cutout:'65%'}
     });
 
@@ -725,72 +713,64 @@ function renderCharts() {
   } else {
     charts.region = new Chart(document.getElementById('regionChart'), {
       type:'doughnut',
-      data:{
-        labels: ['ไม่พบข้อมูลภูมิภาคในเดือนนี้'],
-        datasets:[{data:[1],backgroundColor:isDark?['#334155']:['#E5E7EB'],borderWidth:0}]
-      },
+      data:{ labels: ['ไม่พบข้อมูลภูมิภาคในเดือนนี้'], datasets:[{data:[1],backgroundColor:isDark?['#334155']:['#E5E7EB'],borderWidth:0}] },
       options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:textColor,font:{family:'Inter,Noto Sans Thai',size:11}}}},cutout:'65%', events:[]}
     });
     if (document.getElementById('regionSummary')) document.getElementById('regionSummary').style.display = 'none';
   }
 
-  // Trigger Monthly Trend Charts rendering
   renderMonthlyTrendCharts();
 }
 
 window.renderTopAds = function() {
-  const track = document.getElementById('topAdsTrack');
+  const container = document.getElementById('topAdsContainer');
+  if (!container) return;
+
   const metric = document.getElementById('topAdsMetric').value || 'spend';
   const d = filteredData;
 
-  if (d.length === 0) {
-    track.innerHTML = '<div style="padding: 24px; color: var(--muted); width: 100%; text-align: center;">ไม่มีข้อมูล (No Data)</div>';
-    return;
-  }
-
-  // Group data by Ad Name
-  const groupedAds = {};
+  const adGroups = {};
   d.forEach(r => {
-    const adName = r.ad;
-    if (!adName || adName.trim() === '-' || adName.toLowerCase() === 'unknown') return; 
-    
-    if (!groupedAds[adName]) {
-      groupedAds[adName] = { name: adName, spend: 0, reach: 0, impressions: 0, engagements: 0, fbLikes: 0 };
-    }
-    groupedAds[adName].spend += r.spend || 0;
-    groupedAds[adName].reach += r.reach || 0;
-    groupedAds[adName].impressions += r.impressions || 0;
-    groupedAds[adName].engagements += r.engagements || 0;
-    groupedAds[adName].fbLikes += r.fbLikes || 0;
+    if (!r.ad || r.ad === '-') return;
+    if (!adGroups[r.ad]) adGroups[r.ad] = { ad: r.ad, spend: 0, impressions: 0, engagements: 0, fbLikes: 0, reach: 0 };
+    adGroups[r.ad].spend += r.spend;
+    adGroups[r.ad].impressions += r.impressions;
+    adGroups[r.ad].engagements += r.engagements;
+    adGroups[r.ad].fbLikes += r.fbLikes;
+    adGroups[r.ad].reach += r.reach;
   });
 
-  // Sort and slice Top 10
-  const sortedAds = Object.values(groupedAds).sort((a, b) => b[metric] - a[metric]).slice(0, 10);
+  const sortedAds = Object.values(adGroups).sort((a, b) => b[metric] - a[metric]).slice(0, 10);
 
   if (sortedAds.length === 0) {
-    track.innerHTML = '<div style="padding: 24px; color: var(--muted); width: 100%; text-align: center;">ไม่มีข้อมูลโฆษณา (No Ad Data)</div>';
+    container.innerHTML = '<div style="padding: 32px; text-align: center; color: var(--muted); width: 100%;">ไม่มีข้อมูลโฆษณา (Data = 0)</div>';
     return;
   }
 
   const isDark = document.body.classList.contains('dark-mode');
   const bgColor = isDark ? '%23334155' : '%23E5E7EB';
   const textColor = isDark ? '%2394A3B8' : '%2364748B';
-  const fallbackSrc = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='300'><rect width='100%' height='100%' fill='${bgColor}'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='13' font-weight='600' fill='${textColor}'>ไม่มีรูปภาพโฆษณา</text></svg>`;
-    // กำหนด Path สำหรับทั้ง .jpg และ .png
+  const fallbackImg = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect width='100%25' height='100%25' fill='${bgColor}'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='16' font-weight='600' fill='${textColor}'%3ENo Image%3C/text%3E%3C/svg%3E`;
+
+  container.innerHTML = sortedAds.map((r, index) => {
+    let valStr = '';
+    if (metric === 'spend') valStr = `฿${r.spend.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+    else valStr = r[metric].toLocaleString();
+
+    const adNameSafe = r.ad.replace(/"/g, '&quot;');
+    const encodedAdName = encodeURIComponent(r.ad);
     const imgSrcJpg = `./images/${encodedAdName}.jpg`;
     const imgSrcPng = `./images/${encodedAdName}.png`;
     
-    // ลองโหลด .jpg ก่อน ถ้าพัง (onerror) ให้ลองโหลด .png ถ้ายังพังอีกถึงจะใช้ fallbackImg
     let imgHtml = `<img src="${imgSrcJpg}" alt="${adNameSafe}" class="ad-image" onerror="if(!this.getAttribute('data-tried-png')){ this.setAttribute('data-tried-png', 'true'); this.src='${imgSrcPng}'; } else { this.onerror=null; this.src='${fallbackImg}'; }">`;
 
-    // ดึงข้อมูลลิงก์โดยใช้ชื่อ "Ad Name (r.ad)" ไปค้นหา
-    const linkUrl = window.creativeLinks ? window.creativeLinks[r.ad] : null;
+    const linkUrl = window.creativeLinksData ? window.creativeLinksData[r.ad] : null;
     if (linkUrl) {
       imgHtml = `
         <a href="${linkUrl}" target="_blank" title="คลิกเพื่อดูโพสต์ต้นฉบับ" style="display:block; height:100%;">
           ${imgHtml}
           <div class="ad-link-overlay">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
           </div>
         </a>
       `;
@@ -798,17 +778,13 @@ window.renderTopAds = function() {
 
     return `
       <div class="ad-card">
-        ${imgHtml}
+        <div class="ad-rank">#${index + 1}</div>
+        <div class="ad-image-wrap">${imgHtml}</div>
         <div class="ad-info">
-          <div class="ad-name" title="${ad.name}">
-            <span style="display:inline-block; background:var(--primary); color:white; width:20px; height:20px; text-align:center; border-radius:4px; font-size:11px; line-height:20px; margin-right:6px; vertical-align:middle;">${index + 1}</span>
-            <span style="vertical-align:middle;">${ad.name}</span>
-          </div>
-          <div class="ad-metric-grid">
-            <div class="ad-metric">Spend <strong>฿${ad.spend.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}</strong></div>
-            <div class="ad-metric">Impr. <strong>${ad.impressions.toLocaleString()}</strong></div>
-            <div class="ad-metric">Engage <strong>${ad.engagements.toLocaleString()}</strong></div>
-            <div class="ad-metric">Reach <strong>${ad.reach.toLocaleString()}</strong></div>
+          <div class="ad-title" title="${adNameSafe}">${adNameSafe}</div>
+          <div class="ad-stat">
+            <span style="color: var(--text-secondary); font-size: 11px;">${document.getElementById('topAdsMetric').options[document.getElementById('topAdsMetric').selectedIndex].text.replace('Sort by: ', '')}</span>
+            <span>${valStr}</span>
           </div>
         </div>
       </div>
@@ -831,16 +807,13 @@ function renderMonthlyTrendCharts() {
   const getPageFollowerAggData = (month, metric) => {
     if (!window.allMonthsAggregated[month]) return 0;
     const mData = window.allMonthsAggregated[month];
-    
     if (selectedCamp) {
        if (!selectedCamp.includes('Page Follower')) return 0;
        return mData.campaigns[selectedCamp] ? (mData.campaigns[selectedCamp][metric] || 0) : 0;
     } else {
        let total = 0;
        for (let c in mData.campaigns) {
-          if (c.includes('Page Follower')) {
-             total += mData.campaigns[c][metric] || 0;
-          }
+          if (c.includes('Page Follower')) total += mData.campaigns[c][metric] || 0;
        }
        return total;
     }
@@ -849,14 +822,6 @@ function renderMonthlyTrendCharts() {
   const spendData = monthNames.map(m => getAggData(m, 'spend'));
   const impData = monthNames.map(m => getAggData(m, 'impressions'));
   
-  const pfSpendData = monthNames.map(m => getPageFollowerAggData(m, 'spend'));
-  const pfLikeData = monthNames.map(m => getPageFollowerAggData(m, 'fbLikes'));
-  const pfCostPerLikeData = monthNames.map(m => {
-    const s = getPageFollowerAggData(m, 'spend');
-    const l = getPageFollowerAggData(m, 'fbLikes');
-    return l > 0 ? (s / l) : 0;
-  });
-
   const totalSpendAllMonths = spendData.reduce((a, b) => a + b, 0);
   const totalImpAllMonths = impData.reduce((a, b) => a + b, 0);
 
@@ -867,6 +832,14 @@ function renderMonthlyTrendCharts() {
   } else {
     monthlyTrendSectionContainer.style.display = 'block';
   }
+
+  const pfSpendData = monthNames.map(m => getPageFollowerAggData(m, 'spend'));
+  const pfLikeData = monthNames.map(m => getPageFollowerAggData(m, 'fbLikes'));
+  const pfCostPerLikeData = monthNames.map(m => {
+    const s = getPageFollowerAggData(m, 'spend');
+    const l = getPageFollowerAggData(m, 'fbLikes');
+    return l > 0 ? (s / l) : 0;
+  });
 
   const dualOpts = (y1Label, y2Label) => ({
     responsive: true, maintainAspectRatio: false,
@@ -949,11 +922,7 @@ window.renderChart4 = function() {
     }
   };
 
-  const labelMap = {
-    impressions: 'Impressions', spend: 'Spending (฿)', reach: 'Reach', fbLikes: 'FB Likes', engagements: 'Engagements',
-    cpm: 'CPM (฿)', cpe: 'CPE (฿)', cpr: 'Cost/1K Reach (฿)', costPerLike: 'Cost/Like (฿)', freq: 'Frequency'
-  };
-
+  const labelMap = { impressions: 'Impressions', spend: 'Spending (฿)', reach: 'Reach', fbLikes: 'FB Likes', engagements: 'Engagements', cpm: 'CPM (฿)', cpe: 'CPE (฿)', cpr: 'Cost/1K Reach (฿)', costPerLike: 'Cost/Like (฿)', freq: 'Frequency' };
   const data1 = monthNames.map(m => mapData(m, m1));
   const data2 = monthNames.map(m => mapData(m, m2));
 
@@ -970,13 +939,7 @@ window.renderChart4 = function() {
 
   charts.monthly4 = new Chart(document.getElementById('monthlyChart4'), {
     type: 'bar',
-    data: {
-      labels: monthNames,
-      datasets: [
-        { label: labelMap[m1], data: data1, type: 'bar', backgroundColor: 'rgba(139, 92, 246, 0.8)', yAxisID: 'y', borderRadius: 4, order: 2 },
-        { label: labelMap[m2], data: data2, type: 'line', borderColor: '#06B6D4', backgroundColor: '#06B6D4', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 3, order: 1 }
-      ]
-    },
+    data: { labels: monthNames, datasets: [{ label: labelMap[m1], data: data1, type: 'bar', backgroundColor: 'rgba(139, 92, 246, 0.8)', yAxisID: 'y', borderRadius: 4, order: 2 }, { label: labelMap[m2], data: data2, type: 'line', borderColor: '#06B6D4', backgroundColor: '#06B6D4', yAxisID: 'y1', tension: 0.3, borderWidth: 2, pointRadius: 3, order: 1 }] },
     options: dualOpts(labelMap[m1], labelMap[m2])
   });
 }
@@ -994,12 +957,8 @@ window.switchTableTab = function(tab) {
 };
 
 window.handleSort = function(col) {
-  if (currentSortCol === col) {
-    currentSortAsc = !currentSortAsc;
-  } else {
-    currentSortCol = col;
-    currentSortAsc = col === 'name' ? true : false;
-  }
+  if (currentSortCol === col) currentSortAsc = !currentSortAsc;
+  else { currentSortCol = col; currentSortAsc = col === 'name' ? true : false; }
   renderTable();
 };
 
@@ -1014,19 +973,8 @@ function renderTable() {
   d.forEach(r => {
     const key = currentTableTab === 'campaign' ? r.campaign : r.ad;
     if (!key) return;
-    if (!groupedObj[key]) {
-      groupedObj[key] = { name: key, spend: 0, reach: 0, impressions: 0, views: 0, engagements: 0, fbLikes: 0, reactions: 0, comments: 0, shares: 0, saves: 0 };
-    }
-    groupedObj[key].spend += r.spend;
-    groupedObj[key].reach += r.reach;
-    groupedObj[key].impressions += r.impressions;
-    groupedObj[key].views += (r.views || 0);
-    groupedObj[key].engagements += r.engagements;
-    groupedObj[key].fbLikes += r.fbLikes;
-    groupedObj[key].reactions += r.reactions;
-    groupedObj[key].comments += r.comments;
-    groupedObj[key].shares += r.shares;
-    groupedObj[key].saves += r.saves;
+    if (!groupedObj[key]) groupedObj[key] = { name: key, spend: 0, reach: 0, impressions: 0, views: 0, engagements: 0, fbLikes: 0, reactions: 0, comments: 0, shares: 0, saves: 0 };
+    groupedObj[key].spend += r.spend; groupedObj[key].reach += r.reach; groupedObj[key].impressions += r.impressions; groupedObj[key].views += (r.views || 0); groupedObj[key].engagements += r.engagements; groupedObj[key].fbLikes += r.fbLikes; groupedObj[key].reactions += r.reactions; groupedObj[key].comments += r.comments; groupedObj[key].shares += r.shares; groupedObj[key].saves += r.saves;
   });
 
   const groupedData = Object.values(groupedObj).sort((a, b) => {
@@ -1049,19 +997,7 @@ function renderTable() {
 
   document.getElementById('tableBody').innerHTML = groupedData.map(r=>{
     let displayHTML = `<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${r.name}</div>`;
-    return `<tr>
-      <td title="${r.name}" style="max-width:240px; padding-right:12px;">${displayHTML}</td>
-      <td class="cost-cell">฿${r.spend.toFixed(2)}</td>
-      <td class="num">${r.reach.toLocaleString()}</td>
-      <td class="num">${r.impressions.toLocaleString()}</td>
-      <td class="num">${r.views.toLocaleString()}</td>
-      <td class="num">${r.engagements.toLocaleString()}</td>
-      <td class="num">${r.fbLikes.toLocaleString()}</td>
-      <td class="num">${r.reactions.toLocaleString()}</td>
-      <td class="num">${r.comments.toLocaleString()}</td>
-      <td class="num">${r.shares.toLocaleString()}</td>
-      <td class="num">${r.saves.toLocaleString()}</td>
-    </tr>`;
+    return `<tr><td title="${r.name}" style="max-width:240px; padding-right:12px;">${displayHTML}</td><td class="cost-cell">฿${r.spend.toFixed(2)}</td><td class="num">${r.reach.toLocaleString()}</td><td class="num">${r.impressions.toLocaleString()}</td><td class="num">${r.views.toLocaleString()}</td><td class="num">${r.engagements.toLocaleString()}</td><td class="num">${r.fbLikes.toLocaleString()}</td><td class="num">${r.reactions.toLocaleString()}</td><td class="num">${r.comments.toLocaleString()}</td><td class="num">${r.shares.toLocaleString()}</td><td class="num">${r.saves.toLocaleString()}</td></tr>`;
   }).join('');
 }
 
@@ -1076,19 +1012,13 @@ function applyFilters() {
 
   filteredData = allData.filter(r => {
     const matchCampaign = !campaign || r.campaign === campaign;
-    
     let matchObjective = true;
     if (objective) {
-      if (objective === 'Leads') {
-        matchObjective = r.campaign.toLowerCase().includes('lead');
-      } else {
-        matchObjective = r.campaign.toLowerCase().includes(objective.toLowerCase());
-      }
+      if (objective === 'Leads') matchObjective = r.campaign.toLowerCase().includes('lead');
+      else matchObjective = r.campaign.toLowerCase().includes(objective.toLowerCase());
     }
-    
     return matchCampaign && matchObjective;
   });
-  
   renderAll(); 
 }
 
@@ -1097,17 +1027,6 @@ function clearFilters() {
   document.getElementById('filterObjective').value = '';
   filteredData = [...allData];
   renderAll();
-}
-
-// Helper to safely fetch files without throwing URL errors in Sandboxed environments
-async function safeFetch(url) {
-  try {
-    if (window.location.protocol.startsWith('blob') || window.location.protocol.startsWith('data')) return null;
-    const res = await window.fetch(url);
-    return res.ok ? res : null;
-  } catch (e) {
-    return null;
-  }
 }
 
 async function loadAllMonthsTrend() {
@@ -1135,8 +1054,7 @@ async function loadAllMonthsTrend() {
     rows.forEach(r => {
         let c = '', spend=0, reach=0, imp=0, eng=0, likes=0, views=0;
         for(let k in r) {
-            let cleanK = cleanKey(k);
-            let val = r[k];
+            let cleanK = cleanKey(k); let val = r[k];
             if(['campaign name', 'campaign', 'แคมเปญ'].includes(cleanK)) c = val;
             else if(['amount spent (thb)', 'spend', 'ยอดใช้จ่าย'].includes(cleanK)) spend = parseNum(val);
             else if(['reach', 'การเข้าถึง'].includes(cleanK)) reach = parseNum(val);
@@ -1145,35 +1063,20 @@ async function loadAllMonthsTrend() {
             else if(['facebook likes', 'fblikes', 'ยอดถูกใจเพจ', 'ไลก์'].includes(cleanK)) likes = parseNum(val);
             else if(['video plays', 'views', 'การรับชม'].includes(cleanK)) views = parseNum(val);
         }
-
-        monthlyTotal.spend += spend;
-        monthlyTotal.reach += reach;
-        monthlyTotal.impressions += imp;
-        monthlyTotal.engagements += eng;
-        monthlyTotal.fbLikes += likes;
-        monthlyTotal.views += views;
-
+        monthlyTotal.spend += spend; monthlyTotal.reach += reach; monthlyTotal.impressions += imp; monthlyTotal.engagements += eng; monthlyTotal.fbLikes += likes; monthlyTotal.views += views;
         if(!monthlyTotal.campaigns[c]) monthlyTotal.campaigns[c] = {spend:0, reach:0, impressions:0, engagements:0, fbLikes:0, views:0};
-        monthlyTotal.campaigns[c].spend += spend;
-        monthlyTotal.campaigns[c].reach += reach;
-        monthlyTotal.campaigns[c].impressions += imp;
-        monthlyTotal.campaigns[c].engagements += eng;
-        monthlyTotal.campaigns[c].fbLikes += likes;
-        monthlyTotal.campaigns[c].views += views;
+        monthlyTotal.campaigns[c].spend += spend; monthlyTotal.campaigns[c].reach += reach; monthlyTotal.campaigns[c].impressions += imp; monthlyTotal.campaigns[c].engagements += eng; monthlyTotal.campaigns[c].fbLikes += likes; monthlyTotal.campaigns[c].views += views;
     });
     return { month, data: monthlyTotal };
   });
 
   const results = await Promise.all(promises);
-  results.forEach(res => {
-      if(res.data) window.allMonthsAggregated[res.month] = res.data;
-  });
+  results.forEach(res => { if(res.data) window.allMonthsAggregated[res.month] = res.data; });
 }
 
 async function loadMonthData(isInit = false) {
   const month = document.getElementById('filterMonth').value;
   if (!month) return; 
-  
   if(!isInit) showStatus(`กำลังดึงข้อมูลแคมเปญและภูมิภาคของเดือน ${month}...`);
 
   try {
@@ -1198,10 +1101,9 @@ async function loadMonthData(isInit = false) {
     }
 
     if (!mainLoaded) {
-      if(!isInit) showStatus(`❌ ไม่พบไฟล์ข้อมูลหลัก ${month}.csv หรือ .xlsx ใน ./data/`);
-      allData = [];
-      filteredData = [];
-      document.getElementById('mainSourceFile').textContent = 'ไม่พบไฟล์ข้อมูลหลัก (ค่า 0)';
+      if(!isInit) showStatus(`❌ ไม่พบไฟล์ข้อมูลหลัก ${month} ใน ./data/`);
+      allData = []; filteredData = [];
+      document.getElementById('mainSourceFile').textContent = 'ไม่พบไฟล์ข้อมูล (ค่า 0)';
     }
 
     let regionLoaded = false;
@@ -1225,19 +1127,14 @@ async function loadMonthData(isInit = false) {
     }
 
     if (!regionLoaded) {
-      regionData = [];
-      document.getElementById('regionSourceFile').textContent = 'ไม่พบไฟล์ภูมิภาค (ค่า 0)';
+      regionData = []; document.getElementById('regionSourceFile').textContent = 'ไม่พบไฟล์ภูมิภาค (ค่า 0)';
     }
     
     const now = new Date();
     document.getElementById('lastUpdated').textContent = now.toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'short' }) + ' น.';
 
-    if (!isInit) {
-        populateFilters();
-        renderAll();
-    }
+    if (!isInit) { populateFilters(); renderAll(); }
   } catch (error) {
-    console.error(error);
     if(!isInit) showStatus(`❌ พบปัญหาการดึงไฟล์ โปรดตรวจสอบ Web Server`);
   }
 }
@@ -1245,8 +1142,7 @@ async function loadMonthData(isInit = false) {
 function processRegionData(rows) {
   try {
     regionData = rows.map(r => {
-      let region = 'Unknown';
-      let reach = 0;
+      let region = 'Unknown'; let reach = 0;
       for(let k in r) {
           let cleanK = cleanKey(k);
           if(['region', 'ภูมิภาค', 'จังหวัด', 'province'].includes(cleanK)) region = r[k];
@@ -1254,7 +1150,7 @@ function processRegionData(rows) {
       }
       return { region, reach };
     }).filter(r => r.reach > 0);
-  } catch(e) { console.warn(e.message); }
+  } catch(e) {}
 }
 
 function processMainData(rows) {
@@ -1264,8 +1160,7 @@ function processMainData(rows) {
       let spend=0, reach=0, impressions=0, views=0, engagements=0, fbLikes=0, reactions=0, comments=0, shares=0, saves=0, leads=0;
       
       for(let k in r) {
-        let cleanK = cleanKey(k);
-        let val = r[k];
+        let cleanK = cleanKey(k); let val = r[k];
         if(['campaign name', 'campaign', 'แคมเปญ'].includes(cleanK)) campaign = val;
         else if(['ad name', 'ad', 'ชื่อโฆษณา'].includes(cleanK)) ad = val;
         else if(['age', 'อายุ'].includes(cleanK)) age = val;
@@ -1282,11 +1177,7 @@ function processMainData(rows) {
         else if(['post saves', 'saves', 'การบันทึก'].includes(cleanK)) saves = parseNum(val);
         else if(['leads', 'ลีด', 'ผู้ติดต่อ', 'contacts'].includes(cleanK)) leads = parseNum(val);
       }
-
-      return {
-        campaign, ad, age, gender, spend, reach, impressions, views, engagements, fbLikes, reactions, comments, shares, saves, leads,
-        objective: parseObjective(campaign)
-      };
+      return { campaign, ad, age, gender, spend, reach, impressions, views, engagements, fbLikes, reactions, comments, shares, saves, leads, objective: parseObjective(campaign) };
     }).filter(r => r.ad && String(r.ad).trim() !== '-');
 
     filteredData = [...allData];
@@ -1334,12 +1225,11 @@ settingsBtn?.addEventListener('click', openDrawer);
 closeDrawerBtn?.addEventListener('click', closeDrawer);
 settingsOverlay?.addEventListener('click', closeDrawer);
 
-// Initialization Flow
+// Boot up
 const currentMonth = monthNames[new Date().getMonth()];
 const monthDropdown = document.getElementById('filterMonth');
 if (monthDropdown) monthDropdown.value = currentMonth;
 
-// Load Data
 Promise.all([
   loadMonthData(true),
   loadAllMonthsTrend(),
