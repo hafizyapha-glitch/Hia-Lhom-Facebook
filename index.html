@@ -497,11 +497,11 @@ async function loadCreativeLinks() {
       for(let k in r) {
         let cleanK = cleanKey(k);
         if(['ad name', 'ad', 'ชื่อโฆษณา', 'creative'].includes(cleanK)) adName = r[k];
-        if(['link', 'url', 'destination', 'ลิงก์'].includes(cleanK)) link = r[k];
+        if(['link', 'url', 'destination', 'ลิงก์', 'ลิ้งค์'].includes(cleanK)) link = r[k];
       }
       if (adName && link) {
         // Smart Matching: Remove spaces and convert to lower case for ultra robust matching
-        window.creativeLinksData[adName.trim().toLowerCase()] = link.trim();
+        window.creativeLinksData[adName.trim().toLowerCase().replace(/\s+/g, '')] = link.trim();
       }
     });
   } catch(e) {}
