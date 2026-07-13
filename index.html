@@ -8,7 +8,8 @@
   <!-- Favicon Link -->
   <link rel="icon" type="image/jpeg" href="https://scontent.fbkk22-8.fna.fbcdn.net/v/t39.30808-6/605113471_122108048559150355_6122134216378049132_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1319x1311&amp;ctp=s1319x1311&amp;_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=a5f93a&amp;_nc_ohc=CWldC3McBscQ7kNvwETPviA&amp;_nc_oc=AdqrFgPeK9DhTFs5W5XZbuY2V1GwWljQlE60m6a9e8ASKo376vrJqqRB8lriTOZrACA&amp;_nc_zt=23&amp;_nc_ht=scontent.fbkk22-8.fna&amp;_nc_gid=wTEzxyZZ21kiCZZ5ecWC2Q&amp;_nc_ss=7b2a8&amp;oh=00_Af9b7tlTQNPWTQJvxItQmTMMHlozUIfu6OxmXQwXVMGMMQ&amp;oe=6A3ACC62">
   <link rel="shortcut icon" type="image/jpeg" href="https://scontent.fbkk22-8.fna.fbcdn.net/v/t39.30808-6/605113471_122108048559150355_6122134216378049132_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1319x1311&amp;ctp=s1319x1311&amp;_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=a5f93a&amp;_nc_ohc=CWldC3McBscQ7kNvwETPviA&amp;_nc_oc=AdqrFgPeK9DhTFs5W5XZbuY2V1GwWljQlE60m6a9e8ASKo376vrJqqRB8lriTOZrACA&amp;_nc_zt=23&amp;_nc_ht=scontent.fbkk22-8.fna&amp;_nc_gid=wTEzxyZZ21kiCZZ5ecWC2Q&amp;_nc_ss=7b2a8&amp;oh=00_Af9b7tlTQNPWTQJvxItQmTMMHlozUIfu6OxmXQwXVMGMMQ&amp;oe=6A3ACC62">
-  
+  <link rel="apple-touch-icon" href="https://scontent.fbkk22-8.fna.fbcdn.net/v/t39.30808-6/605113471_122108048559150355_6122134216378049132_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx1319x1311&amp;ctp=s1319x1311&amp;_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=a5f93a&amp;_nc_ohc=CWldC3McBscQ7kNvwETPviA&amp;_nc_oc=AdqrFgPeK9DhTFs5W5XZbuY2V1GwWljQlE60m6a9e8ASKo376vrJqqRB8lriTOZrACA&amp;_nc_zt=23&amp;_nc_ht=scontent.fbkk22-8.fna&amp;_nc_gid=wTEzxyZZ21kiCZZ5ecWC2Q&amp;_nc_ss=7b2a8&amp;oh=00_Af9b7tlTQNPWTQJvxItQmTMMHlozUIfu6OxmXQwXVMGMMQ&amp;oe=6A3ACC62">
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -105,7 +106,7 @@
     
     .ad-image-wrap { position: relative; display: block; width: 100%; background: var(--surface); border-bottom: 1px solid var(--border); aspect-ratio: 4 / 5; }
     .ad-image { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .ad-link-overlay { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.6); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; backdrop-filter: blur(4px); z-index: 2; }
+    .ad-link-overlay { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.6); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; backdrop-filter: blur(4px); z-index: 2; pointer-events: none; }
     .ad-image-wrap a:hover .ad-link-overlay { opacity: 1; }
     
     .ad-info { padding: 16px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
@@ -186,7 +187,6 @@
   </style>
 </head>
 <body>
-
 <div class="header">
   <div class="logo-area">
     <div class="logo-icon">
@@ -252,6 +252,7 @@
         <option value="Page Follower">Page Follower</option>
         <option value="Leads">Leads</option>
       </select>
+      
       <button class="clear-btn" onclick="clearFilters()">✕ ล้างตัวกรอง</button>
     </div>
 
@@ -285,6 +286,7 @@
       </div>
     </div>
 
+    <!-- Top 10 Ads Performance -->
     <div class="chart-card wide" style="margin-top: 24px;">
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
         <div>
@@ -298,6 +300,7 @@
           <option value="fbLikes">Sort by: FB Likes</option>
         </select>
       </div>
+      
       <div class="carousel-wrapper">
         <button class="scroll-btn left" onclick="document.getElementById('topAdsContainer').scrollBy({left: -260, behavior: 'smooth'})">‹</button>
         <div id="topAdsContainer" class="carousel-track">
@@ -496,7 +499,10 @@ async function loadCreativeLinks() {
         if(['ad name', 'ad', 'ชื่อโฆษณา', 'creative'].includes(cleanK)) adName = r[k];
         if(['link', 'url', 'destination', 'ลิงก์'].includes(cleanK)) link = r[k];
       }
-      if (adName && link) window.creativeLinksData[adName] = link;
+      if (adName && link) {
+        // Smart Matching: Remove spaces and convert to lower case for ultra robust matching
+        window.creativeLinksData[adName.trim().toLowerCase()] = link.trim();
+      }
     });
   } catch(e) {}
 }
@@ -739,7 +745,9 @@ window.renderTopAds = function() {
   const isDark = document.body.classList.contains('dark-mode');
   const bgColor = isDark ? '%23334155' : '%23e2e8f0';
   const textColor = isDark ? '%2394A3B8' : '%2364748B';
-  const fallbackImg = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect width='100%25' height='100%25' fill='${bgColor}'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='16' font-weight='600' fill='${textColor}'%3ENo Image%3C/text%3E%3C/svg%3E`;
+  
+  // Create a 100% safely encoded SVG fallback URI that completely avoids breaking inline JS quotes.
+  const fallbackImg = `data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27400%27 height=%27500%27%3E%3Crect width=%27100%25%27 height=%27100%25%27 fill=%27${bgColor}%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 font-family=%27sans-serif%27 font-size=%2716%27 font-weight=%27600%27 fill=%27${textColor}%27%3ENo Image%3C/text%3E%3C/svg%3E`;
 
   container.innerHTML = sortedAds.map((r, index) => {
     let valStr = '';
@@ -749,15 +757,22 @@ window.renderTopAds = function() {
     const adNameSafe = r.ad.replace(/"/g, '&quot;');
     const encodedAdName = encodeURIComponent(r.ad);
     
+    // Attempt sequence: .jpg -> .png -> fallback. (100% Bug-free approach using HTML5 Dataset properties)
     const imgSrcJpg = `./images/${encodedAdName}.jpg`;
     const imgSrcPng = `./images/${encodedAdName}.png`;
     
-    let imgHtml = `<img src="${imgSrcJpg}" alt="${adNameSafe}" class="ad-image" onerror="if(!this.getAttribute('data-tried-png')){ this.setAttribute('data-tried-png', 'true'); this.src='${imgSrcPng}'; } else { this.onerror=null; this.src='${fallbackImg}'; }">`;
+    let imgHtml = `<img src="${imgSrcJpg}" alt="${adNameSafe}" class="ad-image" 
+      data-png="${imgSrcPng}" 
+      data-fallback="${fallbackImg}" 
+      onerror="if(this.getAttribute('data-tried') !== 'true'){ this.setAttribute('data-tried', 'true'); this.src=this.getAttribute('data-png'); } else { this.onerror=null; this.src=this.getAttribute('data-fallback'); }">`;
 
-    const linkUrl = window.creativeLinksData ? window.creativeLinksData[r.ad] : null;
+    // Smart link matching (case insensitive & stripped of extra spaces)
+    const normalizedAdName = r.ad.trim().toLowerCase();
+    const linkUrl = window.creativeLinksData ? window.creativeLinksData[normalizedAdName] : null;
+    
     if (linkUrl) {
       imgHtml = `
-        <a href="${linkUrl}" target="_blank" title="คลิกเพื่อดูโพสต์ต้นฉบับ" style="display:block; height:100%;">
+        <a href="${linkUrl}" target="_blank" title="คลิกเพื่อดูโพสต์ต้นฉบับ" style="display:block; width:100%; height:100%; position:relative;">
           ${imgHtml}
           <div class="ad-link-overlay">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
@@ -798,12 +813,12 @@ function renderMonthlyTrendCharts() {
     if (!window.allMonthsAggregated[month]) return 0;
     const mData = window.allMonthsAggregated[month];
     if (selectedCamp) {
-       if (!selectedCamp.includes('Page Follower')) return 0;
+       if (!selectedCamp.toLowerCase().includes('page follower')) return 0;
        return mData.campaigns[selectedCamp] ? (mData.campaigns[selectedCamp][metric] || 0) : 0;
     } else {
        let total = 0;
        for (let c in mData.campaigns) {
-          if (c.includes('Page Follower')) total += mData.campaigns[c][metric] || 0;
+          if (c.toLowerCase().includes('page follower')) total += mData.campaigns[c][metric] || 0;
        }
        return total;
     }
@@ -1002,14 +1017,17 @@ function applyFilters() {
 
   filteredData = allData.filter(r => {
     const matchCampaign = !campaign || r.campaign === campaign;
-    
     let matchObjective = true;
     if (objective) {
-      if (objective === 'Leads') matchObjective = r.campaign.toLowerCase().includes('lead');
-      else matchObjective = r.campaign.toLowerCase().includes(objective.toLowerCase());
+      if (objective === 'Leads') {
+        matchObjective = r.campaign.toLowerCase().includes('lead');
+      } else {
+        matchObjective = r.campaign.toLowerCase().includes(objective.toLowerCase());
+      }
     }
     return matchCampaign && matchObjective;
   });
+  
   renderAll(); 
 }
 
