@@ -56,8 +56,6 @@
     .header-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
     .header-right { display: flex; align-items: center; gap: 16px; }
 
-    .data-source-indicator { display: flex; flex-wrap: wrap; gap: 8px 12px; font-size: 11px; color: var(--muted); background: var(--bg); padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border); box-shadow: inset 0 1px 2px rgba(0,0,0,0.02); align-items: center; }
-    .data-source-indicator > div:not(:first-child) { border-left: 1px solid var(--border); padding-left: 12px; }
     .source-label { color: var(--text-secondary); font-family: monospace; font-weight: 600; }
 
     .main { padding: 18px 64px; max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
@@ -135,8 +133,8 @@
     .drawer-title { font-size: 18px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
     .drawer-close { background: transparent; border: none; cursor: pointer; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; padding: 4px; border-radius: 6px; transition: all 0.2s; }
     .drawer-close:hover { background: var(--surface); color: var(--text); }
-    .drawer-content { padding: 24px; overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; gap: 24px; }
-    .setting-group { /* Removed margin-bottom */ }
+    .drawer-content { padding: 24px; overflow-y: auto; flex-grow: 1; }
+    .setting-group { margin-bottom: 24px; }
     .setting-label { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
     .setting-desc { font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5; }
     
@@ -151,12 +149,34 @@
     input:checked + .slider:before { transform: translateX(20px); }
     body.dark-mode .slider { background-color: #334155; }
 
-    /* New styles for Data Source Info in Drawer */
-    .drawer-info-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-size: 13px; color: var(--text-secondary); display: flex; flex-direction: column; gap: 12px; }
-    .drawer-info-item { display: flex; align-items: flex-start; gap: 8px; }
-    .drawer-info-icon { flex-shrink: 0; font-size: 14px; }
-    .drawer-info-label { color: var(--text); font-weight: 500; min-width: 80px; }
-    .drawer-info-value { font-family: monospace; color: var(--muted); word-break: break-all; }
+    /* Top Ads Carousel Styles */
+    .carousel-track { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 16px; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: thin; }
+    .carousel-track::-webkit-scrollbar { height: 6px; }
+    .carousel-track::-webkit-scrollbar-track { background: var(--surface); border-radius: 4px; }
+    .carousel-track::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .carousel-track::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+    
+    .ad-card { flex: 0 0 280px; scroll-snap-align: start; background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm); transition: transform 0.2s; display: flex; flex-direction: column; }
+    .ad-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .ad-image { width: 100%; height: 160px; object-fit: cover; background: var(--surface); border-bottom: 1px solid var(--border); }
+    .ad-info { padding: 16px; flex-grow: 1; }
+    .ad-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; height: 39px; }
+    .ad-metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .ad-metric { font-size: 11px; color: var(--text-secondary); }
+    .ad-metric strong { color: var(--text); display: block; font-size: 13px; font-family: 'Inter', sans-serif; font-weight: 600; margin-top: 2px; }
+    
+    .scroll-btn { position: absolute; top: 40%; transform: translateY(-50%); z-index: 10; width: 36px; height: 36px; border-radius: 50%; background: var(--card); border: 1px solid var(--border); box-shadow: var(--shadow); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--text); opacity: 0.9; transition: all 0.2s; }
+    .scroll-btn:hover { border-color: var(--primary); color: var(--primary); opacity: 1; }
+    .scroll-btn.left { left: -18px; }
+    .scroll-btn.right { right: -18px; }
+
+    /* Settings Data Source Styling */
+    .settings-data-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; font-size: 13px; }
+    .settings-data-box div { margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between;}
+    .settings-data-box div:last-child { margin-bottom: 0; }
+    .settings-data-box .label { color: var(--text-secondary); }
+    .settings-data-box .value { color: var(--text); font-family: monospace; font-weight: 600; }
+
 
   @media (max-width: 1200px) {
     .kpi-grid.row6 { grid-template-columns: repeat(3,1fr); }
@@ -173,6 +193,7 @@
   }
   @media (max-width: 600px) {
     .kpi-grid.row6, .kpi-grid.row5, .kpi-grid.row4, .kpi-grid.row3 { grid-template-columns: 1fr; }
+    .scroll-btn { display: none; } /* ซ่อนปุ่มเลื่อนบนมือถือ ให้ใช้นิ้วปัดแทน */
   }
 </style>
 </head>
@@ -230,7 +251,7 @@
       <select id="filterCampaign" onchange="applyFilters()">
         <option value="">ทุก Campaign</option>
       </select>
-
+      
       <span class="filter-label" style="margin-left: 8px;">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         Objective:
@@ -274,8 +295,26 @@
       </div>
     </div>
 
-    <div id="monthlyTrendContainer">
-      <!-- Monthly Trend Performance Area -->
+    <!-- Top 10 Ads Carousel -->
+    <div class="kpi-group-label" style="margin-top: 32px; font-size: 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+      <span>Top 10 Ads Performance</span>
+      <select id="topAdsMetric" class="chart-filter-select" onchange="renderTopAds()" style="font-size: 13px; font-weight: 500; padding: 6px 32px 6px 12px;">
+        <option value="spend">Sort by: Spend</option>
+        <option value="impressions">Sort by: Impressions</option>
+        <option value="engagements">Sort by: Engagements</option>
+        <option value="fbLikes">Sort by: FB Likes</option>
+      </select>
+    </div>
+    <div class="carousel-wrapper" style="position: relative; margin-top: 8px;">
+      <button class="scroll-btn left" onclick="document.getElementById('topAdsTrack').scrollBy({left: -300, behavior: 'smooth'})">‹</button>
+      <div id="topAdsTrack" class="carousel-track">
+        <!-- Cards will be injected here -->
+      </div>
+      <button class="scroll-btn right" onclick="document.getElementById('topAdsTrack').scrollBy({left: 300, behavior: 'smooth'})">›</button>
+    </div>
+
+    <!-- Monthly Trend Performance Area -->
+    <div id="monthlyTrendSectionContainer" style="display: none;">
       <div class="kpi-group-label" style="margin-top: 32px; font-size: 18px;">Monthly Trend Performance (เปรียบเทียบรายเดือน)</div>
       <div class="charts-grid" style="margin-top: 8px;">
         <div class="chart-card">
@@ -382,36 +421,18 @@
         </label>
       </div>
     </div>
-
-    <!-- Data Source Info in Drawer -->
+    
     <div class="setting-group">
-      <div class="setting-label">สถานะระบบ (System Info)</div>
-      <div class="setting-desc">ข้อมูลและแหล่งที่มาของข้อมูลที่กำลังแสดงผล</div>
-      <div class="drawer-info-box">
-        <div class="drawer-info-item">
-          <span class="drawer-info-icon">📁</span>
-          <div>
-            <div class="drawer-info-label">ข้อมูลหลัก:</div>
-            <div id="mainSourceFile" class="drawer-info-value">-</div>
-          </div>
-        </div>
-        <div class="drawer-info-item">
-          <span class="drawer-info-icon">🗺️</span>
-          <div>
-            <div class="drawer-info-label">ภูมิภาค:</div>
-            <div id="regionSourceFile" class="drawer-info-value">-</div>
-          </div>
-        </div>
-        <div class="drawer-info-item">
-          <span class="drawer-info-icon">🗓️</span>
-          <div>
-            <div class="drawer-info-label">อัปเดตล่าสุด:</div>
-            <div id="lastUpdated" class="drawer-info-value">-</div>
-          </div>
+      <div class="setting-label">แหล่งข้อมูล (Data Source)</div>
+      <div class="setting-desc">ไฟล์ข้อมูลที่กำลังแสดงผลอยู่ในขณะนี้</div>
+      <div class="settings-data-box">
+        <div><span class="label">📁 ข้อมูลหลัก:</span> <span id="mainSourceFile" class="value">-</span></div>
+        <div><span class="label">🗺️ ภูมิภาค:</span> <span id="regionSourceFile" class="value">-</span></div>
+        <div style="border-top: 1px solid var(--border); margin-top: 8px; padding-top: 8px;">
+          <span class="label">🗓️ อัปเดตล่าสุด:</span> <span id="lastUpdated" class="value">-</span>
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -447,7 +468,7 @@ let filteredData = [];
 let charts = {};
 
 function destroyCharts() { Object.values(charts).forEach(c => { if(c) c.destroy(); }); charts = {}; }
-function renderAll() { renderKPIs(); renderCharts(); renderTable(); }
+function renderAll() { renderKPIs(); renderCharts(); renderTopAds(); renderTable(); }
 
 function renderKPIs() {
   const d = filteredData;
@@ -670,9 +691,77 @@ function renderCharts() {
     if (document.getElementById('regionSummary')) document.getElementById('regionSummary').style.display = 'none';
   }
 
+  // ----------------------------------------------------------------------
   // Trigger Monthly Trend Charts rendering
+  // ----------------------------------------------------------------------
   renderMonthlyTrendCharts();
 }
+
+// ─── TOP ADS CAROUSEL ──────────────────────────────
+window.renderTopAds = function() {
+  const track = document.getElementById('topAdsTrack');
+  const metric = document.getElementById('topAdsMetric').value || 'spend';
+  const d = filteredData;
+
+  if (d.length === 0) {
+    track.innerHTML = '<div style="padding: 24px; color: var(--muted); width: 100%; text-align: center;">ไม่มีข้อมูล (No Data)</div>';
+    return;
+  }
+
+  // Group data by Ad Name
+  const groupedAds = {};
+  d.forEach(r => {
+    const adName = r.ad;
+    if (!adName || adName.trim() === '-' || adName.toLowerCase() === 'unknown') return; 
+    
+    if (!groupedAds[adName]) {
+      groupedAds[adName] = { name: adName, spend: 0, reach: 0, impressions: 0, engagements: 0, fbLikes: 0 };
+    }
+    groupedAds[adName].spend += r.spend || 0;
+    groupedAds[adName].reach += r.reach || 0;
+    groupedAds[adName].impressions += r.impressions || 0;
+    groupedAds[adName].engagements += r.engagements || 0;
+    groupedAds[adName].fbLikes += r.fbLikes || 0;
+  });
+
+  // Sort and slice Top 10
+  const sortedAds = Object.values(groupedAds).sort((a, b) => b[metric] - a[metric]).slice(0, 10);
+
+  if (sortedAds.length === 0) {
+    track.innerHTML = '<div style="padding: 24px; color: var(--muted); width: 100%; text-align: center;">ไม่มีข้อมูลโฆษณา (No Ad Data)</div>';
+    return;
+  }
+
+  // สร้างรูปภาพตัวแทนสีเทา (SVG) หากโหลดรูปภาพจริงจากโฟลเดอร์ไม่ได้
+  const isDark = document.body.classList.contains('dark-mode');
+  const bgColor = isDark ? '%23334155' : '%23E5E7EB';
+  const textColor = isDark ? '%2394A3B8' : '%2364748B';
+  const fallbackSrc = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='160'><rect width='100%' height='100%' fill='${bgColor}'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='13' font-weight='600' fill='${textColor}'>ไม่มีรูปภาพโฆษณา</text></svg>`;
+
+  track.innerHTML = sortedAds.map((ad, index) => {
+    // กำหนด Path อ้างอิงจากชื่อโฆษณา .jpg (ตัวอย่าง: ./images/AdName1.jpg)
+    // หากนำไปใช้งานจริง สามารถเปลี่ยนนามสกุลหรือรูปแบบให้ตรงกับใน Server ได้
+    const imgPath = `./images/${encodeURIComponent(ad.name)}.jpg`; 
+    
+    return `
+      <div class="ad-card">
+        <img class="ad-image" src="${imgPath}" alt="${ad.name}" onerror="this.onerror=null; this.src='${fallbackSrc}';">
+        <div class="ad-info">
+          <div class="ad-name" title="${ad.name}">
+            <span style="display:inline-block; background:var(--primary); color:white; width:20px; height:20px; text-align:center; border-radius:4px; font-size:11px; line-height:20px; margin-right:6px; vertical-align:middle;">${index + 1}</span>
+            <span style="vertical-align:middle;">${ad.name}</span>
+          </div>
+          <div class="ad-metric-grid">
+            <div class="ad-metric">Spend <strong>฿${ad.spend.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}</strong></div>
+            <div class="ad-metric">Impr. <strong>${ad.impressions.toLocaleString()}</strong></div>
+            <div class="ad-metric">Engage <strong>${ad.engagements.toLocaleString()}</strong></div>
+            <div class="ad-metric">Reach <strong>${ad.reach.toLocaleString()}</strong></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+};
 
 function renderMonthlyTrendCharts() {
   const isDark = document.body.classList.contains('dark-mode');
@@ -691,11 +780,9 @@ function renderMonthlyTrendCharts() {
     const mData = window.allMonthsAggregated[month];
     
     if (selectedCamp) {
-       // หากกำลังเปิดตัวกรอง Campaign อื่นที่ไม่ใช่ Page Follower ให้ค่าเป็น 0
        if (!selectedCamp.includes('Page Follower')) return 0;
        return mData.campaigns[selectedCamp] ? (mData.campaigns[selectedCamp][metric] || 0) : 0;
     } else {
-       // หากดูแบบรวม ให้รวมยอดเฉพาะที่มีคำว่า Page Follower ในชื่อแคมเปญ
        let total = 0;
        for (let c in mData.campaigns) {
           if (c.includes('Page Follower')) {
@@ -709,14 +796,6 @@ function renderMonthlyTrendCharts() {
   const spendData = monthNames.map(m => getAggData(m, 'spend'));
   const impData = monthNames.map(m => getAggData(m, 'impressions'));
   
-  // ตรวจสอบว่ามีข้อมูลหรือไม่ (ถ้าไม่มีข้อมูลให้ซ่อนส่วน Monthly Trend)
-  const totalData = spendData.reduce((sum, v) => sum + v, 0) + impData.reduce((sum, v) => sum + v, 0);
-  const container = document.getElementById('monthlyTrendContainer');
-  if (container) {
-      container.style.display = totalData === 0 ? 'none' : 'block';
-      if (totalData === 0) return; // ข้ามการเรนเดอร์กราฟถ้าไม่มีข้อมูลแสดงผล
-  }
-
   const pfSpendData = monthNames.map(m => getPageFollowerAggData(m, 'spend'));
   const pfLikeData = monthNames.map(m => getPageFollowerAggData(m, 'fbLikes'));
   const pfCostPerLikeData = monthNames.map(m => {
@@ -724,6 +803,19 @@ function renderMonthlyTrendCharts() {
     const l = getPageFollowerAggData(m, 'fbLikes');
     return l > 0 ? (s / l) : 0;
   });
+
+  // ตรวจสอบว่ามีข้อมูล spend หรือ impression ในทุกเดือนรวมกันหรือไม่
+  const totalSpendAllMonths = spendData.reduce((a, b) => a + b, 0);
+  const totalImpAllMonths = impData.reduce((a, b) => a + b, 0);
+
+  // ถ้าไม่มีข้อมูลเลย ให้ซ่อน Section ของ Monthly Trend ไว้
+  const monthlyTrendSectionContainer = document.getElementById('monthlyTrendSectionContainer');
+  if (totalSpendAllMonths === 0 && totalImpAllMonths === 0) {
+    monthlyTrendSectionContainer.style.display = 'none';
+    return; // ไม่ต้อง render chart
+  } else {
+    monthlyTrendSectionContainer.style.display = 'block';
+  }
 
   const dualOpts = (y1Label, y2Label) => ({
     responsive: true, maintainAspectRatio: false,
@@ -935,7 +1027,7 @@ function applyFilters() {
     // กรองชื่อแคมเปญตรงตัว (ถ้ามีการเลือก)
     const matchCampaign = !campaign || r.campaign === campaign;
     
-    // กรอง Objective โดยเช็คว่ามีคำที่เลือกอยู่ในชื่อ Campaign หรือไม่
+    // กรอง Objective โดยเช็คว่ามีคำว่า Awareness, Engagement หรือ Page Follower อยู่ในชื่อ Campaign หรือไม่
     const matchObjective = !objective || r.campaign.toLowerCase().includes(objective.toLowerCase());
     
     return matchCampaign && matchObjective;
@@ -1174,7 +1266,7 @@ if (themeCheckbox) {
     if (e.target.checked) document.body.classList.add('dark-mode');
     else document.body.classList.remove('dark-mode');
     localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-    updateThemeIcon(); renderCharts();
+    updateThemeIcon(); renderCharts(); renderTopAds();
   });
 }
 
