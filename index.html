@@ -721,20 +721,26 @@ window.renderTopAds = function() {
   const container = document.getElementById('topAdsContainer');
   if (!container) return;
 
-  const metric = document.getElementById('topAdsMetric').value || 'spend';
+  const metric = document.getElementById('topAdsMetric').value;
   const d = filteredData;
 
+  // จัดกลุ่มข้อมูลตาม Ad
   const adGroups = {};
   d.forEach(r => {
     if (!r.ad || r.ad === '-') return;
-    if (!adGroups[r.ad]) adGroups[r.ad] = { ad: r.ad, spend: 0, impressions: 0, engagements: 0, fbLikes: 0, reach: 0 };
+    if (!adGroups[r.ad]) {
+      // ดึง objective ติดมาด้วยเพื่อใช้กำหนด Metric ที่จะแสดง
+      adGroups[r.ad] = { ad: r.ad, objective: r.objective, spend: 0, impressions: 0, engagements: 0, fbLikes: 0, reach: 0, leads: 0 };
+    }
     adGroups[r.ad].spend += r.spend;
     adGroups[r.ad].impressions += r.impressions;
     adGroups[r.ad].engagements += r.engagements;
     adGroups[r.ad].fbLikes += r.fbLikes;
     adGroups[r.ad].reach += r.reach;
+    adGroups[r.ad].leads += (r.leads || 0);
   });
 
+  // เรียงลำดับตาม Metric ที่เลือก และตัดมาแค่ 10 อันดับแรก
   const sortedAds = Object.values(adGroups).sort((a, b) => b[metric] - a[metric]).slice(0, 10);
 
   if (sortedAds.length === 0) {
@@ -742,55 +748,94 @@ window.renderTopAds = function() {
     return;
   }
 
-  const isDark = document.body.classList.contains('dark-mode');
-  const bgColor = isDark ? '%23334155' : '%23e2e8f0';
-  const textColor = isDark ? '%2394A3B8' : '%2364748B';
-  
-  // Create a 100% safely encoded SVG fallback URI that completely avoids breaking inline JS quotes.
-  const fallbackImg = `data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27400%27 height=%27500%27%3E%3Crect width=%27100%25%27 height=%27100%25%27 fill=%27${bgColor}%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 font-family=%27sans-serif%27 font-size=%2716%27 font-weight=%27600%27 fill=%27${textColor}%27%3ENo Image%3C/text%3E%3C/svg%3E`;
+  // รูปภาพสำรอง (Fallback) กรณีหาไฟล์ภาพไม่เจอ
+  const fallbackImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect width='100%25' height='100%25' fill='%23e2e8f0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='16' font-weight='600' fill='%2394a3b8'%3ENo Image%3C/text%3E%3C/svg%3E";
 
   container.innerHTML = sortedAds.map((r, index) => {
-    let valStr = '';
-    if (metric === 'spend') valStr = `฿${r.spend.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}`;
-    else valStr = r[metric].toLocaleString();
-
     const adNameSafe = r.ad.replace(/"/g, '&quot;');
     const encodedAdName = encodeURIComponent(r.ad);
     
-    // Attempt sequence: .jpg -> .png -> fallback. (100% Bug-free approach using HTML5 Dataset properties)
+    // กำหนด Path สำหรับทั้ง .jpg และ .png
     const imgSrcJpg = `./images/${encodedAdName}.jpg`;
     const imgSrcPng = `./images/${encodedAdName}.png`;
     
-    let imgHtml = `<img src="${imgSrcJpg}" alt="${adNameSafe}" class="ad-image" 
-      data-png="${imgSrcPng}" 
-      data-fallback="${fallbackImg}" 
-      onerror="if(this.getAttribute('data-tried') !== 'true'){ this.setAttribute('data-tried', 'true'); this.src=this.getAttribute('data-png'); } else { this.onerror=null; this.src=this.getAttribute('data-fallback'); }">`;
+    // ลองโหลด .jpg ก่อน ถ้าพัง (onerror) ให้ลองโหลด .png ถ้ายังพังอีกถึงจะใช้ fallbackImg
+    let imgHtml = `<img src="${imgSrcJpg}" alt="${adNameSafe}" class="ad-image" onerror="if(!this.getAttribute('data-tried-png')){ this.setAttribute('data-tried-png', 'true'); this.src='${imgSrcPng}'; } else { this.onerror=null; this.src='${fallbackImg}'; }">`;
 
-    // Smart link matching (case insensitive & stripped of extra spaces)
-    const normalizedAdName = r.ad.trim().toLowerCase();
-    const linkUrl = window.creativeLinksData ? window.creativeLinksData[normalizedAdName] : null;
-    
+    // แปลงชื่อ Ad ปัจจุบันให้เป็นพิมพ์เล็กและลบช่องว่างทิ้งทั้งหมด เพื่อไปเทียบกับฐานข้อมูล
+    const matchKey = String(r.ad).toLowerCase().replace(/\s+/g, '');
+    const linkUrl = window.creativeLinksData ? window.creativeLinksData[matchKey] : null;
+
     if (linkUrl) {
       imgHtml = `
-        <a href="${linkUrl}" target="_blank" title="คลิกเพื่อดูโพสต์ต้นฉบับ" style="display:block; width:100%; height:100%; position:relative;">
+        <a href="${linkUrl}" target="_blank" title="คลิกเพื่อดูโพสต์ต้นฉบับ" style="display:block; height:100%; position:relative;">
           ${imgHtml}
           <div class="ad-link-overlay">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
           </div>
         </a>
       `;
     }
 
+    // --- คำนวณ Metrics ---
+    const freq = r.reach > 0 ? (r.impressions / r.reach) : 0;
+    const cpm = r.impressions > 0 ? (r.spend / r.impressions) * 1000 : 0;
+    const cpr = r.reach > 0 ? (r.spend / r.reach) * 1000 : 0;
+    const costPerLike = r.fbLikes > 0 ? (r.spend / r.fbLikes) : 0;
+    const cpl = r.leads > 0 ? (r.spend / r.leads) : 0;
+    const cpe = r.engagements > 0 ? (r.spend / r.engagements) : 0;
+
+    const formatNum = (val) => val.toLocaleString(undefined, {maximumFractionDigits: 0});
+    const formatMoney = (val) => '฿' + val.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    const formatFloat = (val) => val.toFixed(2);
+
+    // Template สำหรับสร้างกล่องย่อย 1 กล่อง
+    const statBox = (label, val, isHighlight) => `
+      <div style="display:flex; flex-direction:column; background:var(--bg); padding:6px 8px; border-radius:6px; border:1px solid ${isHighlight ? 'var(--primary)' : 'var(--border)'};">
+        <span style="font-size:10px; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${label}">${label}</span>
+        <span style="font-size:12px; font-weight:600; font-family:'Inter',sans-serif; color:${isHighlight ? 'var(--primary)' : 'var(--text)'};">${val}</span>
+      </div>
+    `;
+
+    let stats = [];
+    const obj = (r.objective || '').toLowerCase();
+    
+    // 4 ค่าพื้นฐานที่ทุก Objective มีเหมือนกัน
+    stats.push(statBox('Spending', formatMoney(r.spend), metric === 'spend'));
+    stats.push(statBox('Reach', formatNum(r.reach), false));
+    stats.push(statBox('Impression', formatNum(r.impressions), metric === 'impressions'));
+    stats.push(statBox('Frequency', formatFloat(freq), false));
+
+    // เพิ่ม Metric คู่ที่ 3 ตาม Objective ของ Ad นั้นๆ
+    if (obj.includes('awareness')) {
+        stats.push(statBox('CP1000R', formatMoney(cpr), false));
+        stats.push(statBox('CPM', formatMoney(cpm), false));
+    } else if (obj.includes('page follower')) {
+        stats.push(statBox('Page Follower', formatNum(r.fbLikes), metric === 'fbLikes'));
+        stats.push(statBox('Cost/Follower', formatMoney(costPerLike), false));
+    } else if (obj.includes('lead')) {
+        stats.push(statBox('Leads', formatNum(r.leads), false));
+        stats.push(statBox('Cost/Lead', formatMoney(cpl), false));
+    } else if (obj.includes('engagement')) {
+        stats.push(statBox('Engagement', formatNum(r.engagements), metric === 'engagements'));
+        stats.push(statBox('CPE', formatMoney(cpe), false));
+    } else {
+        // Default กรณีไม่เข้าเงื่อนไขใด
+        stats.push(statBox('CP1000R', formatMoney(cpr), false));
+        stats.push(statBox('CPM', formatMoney(cpm), false));
+    }
+
+    const metricsHtml = `<div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:12px;">${stats.join('')}</div>`;
+
     return `
       <div class="ad-card">
         <div class="ad-rank">#${index + 1}</div>
-        <div class="ad-image-wrap">${imgHtml}</div>
+        <div class="ad-image-wrap">
+          ${imgHtml}
+        </div>
         <div class="ad-info">
-          <div class="ad-title" title="${adNameSafe}">${adNameSafe}</div>
-          <div class="ad-stat">
-            <span style="color: var(--text-secondary); font-size: 11px;">${document.getElementById('topAdsMetric').options[document.getElementById('topAdsMetric').selectedIndex].text.replace('Sort by: ', '')}</span>
-            <span>${valStr}</span>
-          </div>
+          <div class="ad-title" style="margin-bottom:0;" title="${adNameSafe}">${adNameSafe}</div>
+          ${metricsHtml}
         </div>
       </div>
     `;
