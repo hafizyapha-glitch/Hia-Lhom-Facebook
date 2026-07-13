@@ -465,6 +465,20 @@ let charts = {};
 function destroyCharts() { Object.values(charts).forEach(c => { if(c) c.destroy(); }); charts = {}; }
 function renderAll() { renderKPIs(); renderCharts(); renderTopAds(); renderTable(); }
 
+// --- เพิ่มฟังก์ชันจัดการรูปภาพสำรองที่นี่ (ป้องกัน HTML Syntax Error) ---
+window.handleAdImageError = function(img) {
+  if (!img.getAttribute('data-tried-png')) {
+    img.setAttribute('data-tried-png', 'true');
+    // ลองเปลี่ยนนามสกุลจาก .jpg เป็น .png
+    img.src = img.src.replace(/\.jpg$/i, '.png');
+  } else {
+    // ถ้าพังทั้ง jpg และ png ค่อยแสดงภาพสีเทา
+    img.onerror = null;
+    img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect width='100%25' height='100%25' fill='%23e2e8f0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='16' font-weight='600' fill='%2394a3b8'%3ENo Image%3C/text%3E%3C/svg%3E";
+  }
+};
+// ----------------------------------------------------------------
+
 async function safeFetch(url) {
   try {
     if (window.location.protocol.startsWith('blob') || window.location.protocol.startsWith('data')) return null;
@@ -748,19 +762,15 @@ window.renderTopAds = function() {
     return;
   }
 
-  // รูปภาพสำรอง (Fallback) กรณีหาไฟล์ภาพไม่เจอ
-  const fallbackImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect width='100%25' height='100%25' fill='%23e2e8f0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='16' font-weight='600' fill='%2394a3b8'%3ENo Image%3C/text%3E%3C/svg%3E";
-
   container.innerHTML = sortedAds.map((r, index) => {
     const adNameSafe = r.ad.replace(/"/g, '&quot;');
     const encodedAdName = encodeURIComponent(r.ad);
     
-    // กำหนด Path สำหรับทั้ง .jpg และ .png
+    // กำหนด Path สำหรับ .jpg ก่อน
     const imgSrcJpg = `./images/${encodedAdName}.jpg`;
-    const imgSrcPng = `./images/${encodedAdName}.png`;
     
-    // ลองโหลด .jpg ก่อน ถ้าพัง (onerror) ให้ลองโหลด .png ถ้ายังพังอีกถึงจะใช้ fallbackImg
-    let imgHtml = `<img src="${imgSrcJpg}" alt="${adNameSafe}" class="ad-image" onerror="if(!this.getAttribute('data-tried-png')){ this.setAttribute('data-tried-png', 'true'); this.src='${imgSrcPng}'; } else { this.onerror=null; this.src='${fallbackImg}'; }">`;
+    // เรียกใช้ handleAdImageError เมื่อโหลดภาพไม่สำเร็จ
+    let imgHtml = `<img src="${imgSrcJpg}" alt="${adNameSafe}" class="ad-image" onerror="handleAdImageError(this)">`;
 
     // แปลงชื่อ Ad ปัจจุบันให้เป็นพิมพ์เล็กและลบช่องว่างทิ้งทั้งหมด เพื่อไปเทียบกับฐานข้อมูล
     const matchKey = String(r.ad).toLowerCase().replace(/\s+/g, '');
