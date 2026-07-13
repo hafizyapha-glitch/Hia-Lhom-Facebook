@@ -46,16 +46,13 @@
 
     .header { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }
     .logo-area { display: flex; align-items: center; gap: 16px; }
-    
     .logo-icon { width: 64px; height: 64px; border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); background: #FFF; box-shadow: var(--shadow-sm); padding: 4px; }
     .logo-icon img { width: 100%; height: 100%; object-fit: contain; }
-    
     .logo-title { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
     .logo-sub { font-size: 13px; color: var(--muted); font-weight: 500; }
     
     .header-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
     .header-right { display: flex; align-items: center; gap: 16px; }
-
     .source-label { color: var(--text-secondary); font-family: monospace; font-weight: 600; }
 
     .main { padding: 18px 64px; max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
@@ -124,7 +121,6 @@
 
     #statusBar { display: none; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 12px 16px; font-size: 14px; font-weight: 500; color: var(--green); margin-bottom: 16px; }
 
-    /* Settings Drawer Styles */
     .drawer-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
     .drawer-overlay.show { opacity: 1; visibility: visible; }
     .drawer { position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100vh; background: var(--card); z-index: 1000; box-shadow: -4px 0 15px rgba(0,0,0,0.1); transition: right 0.3s ease; display: flex; flex-direction: column; border-left: 1px solid var(--border); }
@@ -138,7 +134,6 @@
     .setting-label { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
     .setting-desc { font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5; }
     
-    /* Theme Switch (Slide) */
     .theme-switch-wrapper { display: flex; align-items: center; justify-content: space-between; background: var(--surface); padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border); }
     .theme-switch-text { font-size: 13px; font-weight: 500; color: var(--text); display: flex; align-items: center; gap: 8px; }
     .switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
@@ -149,7 +144,12 @@
     input:checked + .slider:before { transform: translateX(20px); }
     body.dark-mode .slider { background-color: #334155; }
 
-    /* Top Ads Carousel Styles */
+    .settings-data-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; font-size: 13px; }
+    .settings-data-box div { margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between;}
+    .settings-data-box div:last-child { margin-bottom: 0; }
+    .settings-data-box .label { color: var(--text-secondary); }
+    .settings-data-box .value { color: var(--text); font-family: monospace; font-weight: 600; }
+
     .carousel-track { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 16px; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: thin; }
     .carousel-track::-webkit-scrollbar { height: 6px; }
     .carousel-track::-webkit-scrollbar-track { background: var(--surface); border-radius: 4px; }
@@ -173,14 +173,6 @@
     .scroll-btn.left { left: -18px; }
     .scroll-btn.right { right: -18px; }
 
-    /* Settings Data Source Styling */
-    .settings-data-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; font-size: 13px; }
-    .settings-data-box div { margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between;}
-    .settings-data-box div:last-child { margin-bottom: 0; }
-    .settings-data-box .label { color: var(--text-secondary); }
-    .settings-data-box .value { color: var(--text); font-family: monospace; font-weight: 600; }
-
-
   @media (max-width: 1200px) {
     .kpi-grid.row6 { grid-template-columns: repeat(3,1fr); }
   }
@@ -196,7 +188,7 @@
   }
   @media (max-width: 600px) {
     .kpi-grid.row6, .kpi-grid.row5, .kpi-grid.row4, .kpi-grid.row3 { grid-template-columns: 1fr; }
-    .scroll-btn { display: none; } /* ซ่อนปุ่มเลื่อนบนมือถือ ให้ใช้นิ้วปัดแทน */
+    .scroll-btn { display: none; }
   }
 </style>
 </head>
@@ -247,15 +239,15 @@
   <div style="padding: 0 32px; margin-top: -8px;" id="innerMain">
     <div id="statusBar"></div>
     <div class="filter-row">
-      <span class="filter-label">
+      <span class="filter-label" style="margin-left: 8px;">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="4" x2="14" y2="4"/><line x1="10" y1="4" x2="3" y2="4"/><line x1="21" y1="12" x2="12" y2="12"/><line x1="8" y1="12" x2="3" y2="12"/><line x1="21" y1="20" x2="16" y2="20"/><line x1="12" y1="20" x2="3" y2="20"/><line x1="14" y1="2" x2="14" y2="6"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="16" y1="18" x2="16" y2="22"/></svg>
         Campaign:
       </span>
       <select id="filterCampaign" onchange="applyFilters()">
         <option value="">ทุก Campaign</option>
       </select>
-      
-      <span class="filter-label" style="margin-left: 8px;">
+
+      <span class="filter-label">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         Objective:
       </span>
@@ -446,12 +438,10 @@
 </div>
 
 <script>
-// ─── DATA MANAGEMENT ──────────────────────────────
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 window.allMonthsAggregated = {}; 
-window.creativeLinks = {}; // เก็บข้อมูลลิงก์สำหรับแต่ละโฆษณา
+window.creativeLinks = {}; 
 
-// Clean string functions to handle invisible spaces or BOM characters
 const cleanKey = k => k ? k.trim().replace(/^\uFEFF/, '').toLowerCase() : '';
 
 function parseNum(val) {
@@ -465,11 +455,14 @@ function parseNum(val) {
 
 function parseObjective(campaign) {
   if (!campaign) return 'Other';
-  const c = String(campaign);
-  if (c.includes('Awareness - Chonburi')) return 'Awareness - Chonburi';
-  if (c.includes('Awareness')) return 'Awareness';
-  if (c.includes('Page Follower')) return 'Page Follower';
-  if (c.toLowerCase().includes('leads') || c.includes('ลีด')) return 'Leads';
+  const c = String(campaign).toLowerCase();
+  
+  if (c.includes('awareness - chonburi')) return 'Awareness - Chonburi';
+  if (c.includes('awareness')) return 'Awareness';
+  if (c.includes('page follower')) return 'Page Follower';
+  if (c.includes('lead')) return 'Leads'; 
+  if (c.includes('engagement')) return 'Engagement';
+  
   return 'Other';
 }
 
@@ -738,13 +731,10 @@ function renderCharts() {
     if (document.getElementById('regionSummary')) document.getElementById('regionSummary').style.display = 'none';
   }
 
-  // ----------------------------------------------------------------------
   // Trigger Monthly Trend Charts rendering
-  // ----------------------------------------------------------------------
   renderMonthlyTrendCharts();
 }
 
-// ─── TOP ADS CAROUSEL ──────────────────────────────
 window.renderTopAds = function() {
   const track = document.getElementById('topAdsTrack');
   const metric = document.getElementById('topAdsMetric').value || 'spend';
@@ -779,20 +769,17 @@ window.renderTopAds = function() {
     return;
   }
 
-  // สร้างรูปภาพตัวแทนสีเทา (SVG) หากโหลดรูปภาพจริงจากโฟลเดอร์ไม่ได้ (ปรับสัดส่วน 4:5)
   const isDark = document.body.classList.contains('dark-mode');
   const bgColor = isDark ? '%23334155' : '%23E5E7EB';
   const textColor = isDark ? '%2394A3B8' : '%2364748B';
   const fallbackSrc = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='300'><rect width='100%' height='100%' fill='${bgColor}'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='13' font-weight='600' fill='${textColor}'>ไม่มีรูปภาพโฆษณา</text></svg>`;
 
   track.innerHTML = sortedAds.map((ad, index) => {
-    // กำหนด Path อ้างอิงจากชื่อโฆษณา .jpg (ตัวอย่าง: ./images/AdName1.jpg)
     const imgPath = `./images/${encodeURIComponent(ad.name)}.jpg`; 
     const postLink = window.creativeLinks[ad.name];
     
     let imgHtml = `<img class="ad-image" src="${imgPath}" alt="${ad.name}" onerror="this.onerror=null; this.src='${fallbackSrc}';">`;
     
-    // หากมีลิงก์ ให้หุ้มด้วยแท็ก <a> เพื่อให้คลิกได้ และมีไอคอน Overlay ตอน Hover
     if (postLink) {
       imgHtml = `
         <a href="${postLink}" target="_blank" class="ad-image-wrap" title="คลิกเพื่อดูโพสต์จริง">
@@ -866,15 +853,13 @@ function renderMonthlyTrendCharts() {
     return l > 0 ? (s / l) : 0;
   });
 
-  // ตรวจสอบว่ามีข้อมูล spend หรือ impression ในทุกเดือนรวมกันหรือไม่
   const totalSpendAllMonths = spendData.reduce((a, b) => a + b, 0);
   const totalImpAllMonths = impData.reduce((a, b) => a + b, 0);
 
-  // ถ้าไม่มีข้อมูลเลย ให้ซ่อน Section ของ Monthly Trend ไว้
   const monthlyTrendSectionContainer = document.getElementById('monthlyTrendSectionContainer');
   if (totalSpendAllMonths === 0 && totalImpAllMonths === 0) {
     monthlyTrendSectionContainer.style.display = 'none';
-    return; // ไม่ต้อง render chart
+    return;
   } else {
     monthlyTrendSectionContainer.style.display = 'block';
   }
@@ -1086,11 +1071,16 @@ function applyFilters() {
   const objective = document.getElementById('filterObjective').value;
 
   filteredData = allData.filter(r => {
-    // กรองชื่อแคมเปญตรงตัว (ถ้ามีการเลือก)
     const matchCampaign = !campaign || r.campaign === campaign;
     
-    // กรอง Objective โดยเช็คว่ามีคำว่า Awareness, Engagement หรือ Page Follower อยู่ในชื่อ Campaign หรือไม่
-    const matchObjective = !objective || r.campaign.toLowerCase().includes(objective.toLowerCase());
+    let matchObjective = true;
+    if (objective) {
+      if (objective === 'Leads') {
+        matchObjective = r.campaign.toLowerCase().includes('lead');
+      } else {
+        matchObjective = r.campaign.toLowerCase().includes(objective.toLowerCase());
+      }
+    }
     
     return matchCampaign && matchObjective;
   });
@@ -1100,7 +1090,7 @@ function applyFilters() {
 
 function clearFilters() {
   document.getElementById('filterCampaign').value = '';
-  document.getElementById('filterObjective').value = ''; // รีเซ็ตค่า Objective 
+  document.getElementById('filterObjective').value = '';
   filteredData = [...allData];
   renderAll();
 }
@@ -1112,7 +1102,7 @@ async function safeFetch(url) {
     const res = await window.fetch(url);
     return res.ok ? res : null;
   } catch (e) {
-    return null; // ข้ามข้อผิดพลาดกรณี URL หรือ Network มีปัญหา
+    return null;
   }
 }
 
@@ -1176,7 +1166,6 @@ async function loadAllMonthsTrend() {
   });
 }
 
-// โหลดข้อมูลสำหรับเดือนที่เลือก
 async function loadMonthData(isInit = false) {
   const month = document.getElementById('filterMonth').value;
   if (!month) return; 
@@ -1236,11 +1225,9 @@ async function loadMonthData(isInit = false) {
       document.getElementById('regionSourceFile').textContent = 'ไม่พบไฟล์ภูมิภาค (ค่า 0)';
     }
     
-    // อัปเดตเวลาล่าสุด
     const now = new Date();
     document.getElementById('lastUpdated').textContent = now.toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'short' }) + ' น.';
 
-    // หากเป็นการเปลี่ยน Dropdown ธรรมดา ให้เรนเดอร์ใหม่ทันที
     if (!isInit) {
         populateFilters();
         renderAll();
@@ -1308,7 +1295,6 @@ function showStatus(msg) {
   setTimeout(()=>{ bar.style.display='none'; }, 4000);
 }
 
-// UI Settings & Theme
 if (localStorage.getItem('theme')==='dark') document.body.classList.add('dark-mode');
 const themeCheckbox = document.getElementById('themeToggleCheckbox');
 if (themeCheckbox) themeCheckbox.checked = document.body.classList.contains('dark-mode');
@@ -1351,7 +1337,7 @@ if (monthDropdown) monthDropdown.value = currentMonth;
 
 // Load Data
 Promise.all([
-  loadMonthData(true), // true = flag to not render yet
+  loadMonthData(true),
   loadAllMonthsTrend(),
   loadCreativeLinks()
 ]).finally(() => {
