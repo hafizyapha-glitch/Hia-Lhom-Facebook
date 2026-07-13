@@ -296,21 +296,26 @@
     </div>
 
     <!-- Top 10 Ads Carousel -->
-    <div class="kpi-group-label" style="margin-top: 32px; font-size: 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-      <span>Top 10 Ads Performance</span>
-      <select id="topAdsMetric" class="chart-filter-select" onchange="renderTopAds()" style="font-size: 13px; font-weight: 500; padding: 6px 32px 6px 12px;">
-        <option value="spend">Sort by: Spend</option>
-        <option value="impressions">Sort by: Impressions</option>
-        <option value="engagements">Sort by: Engagements</option>
-        <option value="fbLikes">Sort by: FB Likes</option>
-      </select>
-    </div>
-    <div class="carousel-wrapper" style="position: relative; margin-top: 8px;">
-      <button class="scroll-btn left" onclick="document.getElementById('topAdsTrack').scrollBy({left: -300, behavior: 'smooth'})">‹</button>
-      <div id="topAdsTrack" class="carousel-track">
-        <!-- Cards will be injected here -->
+    <div class="chart-card" style="margin-top: 24px; padding: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+        <div>
+          <div class="chart-title" style="font-size: 18px;">Top 10 Ads Performance</div>
+          <div class="chart-sub" style="margin-bottom: 0;">ภาพรวมโฆษณาที่ประสิทธิภาพสูงสุด 10 อันดับแรก</div>
+        </div>
+        <select id="topAdsMetric" class="chart-filter-select" onchange="renderTopAds()" style="font-size: 13px; font-weight: 500; padding: 6px 32px 6px 12px;">
+          <option value="spend">Sort by: Spend</option>
+          <option value="impressions">Sort by: Impressions</option>
+          <option value="engagements">Sort by: Engagements</option>
+          <option value="fbLikes">Sort by: FB Likes</option>
+        </select>
       </div>
-      <button class="scroll-btn right" onclick="document.getElementById('topAdsTrack').scrollBy({left: 300, behavior: 'smooth'})">›</button>
+      <div class="carousel-wrapper" style="position: relative;">
+        <button class="scroll-btn left" onclick="document.getElementById('topAdsTrack').scrollBy({left: -300, behavior: 'smooth'})">‹</button>
+        <div id="topAdsTrack" class="carousel-track">
+          <!-- Cards will be injected here -->
+        </div>
+        <button class="scroll-btn right" onclick="document.getElementById('topAdsTrack').scrollBy({left: 300, behavior: 'smooth'})">›</button>
+      </div>
     </div>
 
     <!-- Monthly Trend Performance Area -->
