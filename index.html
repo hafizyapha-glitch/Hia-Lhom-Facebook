@@ -1103,12 +1103,36 @@ window.renderYearlyTable = function() {
   document.querySelector('.table-responsive table thead').innerHTML = theadHtml;
 
   const selectedCamp = document.getElementById('filterCampaign').value;
+  const selectedObj = document.getElementById('filterObjective').value;
+
   const getMData = (m, field) => {
     if(!window.allMonthsAggregated[m]) return 0;
     const mData = window.allMonthsAggregated[m];
-    // ถ้า Filter Campaign ดึงเฉพาะอันนั้น
-    const targetData = selectedCamp ? (mData.campaigns[selectedCamp] || {}) : mData;
-    return targetData[field] || 0;
+    
+    // ถ้าไม่ได้เลือก Filter ใดๆ เลย ให้ดึงค่า Total ของเดือนนั้นมาใช้ได้เลยเพื่อความรวดเร็ว
+    if (!selectedCamp && !selectedObj) {
+      return mData[field] || 0;
+    }
+
+    // ถ้ามีการเลือก Filter ต้องนำแคมเปญที่ตรงเงื่อนไขมาบวกกัน
+    let sum = 0;
+    for (const [campName, campData] of Object.entries(mData.campaigns || {})) {
+      let matchCamp = !selectedCamp || campName === selectedCamp;
+      let matchObj = true;
+      
+      if (selectedObj) {
+        if (selectedObj === 'Leads') {
+          matchObj = campName.toLowerCase().includes('lead');
+        } else {
+          matchObj = campName.toLowerCase().includes(selectedObj.toLowerCase());
+        }
+      }
+
+      if (matchCamp && matchObj) {
+        sum += (campData[field] || 0);
+      }
+    }
+    return sum;
   };
 
   const formatVal = (v, isMoney, isFloat) => {
