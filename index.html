@@ -368,6 +368,7 @@
       <div class="tab-bar" style="padding-top: 12px; background: var(--surface);">
         <button id="tab-campaign" class="tab-btn active" onclick="switchTableTab('campaign')">Campaign Performance</button>
         <button id="tab-ad" class="tab-btn" onclick="switchTableTab('ad')">Ad Performance</button>
+        <button id="tab-yearly" class="tab-btn" onclick="switchTableTab('yearly')">Yearly Performance</button>
       </div>
       <div class="table-header">
         <div>
@@ -1022,6 +1023,7 @@ window.switchTableTab = function(tab) {
 };
 
 window.handleSort = function(col) {
+  if (currentTableTab === 'yearly') return; // ยกเลิกการ Sort ในหน้า Yearly
   if (currentSortCol === col) currentSortAsc = !currentSortAsc;
   else { currentSortCol = col; currentSortAsc = col === 'name' ? true : false; }
   renderTable();
@@ -1031,8 +1033,28 @@ function renderTable() {
   let d = filteredData;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(`tab-${currentTableTab}`).classList.add('active');
+  
+  if (currentTableTab === 'yearly') {
+    renderYearlyTable();
+    return;
+  }
+
   document.getElementById('tableMainTitle').textContent = currentTableTab === 'campaign' ? 'Campaign Performance' : 'Ad Performance';
-  document.getElementById('th-name-label').innerHTML = currentTableTab === 'campaign' ? 'Campaign Name <span class="sort-icon" id="sortIcon-name"></span>' : 'Ad Name <span class="sort-icon" id="sortIcon-name"></span>';
+  
+  // คืนค่าหัวตารางเดิม สำหรับ Campaign / Ad
+  document.querySelector('.table-responsive table thead').innerHTML = `<tr>
+    <th class="sortable" onclick="handleSort('name')" id="th-name-label">${currentTableTab === 'campaign' ? 'Campaign Name' : 'Ad Name'} <span class="sort-icon" id="sortIcon-name"></span></th>
+    <th class="sortable" onclick="handleSort('spend')">Spend (฿) <span class="sort-icon" id="sortIcon-spend"></span></th>
+    <th class="sortable" onclick="handleSort('reach')">Reach <span class="sort-icon" id="sortIcon-reach"></span></th>
+    <th class="sortable" onclick="handleSort('impressions')">Impressions <span class="sort-icon" id="sortIcon-impressions"></span></th>
+    <th class="sortable" onclick="handleSort('views')">Views <span class="sort-icon" id="sortIcon-views"></span></th>
+    <th class="sortable" onclick="handleSort('engagements')">Engagements <span class="sort-icon" id="sortIcon-engagements"></span></th>
+    <th class="sortable" onclick="handleSort('fbLikes')">FB Likes <span class="sort-icon" id="sortIcon-fbLikes"></span></th>
+    <th class="sortable" onclick="handleSort('reactions')">Reactions <span class="sort-icon" id="sortIcon-reactions"></span></th>
+    <th class="sortable" onclick="handleSort('comments')">Comments <span class="sort-icon" id="sortIcon-comments"></span></th>
+    <th class="sortable" onclick="handleSort('shares')">Shares <span class="sort-icon" id="sortIcon-shares"></span></th>
+    <th class="sortable" onclick="handleSort('saves')">Saves <span class="sort-icon" id="sortIcon-saves"></span></th>
+  </tr>`;
 
   const groupedObj = {};
   d.forEach(r => {
@@ -1065,6 +1087,135 @@ function renderTable() {
     return `<tr><td title="${r.name}" style="max-width:240px; padding-right:12px;">${displayHTML}</td><td class="cost-cell">฿${r.spend.toFixed(2)}</td><td class="num">${r.reach.toLocaleString()}</td><td class="num">${r.impressions.toLocaleString()}</td><td class="num">${r.views.toLocaleString()}</td><td class="num">${r.engagements.toLocaleString()}</td><td class="num">${r.fbLikes.toLocaleString()}</td><td class="num">${r.reactions.toLocaleString()}</td><td class="num">${r.comments.toLocaleString()}</td><td class="num">${r.shares.toLocaleString()}</td><td class="num">${r.saves.toLocaleString()}</td></tr>`;
   }).join('');
 }
+
+// ฟังก์ชันสำหรับตาราง Yearly ตาม Reference Image
+window.renderYearlyTable = function() {
+  document.getElementById('tableMainTitle').textContent = 'Yearly Performance';
+  document.getElementById('tableCount').textContent = 'ภาพรวมรายเดือน (ม.ค. - ธ.ค.) พร้อมผลรวม';
+
+  // สร้างหัวตาราง (Thead)
+  let theadHtml = `<tr><th style="text-align: left; min-width: 240px;">Metric</th>`;
+  monthNames.forEach(m => {
+    // แสดงชื่อย่อเดือน (Jan, Feb, Mar, ...)
+    theadHtml += `<th class="num" style="text-align: right;">${m.substring(0, 3)}</th>`;
+  });
+  theadHtml += `<th class="num" style="text-align: right; background-color: var(--surface); color: var(--primary); font-weight: 700;">Total</th></tr>`;
+  document.querySelector('.table-responsive table thead').innerHTML = theadHtml;
+
+  const selectedCamp = document.getElementById('filterCampaign').value;
+  const getMData = (m, field) => {
+    if(!window.allMonthsAggregated[m]) return 0;
+    const mData = window.allMonthsAggregated[m];
+    // ถ้า Filter Campaign ดึงเฉพาะอันนั้น
+    const targetData = selectedCamp ? (mData.campaigns[selectedCamp] || {}) : mData;
+    return targetData[field] || 0;
+  };
+
+  const formatVal = (v, isMoney, isFloat) => {
+    if (!v || v === 0) return '-';
+    if (isMoney) return v.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    if (isFloat) return v.toFixed(2);
+    return v.toLocaleString(undefined, {maximumFractionDigits: 0});
+  };
+
+  // Metric Structure ถอดแบบจากรูปภาพ Reference
+  const rowsData = [
+    { key: 'spend', label: 'Spending (฿)', isMoney: true },
+    { key: 'reach', label: 'Reach' },
+    { key: 'impressions', label: 'Impression' },
+    { key: 'engagements', label: 'Post Engagement' },
+    { key: 'messages', label: 'Message' },
+    { key: 'fbLikes', label: 'Page Like' },
+    { key: 'leads', label: 'Lead gen' },
+    { key: 'frequency', label: 'Frequency', isFloat: true },
+    { key: 'cpr', label: 'Cost per 1,000 Reach (CPR)', isMoney: true },
+    { key: 'cpm', label: 'Cost per 1,000 impressions (CPM)', isMoney: true },
+    { key: 'cpe', label: 'Cost per engagement (CPE)', isMoney: true },
+    { key: 'cpmsg', label: 'Cost per Message(CPMsg)', isMoney: true },
+    { key: 'cplike', label: 'Cost per page like', isMoney: true },
+    { key: 'cpl', label: 'Cost per Leads', isMoney: true },
+  ];
+
+  let tbodyHtml = '';
+  
+  // Variables to hold yearly totals for derived metrics
+  let totalSpend = 0;
+  let totalReach = 0;
+  let totalImpressions = 0;
+  let totalEngagements = 0;
+  let totalMessages = 0;
+  let totalFbLikes = 0;
+  let totalLeads = 0;
+
+  // First pass: calculate base metrics totals
+  monthNames.forEach(m => {
+      totalSpend += getMData(m, 'spend');
+      totalReach += getMData(m, 'reach');
+      totalImpressions += getMData(m, 'impressions');
+      totalEngagements += getMData(m, 'engagements');
+      totalMessages += getMData(m, 'messages');
+      totalFbLikes += getMData(m, 'fbLikes');
+      totalLeads += getMData(m, 'leads');
+  });
+
+  rowsData.forEach(row => {
+    let tr = `<tr><td style="font-weight: 600; color: var(--text);">${row.label}</td>`;
+    
+    monthNames.forEach(m => {
+      let s = getMData(m, 'spend');
+      let r = getMData(m, 'reach');
+      let i = getMData(m, 'impressions');
+      let e = getMData(m, 'engagements');
+      let msg = getMData(m, 'messages');
+      let fbl = getMData(m, 'fbLikes');
+      let lds = getMData(m, 'leads');
+
+      let val = 0;
+      if (row.key === 'spend') val = s;
+      else if (row.key === 'reach') val = r;
+      else if (row.key === 'impressions') val = i;
+      else if (row.key === 'engagements') val = e;
+      else if (row.key === 'messages') val = msg;
+      else if (row.key === 'fbLikes') val = fbl;
+      else if (row.key === 'leads') val = lds;
+      // Derived Metrics
+      else if (row.key === 'frequency') val = r > 0 ? (i / r) : 0;
+      else if (row.key === 'cpr') val = r > 0 ? (s / r) * 1000 : 0;
+      else if (row.key === 'cpm') val = i > 0 ? (s / i) * 1000 : 0;
+      else if (row.key === 'cpe') val = e > 0 ? (s / e) : 0;
+      else if (row.key === 'cpmsg') val = msg > 0 ? (s / msg) : 0;
+      else if (row.key === 'cplike') val = fbl > 0 ? (s / fbl) : 0;
+      else if (row.key === 'cpl') val = lds > 0 ? (s / lds) : 0;
+
+      tr += `<td class="num" style="text-align: right;">${formatVal(val, row.isMoney, row.isFloat)}</td>`;
+    });
+    
+    // Calculate and append Total column
+    let totalVal = 0;
+    if (row.key === 'spend') totalVal = totalSpend;
+    else if (row.key === 'reach') totalVal = totalReach;
+    else if (row.key === 'impressions') totalVal = totalImpressions;
+    else if (row.key === 'engagements') totalVal = totalEngagements;
+    else if (row.key === 'messages') totalVal = totalMessages;
+    else if (row.key === 'fbLikes') totalVal = totalFbLikes;
+    else if (row.key === 'leads') totalVal = totalLeads;
+    // Derived Metrics for Total
+    else if (row.key === 'frequency') totalVal = totalReach > 0 ? (totalImpressions / totalReach) : 0;
+    else if (row.key === 'cpr') totalVal = totalReach > 0 ? (totalSpend / totalReach) * 1000 : 0;
+    else if (row.key === 'cpm') totalVal = totalImpressions > 0 ? (totalSpend / totalImpressions) * 1000 : 0;
+    else if (row.key === 'cpe') totalVal = totalEngagements > 0 ? (totalSpend / totalEngagements) : 0;
+    else if (row.key === 'cpmsg') totalVal = totalMessages > 0 ? (totalSpend / totalMessages) : 0;
+    else if (row.key === 'cplike') totalVal = totalFbLikes > 0 ? (totalSpend / totalFbLikes) : 0;
+    else if (row.key === 'cpl') totalVal = totalLeads > 0 ? (totalSpend / totalLeads) : 0;
+
+    tr += `<td class="num" style="text-align: right; background-color: rgba(37, 99, 235, 0.05); color: var(--primary); font-weight: 600;">${formatVal(totalVal, row.isMoney, row.isFloat)}</td>`;
+    
+    tr += `</tr>`;
+    tbodyHtml += tr;
+  });
+
+  document.getElementById('tableBody').innerHTML = tbodyHtml;
+};
 
 function populateFilters() {
   const campaigns = [...new Set(allData.map(r=>r.campaign))].sort();
@@ -1119,9 +1270,9 @@ async function loadAllMonthsTrend() {
 
     if(rows.length === 0) return { month, data: null };
 
-    let monthlyTotal = { spend:0, reach:0, impressions:0, engagements:0, fbLikes:0, views:0, campaigns: {} };
+    let monthlyTotal = { spend:0, reach:0, impressions:0, engagements:0, fbLikes:0, views:0, leads:0, messages:0, campaigns: {} };
     rows.forEach(r => {
-        let c = '', spend=0, reach=0, imp=0, eng=0, likes=0, views=0;
+        let c = '', spend=0, reach=0, imp=0, eng=0, likes=0, views=0, leads=0, messages=0;
         for(let k in r) {
             let cleanK = cleanKey(k); let val = r[k];
             if(['campaign name', 'campaign', 'แคมเปญ'].includes(cleanK)) c = val;
@@ -1131,10 +1282,13 @@ async function loadAllMonthsTrend() {
             else if(['post engagements', 'engagements', 'การมีส่วนร่วม'].includes(cleanK)) eng = parseNum(val);
             else if(['facebook likes', 'fblikes', 'ยอดถูกใจเพจ', 'ไลก์'].includes(cleanK)) likes = parseNum(val);
             else if(['video plays', 'views', 'การรับชม'].includes(cleanK)) views = parseNum(val);
+            else if(['leads', 'ลีด', 'ผู้ติดต่อ', 'contacts'].includes(cleanK)) leads = parseNum(val);
+            else if(['messages', 'new messaging connections', 'ข้อความ', 'การเชื่อมต่อผ่านข้อความใหม่'].includes(cleanK)) messages = parseNum(val);
         }
-        monthlyTotal.spend += spend; monthlyTotal.reach += reach; monthlyTotal.impressions += imp; monthlyTotal.engagements += eng; monthlyTotal.fbLikes += likes; monthlyTotal.views += views;
-        if(!monthlyTotal.campaigns[c]) monthlyTotal.campaigns[c] = {spend:0, reach:0, impressions:0, engagements:0, fbLikes:0, views:0};
-        monthlyTotal.campaigns[c].spend += spend; monthlyTotal.campaigns[c].reach += reach; monthlyTotal.campaigns[c].impressions += imp; monthlyTotal.campaigns[c].engagements += eng; monthlyTotal.campaigns[c].fbLikes += likes; monthlyTotal.campaigns[c].views += views;
+        monthlyTotal.spend += spend; monthlyTotal.reach += reach; monthlyTotal.impressions += imp; monthlyTotal.engagements += eng; monthlyTotal.fbLikes += likes; monthlyTotal.views += views; monthlyTotal.leads += leads; monthlyTotal.messages += messages;
+        
+        if(!monthlyTotal.campaigns[c]) monthlyTotal.campaigns[c] = {spend:0, reach:0, impressions:0, engagements:0, fbLikes:0, views:0, leads:0, messages:0};
+        monthlyTotal.campaigns[c].spend += spend; monthlyTotal.campaigns[c].reach += reach; monthlyTotal.campaigns[c].impressions += imp; monthlyTotal.campaigns[c].engagements += eng; monthlyTotal.campaigns[c].fbLikes += likes; monthlyTotal.campaigns[c].views += views; monthlyTotal.campaigns[c].leads += leads; monthlyTotal.campaigns[c].messages += messages;
     });
     return { month, data: monthlyTotal };
   });
